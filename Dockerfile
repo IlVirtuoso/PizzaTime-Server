@@ -19,8 +19,7 @@ RUN cd /home/compilation && dotnet dev-certs https --trust && dotnet publish -c 
  && ln /opt/pizzaservice/PizzaTimeApi /usr/bin \
  && chmod +x /opt/pizzaservice/PizzaTimeApi
 RUN useradd -ms /bin/sh pizzaservice 
-EXPOSE 5000
-EXPOSE 5001
+EXPOSE 5000 5001
 USER pizzaservice
 ENTRYPOINT [ "/opt/pizzaservice/PizzaTimeApi" ]
 
