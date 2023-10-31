@@ -3,17 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaTimeApi", "PizzaTimeApi\PizzaTimeApi.csproj", "{718EDEAB-1569-4D31-A11A-65485E13DF62}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaTime.Api", "PizzaTimeApi\PizzaTime.Api.csproj", "{718EDEAB-1569-4D31-A11A-65485E13DF62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaTimeApi.UnitTest", "PizzaTimeApi.UnitTest\PizzaTimeApi.UnitTest.csproj", "{372948F6-1326-475F-BE96-71B978DA5EAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaTime.Api.UnitTest", "PizzaTimeApi.UnitTest\PizzaTime.Api.UnitTest.csproj", "{372948F6-1326-475F-BE96-71B978DA5EAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaTime.Data", "PizzaTime.Data\PizzaTime.Data.csproj", "{9CCAAFE6-BC10-43BE-AB24-0EBCFEF6C4A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaTime.Bridge", "PizzaTime.Bridge\PizzaTime.Bridge.csproj", "{922870DA-3554-4BCF-8751-2A3DF1E10FA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{718EDEAB-1569-4D31-A11A-65485E13DF62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -24,5 +25,16 @@ Global
 		{372948F6-1326-475F-BE96-71B978DA5EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{372948F6-1326-475F-BE96-71B978DA5EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{372948F6-1326-475F-BE96-71B978DA5EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CCAAFE6-BC10-43BE-AB24-0EBCFEF6C4A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CCAAFE6-BC10-43BE-AB24-0EBCFEF6C4A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CCAAFE6-BC10-43BE-AB24-0EBCFEF6C4A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CCAAFE6-BC10-43BE-AB24-0EBCFEF6C4A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{922870DA-3554-4BCF-8751-2A3DF1E10FA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{922870DA-3554-4BCF-8751-2A3DF1E10FA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{922870DA-3554-4BCF-8751-2A3DF1E10FA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{922870DA-3554-4BCF-8751-2A3DF1E10FA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

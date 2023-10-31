@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PizzaTime.Bridge;
 
 namespace PizzaTimeApi.Controllers;
 
@@ -12,13 +13,14 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    private Bridge _bridge;
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, Bridge bridge)
     {
         _logger = logger;
+        _bridge = bridge;
     }
 
-    [HttpGet]
+    [HttpGet()]
     public IEnumerable<WeatherForecast> Get()
     {
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -29,4 +31,6 @@ public class WeatherForecastController : ControllerBase
         })
         .ToArray();
     }
+
+    
 }

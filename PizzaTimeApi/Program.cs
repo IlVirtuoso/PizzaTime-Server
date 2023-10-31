@@ -1,10 +1,21 @@
+
+using PizzaTime.Bridge;
+using PizzaTime.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
+
+var config = builder.Configuration.AddJsonFile("./appsettings.json", false, true).Build();
+
+builder.Services.AddBridge(config.GetSection("Configuration").Get<WebAppConfiguration>()?? throw new ArgumentException("Configuration is corrupted"));
+
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -20,8 +31,9 @@ app.UseRouting();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+    pattern: "{controller}/{action}/{id?}");
 
-app.MapFallbackToFile("index.html");;
+app.MapFallbackToFile("index.html"); ;
 
 app.Run();
+
