@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaTime.Data", "PizzaTime
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaTime.Bridge", "PizzaTime.Bridge\PizzaTime.Bridge.csproj", "{922870DA-3554-4BCF-8751-2A3DF1E10FA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaTime.ComponentTests", "PizzaTime.ComponentTests\PizzaTime.ComponentTests.csproj", "{1875DB49-18BC-497B-A0F0-E71605992C7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{922870DA-3554-4BCF-8751-2A3DF1E10FA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{922870DA-3554-4BCF-8751-2A3DF1E10FA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{922870DA-3554-4BCF-8751-2A3DF1E10FA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1875DB49-18BC-497B-A0F0-E71605992C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1875DB49-18BC-497B-A0F0-E71605992C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1875DB49-18BC-497B-A0F0-E71605992C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1875DB49-18BC-497B-A0F0-E71605992C7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

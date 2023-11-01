@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace PizzaTime.Api;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/hellocontroller")]
 public class HelloController:ControllerBase
 {
     private ILogger _logger;
