@@ -13,8 +13,8 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
-    private Bridge _bridge;
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, Bridge bridge)
+    private DbBridge _bridge;
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, DbBridge bridge)
     {
         _logger = logger;
         _bridge = bridge;

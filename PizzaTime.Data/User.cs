@@ -9,11 +9,6 @@ public class User
     public string Email { get; set; } = "";
 }
 
-public class UserAuth
-{
-    public string UserName { get; set; } = "";
-    public string HashedPassword { get; set; } = "";
-}
 
 
 

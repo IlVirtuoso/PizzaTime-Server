@@ -8,11 +8,11 @@ using Npgsql;
 namespace PizzaTime.Bridge;
 
 
-public class Bridge
+public class DbBridge
 {
     private WebAppConfiguration _config;
     private DbConnection _connection;
-    public Bridge(WebAppConfiguration configuration){
+    public DbBridge(WebAppConfiguration configuration){
         _config = configuration;
         _connection = new NpgsqlConnection(_config.DatabaseConnectionString);
     }
@@ -29,8 +29,8 @@ public class Bridge
 public static class BridgeBuilderExtension
 {
     public static IServiceCollection AddBridge(this IServiceCollection builder, WebAppConfiguration configuration){
-        var service = new ServiceDescriptor(typeof(Bridge),(servicebuilder)=>{
-            return new Bridge(configuration);
+        var service = new ServiceDescriptor(typeof(DbBridge),(servicebuilder)=>{
+            return new DbBridge(configuration);
         },ServiceLifetime.Singleton);
         builder.Add(service);
         return builder;
