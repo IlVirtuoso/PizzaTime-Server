@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,11 @@ namespace PizzaTime.Api;
 public class Login
 {
     private ILogger _logger;
-    public Login(ILogger<Login> logger)
+    private DbConnection _connection;
+    public Login(ILogger<Login> logger,DbConnection connection)
     {
         _logger = logger;
-        
+        _connection = connection;
     }
 
 

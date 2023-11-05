@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "container",
+            "database": "PizzaService",
+            "username": "PizzaAdmin",
+            "password": "Pizza1234!"
+        }
+    ]
+}

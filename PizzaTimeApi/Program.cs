@@ -13,12 +13,18 @@ var config = builder.Configuration.AddJsonFile("./appsettings.json", false, true
 
 var appconfig = config.GetSection("Configuration").Get<WebAppConfiguration>();
 
-var app = builder.Build();
-
 var connectionDescriptor = new ServiceDescriptor(typeof(DbConnection), (IServiceProvider t)=>{
     var connection = new NpgsqlConnection(appconfig.DatabaseConnectionString);
+    connection.Open();
     return connection;
-});
+},ServiceLifetime.Singleton);
+
+
+builder.Services.Add(connectionDescriptor);
+
+var app = builder.Build();
+
+
 
 
 // Configure the HTTP request pipeline.
