@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PizzaTime.Bridge;
+
 
 namespace PizzaTimeApi.Controllers;
 
@@ -13,11 +13,10 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
-    private DbBridge _bridge;
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, DbBridge bridge)
+
+    public WeatherForecastController(ILogger<WeatherForecastController> logger)
     {
         _logger = logger;
-        _bridge = bridge;
     }
 
     [HttpGet()]

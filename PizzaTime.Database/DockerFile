@@ -1,0 +1,5 @@
+FROM postgres
+ENV POSTGRES_DB PizzaService
+ENV POSTGRES_USER PizzaAdmin
+ENV POSTGRES_PASSWORD Pizza1234!
+COPY ./*.sql /docker-entrypoint-initdb.d/

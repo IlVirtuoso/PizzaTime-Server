@@ -9,9 +9,3 @@ public class Pizzeria
 }
 
 
-public class PizzeriaAuth
-{
-    public string Email { get; set; } = "";
-    public string HashedPassword { get; set; } = "";
-}
-

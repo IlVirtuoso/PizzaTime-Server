@@ -1,7 +1,6 @@
 using System.Text.Json.Nodes;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Mvc;
-using PizzaTime.Bridge;
 using PizzaTime.Data;
 namespace PizzaTime.Api;
 
@@ -9,12 +8,11 @@ namespace PizzaTime.Api;
 [Route("api/login")]
 public class Login
 {
-    private DbBridge _bridge;
     private ILogger _logger;
-    public Login(ILogger<Login> logger, DbBridge bridge)
+    public Login(ILogger<Login> logger)
     {
         _logger = logger;
-        _bridge = bridge;
+        
     }
 
 
@@ -24,8 +22,22 @@ public class Login
         public string Password { get; set; }
     }
 
+    public class PizzeriaAuth
+    {
+        public string PIVA { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
+
+
     [HttpPost]
     public JsonResult Post([FromBody] UserAuth auth)
+    {
+        return new JsonResult(new { Name = "hello", Result = "workd" });
+    }
+
+    [HttpPost("/pizzeria")]
+    public JsonResult LoginPizzeria([FromBody] PizzeriaAuth auth)
     {
         return new JsonResult(new { Name = "hello", Result = "workd" });
     }
@@ -41,9 +53,30 @@ public class SignInController : ControllerBase
         public string Email { get; set; }
         public string Password { get; set; }
     }
+    public SignInController(ILogger<SignInController> logger)
+    {
+     
+    }
 
     [HttpPost]
-    public JsonResult Post([FromBody] UserSignIn signin){
-        return new JsonResult(new {Message="Hello",Result="World"});
+    public JsonResult Post([FromBody] UserSignIn signin)
+    {
+        return new JsonResult(new { Message = "Hello", Result = "World" });
     }
+
+
+    public class PizzeriaSignIn
+    {
+        public string PIVA { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+    }
+
+    [HttpPost("/pizzeria")]
+    public JsonResult SignInPizzeria([FromBody] PizzeriaSignIn signIn)
+    {
+        return new JsonResult(new { Message = "Hello", Result = "World" });
+
+    }
+
 }

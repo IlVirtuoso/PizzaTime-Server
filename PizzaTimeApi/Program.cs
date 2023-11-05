@@ -1,5 +1,6 @@
 
-using PizzaTime.Bridge;
+using System.Data.Common;
+using Npgsql;
 using PizzaTime.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +11,14 @@ builder.Services.AddControllers();
 
 var config = builder.Configuration.AddJsonFile("./appsettings.json", false, true).Build();
 
-builder.Services.AddBridge(config.GetSection("Configuration").Get<WebAppConfiguration>()?? throw new ArgumentException("Configuration is corrupted"));
-
+var appconfig = config.GetSection("Configuration").Get<WebAppConfiguration>();
 
 var app = builder.Build();
 
+var connectionDescriptor = new ServiceDescriptor(typeof(DbConnection), (IServiceProvider t)=>{
+    var connection = new NpgsqlConnection(appconfig.DatabaseConnectionString);
+    return connection;
+});
 
 
 // Configure the HTTP request pipeline.
