@@ -57,7 +57,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PizzaTime.Data\PizzaTime.Data.csproj" />
-    <ProjectReference Include="..\PizzaTime.Bridge\PizzaTime.Bridge.csproj" />
   </ItemGroup>
 
   <ItemGroup>

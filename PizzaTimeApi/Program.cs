@@ -14,7 +14,7 @@ var config = builder.Configuration.AddJsonFile("./appsettings.json", false, true
 var appconfig = config.GetSection("Configuration").Get<WebAppConfiguration>();
 
 var connectionDescriptor = new ServiceDescriptor(typeof(DbConnection), (IServiceProvider t)=>{
-    var connection = new NpgsqlConnection(appconfig.DatabaseConnectionString);
+    var connection = new NpgsqlConnection(appconfig.ToNpgConnectionString());
     connection.Open();
     return connection;
 },ServiceLifetime.Singleton);

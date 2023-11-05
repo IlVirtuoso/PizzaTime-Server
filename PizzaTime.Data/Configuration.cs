@@ -4,5 +4,12 @@ using Microsoft.Extensions.Configuration;
 
 public class WebAppConfiguration
 {
-    public string DatabaseConnectionString { get; set; } = "";
+    public string Database { get; set; } = "";
+    public string Host { get; set; } = "";
+    public int Port { get; set; } = 0;
+    public string UserAgent { get; set; } = "";
+
+    public string ToNpgConnectionString(){
+        return $"User ID={UserAgent};Password=Pizza1234!;Host={Host};Port={Port};Database={Database};Connection Lifetime=0;";
+    }
 }
