@@ -1,17 +1,20 @@
 CREATE USER "PizzaAdmin" WITH PASSWORD 'Pizza1234!';
 CREATE DATABASE "PizzaService";
-GRANT ALL PRIVILEGES ON "PizzaService" TO "PizzaAdmin";
-\connect PizzaService;
+grant connect on DATABASE "PizzaService" to "PizzaAdmin";
+GRANT pg_read_all_data TO "PizzaAdmin";
+GRANT pg_write_all_data TO "PizzaAdmin";
+
+\c "PizzaService";
 
 CREATE TABLE Pizza(
-    Id INT NOT NULL AUTO_INCREMENT,
+    Id SERIAL NOT NULL ,
     Name VARCHAR NOT NULL,
     Description VARCHAR,
-    Price DOUBLE,
+    Price FLOAT,
     PRIMARY KEY(Id)
 );
 
-CREATE TABLE User(
+CREATE TABLE Users(
     UserName VARCHAR NOT NULL,
     Name VARCHAR not NULL,
     SurName VARCHAR not NULL,
@@ -29,13 +32,14 @@ CREATE TABLE Pizzeria(
 CREATE TABLE UserAuth(
     UserName VARCHAR not NULL,
     Password VARCHAR not NULL,
-    FOREIGN KEY (`UserName`) REFERENCES `User`(`UserName`);
+    FOREIGN KEY (UserName) REFERENCES Users(UserName)
 );
 
 CREATE TABLE PizzeriaAuth (
     PIVA VARCHAR not NULL,
     Password VARCHAR not NULL,
-    FOREIGN KEY (`PIVA`) REFERENCES `Pizzeria`(`PIVA`);
+    FOREIGN KEY (PIVA) REFERENCES Pizzeria(PIVA)
 );
+
 
 
