@@ -58,9 +58,5 @@
   <ItemGroup>
     <ProjectReference Include="..\PizzaTime.Data\PizzaTime.Data.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Database/" />
-  </ItemGroup>
   
 </Project>
