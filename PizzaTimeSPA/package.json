@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "unique-names-generator": "^4.7.1",
     "vue": "^3.2.47"
   },
   "devDependencies": {

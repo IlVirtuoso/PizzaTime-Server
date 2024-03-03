@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PizzaTime.Data\PizzaTime.Data.csproj" />
+    <ProjectReference Include="..\PizzaTimeApi\PizzaTime.Api.csproj" />
   </ItemGroup>
 
 </Project>

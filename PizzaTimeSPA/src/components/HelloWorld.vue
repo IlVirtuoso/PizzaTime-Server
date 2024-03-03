@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import Bridge from '../data/bridge';
 
 defineProps<{ msg: string }>();
-
 const count = ref(0);
-
 const s = ref("hello");
+
+let b = ref(new Bridge());
+
+
 </script>
 
 <template>
   <h1>{{ msg }}</h1>
 
   <div class="card">
-    <button type="button" @click="count++; s= 'Hello1'">count is {{ count }} and s is {{ s }}</button>
+    <button type="button" @click="count++; b.init().then(()=>{s='Done'})'">count is {{ count }} and s is {{ s }}</button>
     <p>
       Edit
       <code>components/HelloWorld.vue</code> to test HMR

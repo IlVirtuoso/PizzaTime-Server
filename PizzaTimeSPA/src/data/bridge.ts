@@ -1,8 +1,11 @@
 
 class Bridge{
-    
-    public init() : void{
 
+    private _inited = false;
+
+
+    public init() : Promise<void>{
+        return fetch("/test").then();
     }
 
     public open(): void{

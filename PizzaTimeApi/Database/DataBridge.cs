@@ -1,7 +1,6 @@
 using System.Data.Common;
 using PizzaTime.Data;
-
-namespace Namespace;
+namespace PizzaTimeApi.Database;
 public class DataBridge
 {
     private DbConnection _connection;
@@ -9,6 +8,8 @@ public class DataBridge
     {
         _connection = connection;
     }
+
+    
 
     public User GetUserByName(string username){
         throw new NotImplementedException();
