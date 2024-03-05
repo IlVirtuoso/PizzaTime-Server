@@ -4,19 +4,20 @@ public class MockBridge : IDataBridge
 {
     public Pizza GetPizzaByName(string name)
     {
-
+        return Pizza.Generate(name);
     }
 
    
 
     public Pizzeria GetPizzeriaByName(string name)
     {
-        throw new NotImplementedException();
+        return Pizzeria.Generate(name);
+
     }
 
     public User GetUserByName(string name)
     {
-        throw new NotImplementedException();
+        return User.Generate(name);
     }
 }
 

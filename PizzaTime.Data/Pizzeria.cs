@@ -6,12 +6,12 @@ public class Pizzeria
     public string Piva { get; set; } = "";
     public string Address { get; set; } = "";
 
-    public static Pizzeria Generate()
+    public static Pizzeria Generate(string iva)
     {
         Pizzeria pizzeria = new Pizzeria();
         pizzeria.Email = "testmail@test";
-        pizzeria.Piva = new Random().Next(1000000,99999999).ToString();
-        pizzeria.Address = "";
+        pizzeria.Piva = iva;
+        pizzeria.Address = "testAddress, p.address";
         return pizzeria;
     }
 }

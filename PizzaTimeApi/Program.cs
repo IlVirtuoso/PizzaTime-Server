@@ -2,6 +2,7 @@
 using System.Data.Common;
 using Npgsql;
 using PizzaTime.Data;
+using PizzaTimeApi.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,10 @@ var connectionDescriptor = new ServiceDescriptor(typeof(DbConnection), (IService
     connection.Open();
     return connection;
 },ServiceLifetime.Singleton);
+
+var databridgeService = new ServiceDescriptor(typeof(IDataBridge), (IServiceProvider s)=>{
+    return new DataBridge(s.GetService<DbConnection>() ?? throw new ArgumentException("No database found"));
+});
 
 
 builder.Services.Add(connectionDescriptor);

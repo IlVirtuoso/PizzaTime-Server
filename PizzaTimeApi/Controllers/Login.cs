@@ -1,45 +1,43 @@
 using System.Data.Common;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.AspNetCore.Mvc;
 using PizzaTime.Data;
+using PizzaTime.Data.Messages;
+using PizzaTimeApi.Controllers;
+using PizzaTimeApi.Database;
 namespace PizzaTime.Api;
 
 [ApiController]
 [Route("api/login")]
-public class Login
+public class Login : PizzaController
 {
-    private ILogger _logger;
-    private DbConnection _connection;
-    public Login(ILogger<Login> logger,DbConnection connection)
+
+    public Login(ILogger<Login> logger, IDataBridge bridge) : base(logger, bridge)
     {
-        _logger = logger;
-        _connection = connection;
+
     }
 
 
-    public class UserAuth
+    [HttpPost("/user")]
+    public JsonResult UserLogin([FromBody] AuthMessage auth)
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class PizzeriaAuth
-    {
-        public string PIVA { get; set; } = "";
-        public string Password { get; set; } = "";
-    }
-
-
-
-    [HttpPost]
-    public JsonResult Post([FromBody] UserAuth auth)
-    {
-        return new JsonResult(new { Name = "hello", Result = "workd" });
+        AuthMessage response = new AuthMessage();
+        if (auth.AuthType != AuthType.USER)
+        {
+            response = AuthMessage.AuthErrorMessage(auth,"Wrong authentication api, please use the one for pizzeria");
+        }
+        var secret = _bridge.GetUserSecret(auth.Identifier);
+        if (secret == null)
+        {
+            response = AuthMessage.AuthErrorMessage(auth,"No user found");
+        }
+        return new JsonResult(response);
     }
 
     [HttpPost("/pizzeria")]
-    public JsonResult LoginPizzeria([FromBody] PizzeriaAuth auth)
+    public JsonResult PizzeriaLogin([FromBody] AuthMessage auth)
     {
         return new JsonResult(new { Name = "hello", Result = "workd" });
     }
@@ -47,7 +45,7 @@ public class Login
 
 [ApiController]
 [Route("api/signin")]
-public class SignInController : ControllerBase
+public class SignInController : PizzaController
 {
     public class UserSignIn
     {
@@ -55,14 +53,16 @@ public class SignInController : ControllerBase
         public string Email { get; set; }
         public string Password { get; set; }
     }
-    public SignInController(ILogger<SignInController> logger)
+    public SignInController(ILogger<SignInController> logger, IDataBridge bridge) : base(logger, bridge)
     {
-     
+
     }
 
     [HttpPost]
     public JsonResult Post([FromBody] UserSignIn signin)
     {
+        var user = _bridge.GetUserByName(signin.UserName);
+
         return new JsonResult(new { Message = "Hello", Result = "World" });
     }
 
