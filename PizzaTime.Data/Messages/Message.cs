@@ -8,7 +8,5 @@ public class Message
         Response,
         Request
     }
-
-    public string Payload { get; set; } = "";
     public MessageType Type { get; protected set; }
 }
