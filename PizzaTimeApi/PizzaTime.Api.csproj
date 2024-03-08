@@ -60,5 +60,8 @@
   <ItemGroup>
     <ProjectReference Include="..\PizzaTime.Data\PizzaTime.Data.csproj" />
   </ItemGroup>
+  <!--include database file from ../PizzaTime.Database/prepare.sql-->
   
+  
+
 </Project>

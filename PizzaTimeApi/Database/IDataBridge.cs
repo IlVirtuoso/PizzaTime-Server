@@ -10,6 +10,14 @@ public interface IDataBridge
     string? GetUserSecret(string userName);
     string? GetPizzeriaSecret(string piva);
 
-    void SetUserSecret(string username, string secret);
-    void SetPizzeriaSecret(string piva, string secret);
+    bool SetUserSecret(string username, string secret);
+    bool SetPizzeriaSecret(string piva, string secret);
+
+    bool UserExist(string userName);
+
+    bool PizzeriaExist(string pizzaName);
+
+    bool AddUser(User user);
+    bool AddPizzeria(Pizzeria pizzeria);
+
 }
