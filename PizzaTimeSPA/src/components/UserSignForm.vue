@@ -1,0 +1,36 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const signForm = ref();
+
+const username = ref('');
+const password = ref('');
+const confirm_password = ref('');
+
+function signup() {
+    console.log("Username is ", username , " and password is ", password, " and confirm password is ", confirm_password);
+}
+
+</script>
+
+
+<template>
+<el-form ref="signForm" :model="signForm" label-width="auto" style="max-width: 600px">
+    <el-form-item label="Username" prop="username">
+        <el-input v-model="username"></el-input>
+    </el-form-item>
+    <el-form-item label="Password" prop="password">
+        <el-input type="password" v-model="password"></el-input>
+    </el-form-item>
+    <el-form-item label="Confirm" prop="confirm_password" >
+        <el-input type="password" v-model="confirm_password"></el-input>
+    </el-form-item>
+    <el-button @click="signup">Sign Up</el-button>
+</el-form>
+</template>
+
+<style scoped>
+.read-the-docs {
+    color: #888;
+}
+</style>

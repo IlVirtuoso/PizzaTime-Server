@@ -26,10 +26,12 @@ public class SignInTest : TestEnvironment
         MockBridge.Setup(t => t.AddUser(It.IsAny<User>())).Returns(true);
         MockBridge.Setup(t => t.SetUserSecret("TestUser","none".ToSHA512().ToHashedString())).Returns(true);
         var controller = BuildSignInController();
-        AuthMessage signInMessage = new AuthMessage();
-        signInMessage.Auth = AuthMessage.AuthType.USER;
-        signInMessage.Identifier = "TestUser";
-        signInMessage.Secret = "none";
+        AuthMessage signInMessage = new AuthMessage
+        {
+            Auth = AuthMessage.AuthType.USER,
+            Identifier = "TestUser",
+            Secret = "none"
+        };
         var result = controller.Post(signInMessage);
         Assert.That(result.Secret == "none".ToSHA512().ToHashedString());
         Assert.That(result.Error == AuthMessage.ErrorReason.OK);

@@ -74,11 +74,13 @@ public class SignInController : PizzaController
         {
             return AuthMessage.AuthErrorMessage(authMessage, AuthMessage.ErrorReason.NO_USER);
         }
-        var newUser = new User();
-        newUser.UserName = user;
-        newUser.Email = authMessage.Email;
-        newUser.Name = authMessage.Name;
-        newUser.SurName = authMessage.SurName;
+        var newUser = new User
+        {
+            UserName = user,
+            Email = authMessage.Email,
+            Name = authMessage.Name,
+            SurName = authMessage.SurName
+        };
         _bridge.AddUser(newUser);
         var hashedSecret = authMessage.Secret.ToSHA512().ToHashedString();
         _bridge.SetUserSecret(user,hashedSecret?? throw new ArgumentException("Illegal argument on hashed secret"));
@@ -92,11 +94,13 @@ public class SignInController : PizzaController
         if(_bridge.PizzeriaExist(pizzeria)){
             return AuthMessage.AuthErrorMessage(message,AuthMessage.ErrorReason.NO_USER);
         }
-        var newPizzeria = new Pizzeria();
-        newPizzeria.Email = message.Email;
-        newPizzeria.Address = message.Address;
-        newPizzeria.Piva = pizzeria;
-        newPizzeria.Name = message.Name;
+        var newPizzeria = new Pizzeria
+        {
+            Email = message.Email,
+            Address = message.Address,
+            Piva = pizzeria,
+            Name = message.Name
+        };
         _bridge.AddPizzeria(newPizzeria);
         var hashedSecret = message.Secret.ToSHA512().ToHashedString();
         _bridge.SetPizzeriaSecret(pizzeria,hashedSecret ?? throw new ArgumentException("Illegal argument on hashed secret"));

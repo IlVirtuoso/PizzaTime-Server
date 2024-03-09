@@ -29,28 +29,38 @@ public class LoginTest : TestEnvironment
     {
         MockBridge.Setup(t=> t.GetUserSecret("TestUser")).Returns(()=> "none".ToSHA512().ToHashedString());
         var controller = BuildLoginController();
-        AuthMessage request = new AuthMessage();
-        request.Auth = AuthMessage.AuthType.USER;
-        request.Identifier = "TestUser";
-        request.Secret = "none";
+        AuthMessage request = new AuthMessage
+        {
+            Auth = AuthMessage.AuthType.USER,
+            Identifier = "TestUser",
+            Secret = "none"
+        };
         var result = controller.Post(request);
-        Assert.That(Message.MessageType.Response == result.Type);
-        Assert.That(result.Error == AuthMessage.ErrorReason.OK);
-        Assert.That(result.Secret == "none".ToSHA512().ToHashedString());
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Type, Is.EqualTo(Message.MessageType.Response));
+            Assert.That(result.Error, Is.EqualTo(AuthMessage.ErrorReason.OK));
+            Assert.That(result.Secret, Is.EqualTo("none".ToSHA512().ToHashedString()));
+        });
     }
 
-    
     [Test]
-    public void TestPizzeriaLogin(){
+    public void TestPizzeriaLogin()
+    {
         MockBridge.Setup(t => t.GetPizzeriaSecret("TestPizzeria")).Returns(()=> "none".ToSHA512().ToHashedString());
         var controller = BuildLoginController();
-        AuthMessage request = new AuthMessage();
-        request.Auth = AuthMessage.AuthType.PIZZERIA;
-        request.Identifier = "TestPizzeria";
-        request.Secret = "none";
+        AuthMessage request = new AuthMessage
+        {
+            Auth = AuthMessage.AuthType.PIZZERIA,
+            Identifier = "TestPizzeria",
+            Secret = "none"
+        };
         var result = controller.Post(request);
-        Assert.That(Message.MessageType.Response == result.Type);
-        Assert.That(result.Error == AuthMessage.ErrorReason.OK);
-        Assert.That(result.Secret == "none".ToSHA512().ToHashedString());
+        Assert.Multiple(() =>
+        {
+            Assert.That(Message.MessageType.Response == result.Type);
+            Assert.That(result.Error, Is.EqualTo(AuthMessage.ErrorReason.OK));
+            Assert.That(result.Secret, Is.EqualTo("none".ToSHA512().ToHashedString()));
+        });
     }
 }

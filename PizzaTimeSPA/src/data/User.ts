@@ -1,4 +1,4 @@
-import { Config, adjectives, countries, names, uniqueNamesGenerator } from "unique-names-generator";
+import { Config,  countries, names, uniqueNamesGenerator } from "unique-names-generator";
 
 
 class User{

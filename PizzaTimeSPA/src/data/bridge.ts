@@ -1,8 +1,6 @@
 
 class Bridge{
 
-    private _inited = false;
-
 
     public init() : Promise<void>{
         return fetch("/test").then();
