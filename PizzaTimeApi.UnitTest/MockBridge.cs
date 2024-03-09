@@ -1,23 +1,86 @@
 
+
 namespace PizzaTime.UnitTest.Mock;
 public class MockBridge : IDataBridge
 {
-    public Pizza GetPizzaByName(string name)
+    public List<User> Users { get; set; } = new List<User>();
+    public List<Pizzeria> Pizzerias { get; set; } = new List<Pizzeria>();
+    public Dictionary<User, string> UserSecrets { get; set; } = new Dictionary<User, string>();
+    public Dictionary<Pizzeria, string> PizzeriaSecrets { get; set; } = new Dictionary<Pizzeria, string>();
+
+    public bool AddPizzeria(Pizzeria pizzeria)
     {
-        return Pizza.Generate(name);
+        if(!Pizzerias.Contains(pizzeria)){
+            Pizzerias.Add(pizzeria);
+            return true;
+        }
+        return false;
     }
 
-   
-
-    public Pizzeria GetPizzeriaByName(string name)
+    public bool AddUser(User user)
     {
-        return Pizzeria.Generate(name);
-
+        if(!Users.Contains(user)){
+            Users.Add(user);
+            return true;
+        }
+        return false;
     }
 
-    public User GetUserByName(string name)
+    public Pizza? GetPizzaByName(string name)
     {
-        return User.Generate(name);
+        throw new NotImplementedException();
+    }
+
+
+    public Pizzeria? GetPizzeriaByPiva(string iva)
+    {
+        foreach(var p in Pizzerias){
+            if(p.Piva == iva) {return p;}
+        }
+        return null;
+    }
+
+    public string? GetPizzeriaSecret(string piva)
+    {
+        return PizzeriaSecrets[GetPizzeriaByPiva(piva) ?? throw new ArgumentException("Entity not existent")];
+    }
+
+    public User? GetUserByName(string name)
+    {
+        foreach(var u in Users){
+            if(u.UserName == name) {return u;}
+        }
+        return null;
+    }
+
+    public string? GetUserSecret(string userName)
+    {
+        if(!UserExist(userName)) return null;
+       return UserSecrets[GetUserByName(userName) ?? throw new ArgumentException("Entity not existent")];
+    }
+
+    public bool PizzeriaExist(string piva)
+    {
+        return Pizzerias.Select(t=> t.Piva).Contains(piva);
+    }
+
+    public bool SetPizzeriaSecret(string piva, string secret)
+    {
+        if(!PizzeriaExist(piva)) return false;
+        PizzeriaSecrets[GetPizzeriaByPiva(piva) ?? throw new ArgumentException("Entity not existent")] = secret;
+        return true;
+    }
+
+    public bool SetUserSecret(string username, string secret)
+    {
+        if(!UserExist(username)) return false;
+        UserSecrets[GetUserByName(username) ?? throw new ArgumentException("Entity not existent")] = secret;
+        return true;
+    }
+
+    public bool UserExist(string userName)
+    {
+        return Users.Select(p=> p.Name).Contains(userName);
     }
 }
 

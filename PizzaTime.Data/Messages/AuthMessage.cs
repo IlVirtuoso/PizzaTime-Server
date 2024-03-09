@@ -16,11 +16,10 @@ public class AuthMessage : Message
         NO_USER,
         INVALID_ENDPOINT
     }
-    public AuthType Auth { get; protected set; }
-    public string Identifier { get; protected set; } = "";
-    public string Secret { get; protected set; } = "";
+    public AuthType Auth { get; set; }
+    public string Identifier { get; set; } = "";
+    public string Secret { get; set; } = "";
     public ErrorReason Error { get; set; } = ErrorReason.OK;
-    public List<string> Attributes { get; set; } = new List<string>();
     public static AuthMessage AuthErrorMessage(AuthMessage request, ErrorReason reason)
     {
         AuthMessage message = request;

@@ -9,7 +9,7 @@ public static class Crypto
         return SHA512.HashData(Encoding.UTF8.GetBytes(text));
     }
 
-    public static string ToString(this byte[] hash){
+    public static string ToHashedString(this byte[] hash){
         return Encoding.UTF8.GetString(hash);
     }
 }

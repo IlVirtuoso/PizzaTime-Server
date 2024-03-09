@@ -34,7 +34,7 @@ public class Login : PizzaController
         {
             return AuthMessage.AuthErrorMessage(auth, AuthMessage.ErrorReason.NO_USER);
         }
-        else if (secret == auth.Secret.ToSHA512().ToString())
+        else if (secret == auth.Secret.ToSHA512().ToHashedString())
         {
             return AuthMessage.AuthPassedMessage(auth, secret);
         }
@@ -61,13 +61,13 @@ public class SignInController : PizzaController
     {
         switch (message.Auth)
         {
-            case AuthMessage.AuthType.PIZZERIA: return PizzeriaSignin(message);
-            case AuthMessage.AuthType.USER: return UserSignin(message);
+            case AuthMessage.AuthType.PIZZERIA: return PizzeriaSignin(message as PizzeriaSignInMessage ?? throw new ArgumentException("Invalid message format"));
+            case AuthMessage.AuthType.USER: return UserSignin(message as UserSignInMessage ?? throw new ArgumentException("Trying to login with invalid message format"));
         }
         return AuthMessage.AuthErrorMessage(message, AuthMessage.ErrorReason.INVALID_ENDPOINT);
     }
 
-    public AuthMessage UserSignin(AuthMessage authMessage)
+    public AuthMessage UserSignin(UserSignInMessage authMessage)
     {
         var user = authMessage.Identifier;
         if (_bridge.UserExist(user))
@@ -76,32 +76,30 @@ public class SignInController : PizzaController
         }
         var newUser = new User();
         newUser.UserName = user;
-        newUser.Email = authMessage.Attributes[0];
-        newUser.Name = authMessage.Attributes[1];
-        newUser.SurName = authMessage.Attributes[2];
+        newUser.Email = authMessage.Email;
+        newUser.Name = authMessage.Name;
+        newUser.SurName = authMessage.SurName;
         _bridge.AddUser(newUser);
-        var hashedSecret = authMessage.Secret.ToSHA512().ToString();
+        var hashedSecret = authMessage.Secret.ToSHA512().ToHashedString();
         _bridge.SetUserSecret(user,hashedSecret?? throw new ArgumentException("Illegal argument on hashed secret"));
         return AuthMessage.AuthPassedMessage(authMessage,hashedSecret);
     }
 
 
-    public AuthMessage PizzeriaSignin(AuthMessage message)
+    public AuthMessage PizzeriaSignin(PizzeriaSignInMessage message)
     {
         var pizzeria = message.Identifier;
         if(_bridge.PizzeriaExist(pizzeria)){
             return AuthMessage.AuthErrorMessage(message,AuthMessage.ErrorReason.NO_USER);
         }
         var newPizzeria = new Pizzeria();
-        newPizzeria.Email = message.Attributes[0];
-        newPizzeria.Address = message.Attributes[1];
+        newPizzeria.Email = message.Email;
+        newPizzeria.Address = message.Address;
         newPizzeria.Piva = pizzeria;
+        newPizzeria.Name = message.Name;
         _bridge.AddPizzeria(newPizzeria);
-        var hashedSecret = message.Secret.ToSHA512().ToString();
+        var hashedSecret = message.Secret.ToSHA512().ToHashedString();
         _bridge.SetPizzeriaSecret(pizzeria,hashedSecret ?? throw new ArgumentException("Illegal argument on hashed secret"));
         return AuthMessage.AuthPassedMessage(message,hashedSecret);
     }
-
-
-
 }
