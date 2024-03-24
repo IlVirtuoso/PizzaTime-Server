@@ -6,6 +6,7 @@ interface IBridge{
     GetUserByName(userName: string): User;
     GetPizzeriaByName(piva: string) : Pizzeria;
     GetPizzaByName(name: string): Pizza;
+    
 };
 
 export default IBridge;

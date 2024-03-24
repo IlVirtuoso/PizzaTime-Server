@@ -2,7 +2,7 @@
 import UserSignForm from "./components/UserSignForm.vue"
 import PizzeriaSignForm from "./components/PizzeriaSignForm.vue"
 import TopMenu  from "./components/TopMenu.vue"
-
+import MainView from "./pages/MainView.vue"
 </script>
 
 <template>
@@ -14,8 +14,8 @@ import TopMenu  from "./components/TopMenu.vue"
 
       <el-main>
         <!-- Here goes visualizer -->
-  <UserSignForm />
-  <PizzeriaSignForm />
+        <MainView />
+
       </el-main>
 
       <el-footer>

@@ -18,4 +18,6 @@ export default class MockBridge implements IBridge{
         return Pizza.generate(name);
     }
 
+    
+
 };

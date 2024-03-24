@@ -14,7 +14,7 @@ function change(key: string, keypath : string[]){
 
 
 <template>
-<el-menu :default-active="'1'" class="navbar el-menu" mode="horizontal" text-color="#2f3640" active-text-color="#409eff"  :model="menu" @select="change">
+<el-menu :default-active="'1'" class="navbar el-menu" mode="horizontal"  :model="menu" @select="change">
     <el-menu-item index="0">
       <p>logo here</p>
     </el-menu-item>
