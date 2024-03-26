@@ -28,7 +28,6 @@ var databridgeService = new ServiceDescriptor(typeof(IDataBridge), (IServiceProv
     return new DataBridge(s.GetService<DbConnection>() ?? throw new ArgumentException("No database found"));
 });
 
-
 builder.Services.Add(connectionDescriptor);
 builder.Services.AddSwaggerGen();
 var app = builder.Build();

@@ -6,6 +6,7 @@ public interface IDataBridge
     User? GetUserByName(string name);
     Pizza? GetPizzaByName(string name);
     Pizzeria? GetPizzeriaByPiva(string name);
+    List<Pizzeria> GetPizzeriaByName(string name);
 
     string? GetUserSecret(string userName);
     string? GetPizzeriaSecret(string piva);
@@ -20,4 +21,6 @@ public interface IDataBridge
     bool AddUser(User user);
     bool AddPizzeria(Pizzeria pizzeria);
 
+    List<Order> GetOrdersFromUser(string userName);
+    List<Order> GetOrdersFromPizzeria(string piva);
 }
