@@ -24,10 +24,15 @@ namespace PizzaTimeApi.Controllers
         [HttpGet("/user/{userName}/orders")]
         public IEnumerable<Order> GetUserOrders(string userName, [FromQuery] Order.OrderState? status = Order.OrderState.PENDING)
         {
-            return _bridge.GetOrdersFromUser(userName).Where(t=> t.State == status);
+            return _bridge.GetOrdersFromUser(userName).Where(t => t.State == status);
         }
 
-        
+        [HttpPost("/user/{userName}/orders/submit")]
+        public JsonResult SubmitOrder(string username, [FromBody] int pizzaId, [FromBody] int quantity, [FromBody] int piva)
+        {
+            
+            return new JsonResult(new {User = username, PizzaId = pizzaId, Quantity = quantity, PIVA= piva});
+        }
 
 
 

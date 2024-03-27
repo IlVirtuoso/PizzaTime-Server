@@ -21,8 +21,8 @@ namespace PizzaTimeApi.Controllers
 
 
         [HttpGet("pizzeria/search")]
-        public List<Pizzeria> GetPizzeriaByName([FromQuery] string name, [FromQuery] string address){
-            return _bridge.GetPizzeriaByName(name).Where(t => t.Address == (address == ""? t.Address:address) ).ToList();
+        public IEnumerable<Pizzeria> GetPizzeriaByName([FromQuery] string name, [FromQuery] string address){
+            return _bridge.GetPizzeriaByName(name).Where(t => t.Address == (address == ""? t.Address:address));
         }
 
 

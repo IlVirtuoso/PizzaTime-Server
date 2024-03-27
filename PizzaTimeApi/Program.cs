@@ -5,6 +5,8 @@ using PizzaTime.Data;
 using PizzaTimeApi.Database;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 var config = builder.Configuration.AddJsonFile("./appsettings.json", false, true).Build();
+
 
 var appconfig = config.GetSection("Configuration").Get<WebAppConfiguration>();
 
