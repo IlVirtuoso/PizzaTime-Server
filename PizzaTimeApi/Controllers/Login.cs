@@ -22,6 +22,11 @@ public class Login : PizzaController
     }
 
 
+    [HttpPost("/try")]
+    public ActionResult Try([FromBody] User user){
+        return new JsonResult(new {Error="OK"});
+    }
+
     [HttpPost("/user/login")]
     public async Task<ActionResult> UserLogin([FromForm] string username, [FromForm] string password)
     {

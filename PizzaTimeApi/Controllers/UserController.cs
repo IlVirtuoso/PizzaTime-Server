@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PizzaTime.Data;
 using PizzaTimeApi.Database;
@@ -12,6 +13,7 @@ namespace PizzaTimeApi.Controllers
 
 
         [HttpGet("/user/{userName}")]
+        [Authorize]
         public User? GetUser(string userName)
         {
             if (!_bridge.UserExist(userName))
@@ -22,12 +24,14 @@ namespace PizzaTimeApi.Controllers
         }
 
         [HttpGet("/user/{userName}/orders")]
+        [Authorize]
         public IEnumerable<Order> GetUserOrders(string userName, [FromQuery] Order.OrderState? status = Order.OrderState.PENDING)
         {
             return _bridge.GetOrdersFromUser(userName).Where(t => t.State == status);
         }
 
         [HttpPost("/user/{userName}/orders/submit")]
+        [Authorize]
         public JsonResult SubmitOrder(string username, [FromBody] int pizzaId, [FromBody] int quantity, [FromBody] int piva)
         {
             

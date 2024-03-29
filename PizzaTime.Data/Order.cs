@@ -7,6 +7,7 @@ public class Order
         SERVING,
         SERVED
     }
+    public int OrderId {get;set;}
     public string UserName { get; set; }
     public string PizzeriaId { get; set; }
     public int PizzaId { get; set; }
