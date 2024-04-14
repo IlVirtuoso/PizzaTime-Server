@@ -1,6 +1,13 @@
+using System.Security.AccessControl;
+using Castle.Core.Logging;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
-using PizzaTime.Data.Messages;
+using PizzaTime.Api;
 
 namespace PizzaTimeApi.UnitTest;
 
@@ -23,19 +30,27 @@ public class SignInTest : TestEnvironment
     [Test]
     public void TestUserSignIn()
     {
-        MockBridge.Setup(t => t.AddUser(It.IsAny<User>())).Returns(true);
-        MockBridge.Setup(t => t.SetUserSecret("TestUser","none".ToSHA512().ToHashedString())).Returns(true);
         var controller = BuildSignInController();
-        AuthMessage signInMessage = new AuthMessage
+        User commit = null;
+        MockBridge.Setup(t=> t.AddUser(It.IsAny<User>())).Callback<User>(t=> commit = t).Returns(true);
+        var user = new User
         {
-            Auth = AuthMessage.AuthType.USER,
-            Identifier = "TestUser",
-            Secret = "none"
+            Name = "matteo",
+            SurName = "ielacqua",
+            Email = "matteo.ielacqua@gmail.com",
+            UserName = "IlVirtuoso"
         };
-        var result = controller.Post(signInMessage);
-        Assert.That(result.Secret == "none".ToSHA512().ToHashedString());
-        Assert.That(result.Error == AuthMessage.ErrorReason.OK);
-        Assert.That(result.Type == Message.MessageType.Response);
+        
+        var response = controller.UserSignin(user.UserName, "none", user.Email, user.Name, user.SurName);
+        commit.Should().BeEquivalentTo(user);
     }
+
+    [Test]
+    public void TestPizzeriaSignIn()
+    {
+        var controller = BuildSignInController();
+
+    }
+
 
 }

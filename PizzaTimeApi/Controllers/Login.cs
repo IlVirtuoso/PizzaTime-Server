@@ -33,12 +33,12 @@ public class Login : PizzaController
         string hashed = password.ToSHA512().ToHashedString();
         if (!_bridge.UserExist(username))
         {
-            return new JsonResult(new { Error = "Username doesn't exists" });
+            return new JsonResult(new ErrorMessage("Username doesn't exists" ));
         }
         var userSecret = _bridge.GetUserSecret(username);
         if (userSecret != hashed)
         {
-            return new JsonResult(new { Error = "Invalid Password" });
+            return new JsonResult(new ErrorMessage("Invalid Password" ));
         }
 
         var user = _bridge.GetUserByName(username);
@@ -55,7 +55,7 @@ public class Login : PizzaController
         var userPrincipal = new ClaimsPrincipal(userIdentity);
 
         await HttpContext.SignInAsync(userPrincipal);
-        return new JsonResult(new { Error = "OK" });
+        return new JsonResult(new ErrorMessage("OK" ));
     }
 
     [HttpPost("/pizzeria/login")]
@@ -64,12 +64,12 @@ public class Login : PizzaController
         string hashed = password.ToSHA512().ToHashedString();
         if (!_bridge.PizzeriaExist(piva))
         {
-            return new JsonResult(new { Error = "Pizzeria doesn't exists" });
+            return new JsonResult(new ErrorMessage("Pizzeria doesn't exists" ));
         }
         var pizzeriaSecret = _bridge.GetPizzeriaSecret(piva);
         if (pizzeriaSecret != hashed)
         {
-            return new JsonResult(new { Error = "Invalid password" });
+            return new JsonResult(new ErrorMessage("Invalid password" ));
         }
 
         var pizzeria = _bridge.GetPizzeriaByPiva(piva);
@@ -83,7 +83,7 @@ public class Login : PizzaController
 
         var identity = new ClaimsPrincipal(new ClaimsIdentity(claims));
         await HttpContext.SignInAsync(identity);
-        return new JsonResult(new { Error = "OK" });
+        return new JsonResult(new OkMessage());
     }
 
 
@@ -92,7 +92,7 @@ public class Login : PizzaController
     public ActionResult Logout()
     {
         HttpContext.SignOutAsync();
-        return new JsonResult(new { Error = "OK" });
+        return new JsonResult(new OkMessage());
     }
 }
 
@@ -112,7 +112,7 @@ public class SignInController : PizzaController
     {
         if (_bridge.UserExist(username))
         {
-            return new JsonResult(new { Error = "User already exists" });
+            return new JsonResult(new ErrorMessage("User already exists" ));
         }
         var newUser = new User
         {
@@ -121,10 +121,13 @@ public class SignInController : PizzaController
             Name = name,
             SurName = surname
         };
-        _bridge.AddUser(newUser);
+        if(!_bridge.AddUser(newUser)){
+            HttpContext.Response.StatusCode = 500;
+            return new JsonResult(new {Error= "Server error"});
+        }
         var hashedSecret = password.ToSHA512().ToHashedString();
         _bridge.SetUserSecret(username, hashedSecret ?? throw new ArgumentException("Illegal argument on hashed secret"));
-        return new JsonResult(new { Error = "OK", Secret = hashedSecret });
+        return new JsonResult(new Message<string>(hashedSecret));
     }
 
 
@@ -133,7 +136,7 @@ public class SignInController : PizzaController
     {
         if (_bridge.PizzeriaExist(piva))
         {
-            return new JsonResult(new { Error = "Pizzeria already exist" });
+            return new JsonResult(new ErrorMessage("Pizzeria already exist" ));
         }
         var newPizzeria = new Pizzeria
         {
@@ -145,7 +148,7 @@ public class SignInController : PizzaController
         _bridge.AddPizzeria(newPizzeria);
         var hashedSecret = password.ToSHA512().ToHashedString();
         _bridge.SetPizzeriaSecret(piva, hashedSecret ?? throw new ArgumentException("Illegal argument on hashed secret"));
-        return new JsonResult(new { Error = "OK", Secret = hashedSecret });
+        return new JsonResult(new Message<string>(hashedSecret));
 
     }
 }

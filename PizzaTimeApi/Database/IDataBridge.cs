@@ -22,5 +22,9 @@ public interface IDataBridge
     bool AddPizzeria(Pizzeria pizzeria);
 
     List<Order> GetOrdersFromUser(string userName);
-    List<Order> GetOrdersFromPizzeria(string piva);
+    List<Order> GetOrdersFromPizzeria(string piva); 
+    bool UpdateOrder(int orderId, Order.OrderState state);
+    bool AddOrder(Order order);
+    
+
 }

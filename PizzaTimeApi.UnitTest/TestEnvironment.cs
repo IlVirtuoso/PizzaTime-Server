@@ -3,10 +3,17 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using PizzaTime.Api;
 using PizzaTime.UnitTest.Mock;
+using PizzaTimeApi.Controllers;
 
 namespace PizzaTimeApi.UnitTest;
 public class TestEnvironment
 {
+
+    protected T BuildController<T>() where T: PizzaController{
+        var logger = new NullLogger<Login>();
+        var controller = Activator.CreateInstance(typeof(T), logger,MockBridge.Object) as T ?? throw new ArgumentException("cannot activate instance of controller with current parameters");
+        return controller;
+    }
     protected Login BuildLoginController()
     {
         var logger = new NullLogger<Login>();

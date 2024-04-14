@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 as build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as prebuild
 ENV TERM xterm-color
 ARG DEBIAN_FRONTEND=noninteractive
 RUN mkdir /home/nodeInstall && apt update && apt install build-essential -y
@@ -7,13 +7,12 @@ RUN cd /home/nodeInstall/ \
     && tar -vxf ./node.tar.xz \
     && cd ./node-v18.16.0-linux-x64 
 ENV PATH=$PATH:/home/nodeInstall/node-v18.16.0-linux-x64/bin/
-WORKDIR /home/builder
 RUN npm install -g vite
+FROM prebuild as build
+WORKDIR /home/builder
 COPY . .
-RUN dotnet build ./PizzaTimeService.sln -c Release -o ./build
-
-
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 as runner
+RUN dotnet build ./PizzaTimeApi/ -c Release -o build
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 as runner
 WORKDIR /runtime
 COPY --from=build /home/builder/build/* .
 RUN useradd -ms /bin/sh pizzaservice 

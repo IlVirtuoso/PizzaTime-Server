@@ -5,7 +5,8 @@ public class Order
     {
         PENDING,
         SERVING,
-        SERVED
+        SERVED,
+        CANCELLED
     }
     public int OrderId {get;set;}
     public string UserName { get; set; }
