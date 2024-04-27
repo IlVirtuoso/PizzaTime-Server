@@ -7,7 +7,9 @@ public class User
     public string Name { get; set; } = "";
     public string SurName { get; set; } = "";
     public string Email { get; set; } = "";
-    public static User Generate(string userName){
+    public virtual string Role {get;set;} = "User";
+    public static User Generate(string userName)
+    {
         User user = new User();
         user.UserName = userName;
         user.Name = "Test";
@@ -18,8 +20,9 @@ public class User
 }
 
 
-
-
+public class Rider : User{
+    public override string Role => "Rider";
+}
 
 
 

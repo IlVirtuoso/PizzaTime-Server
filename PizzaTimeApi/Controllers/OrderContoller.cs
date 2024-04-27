@@ -8,11 +8,8 @@ using PizzaTimeApi.Database;
 namespace PizzaTimeApi.Controllers
 {
     [Authorize]
-    public class OrderContoller : PizzaController
+    public class OrderContoller(ILogger logger, IDataBridge dataBridge) : PizzaController(logger, dataBridge)
     {
-        public OrderContoller(ILogger logger, IDataBridge bridge) : base(logger, bridge)
-        {
-        }
 
         [HttpGet("/order/{piva}/get")]
         [Authorize(Roles = "Pizzeria")]
@@ -22,7 +19,7 @@ namespace PizzaTimeApi.Controllers
         public record OrderCreate(int pizzeriaId, int pizzaId, uint quantity);
 
         [HttpPost("/order/create")]
-        public ActionResult CreateOrder([FromBody] OrderCreate order){
+        public IActionResult CreateOrder([FromBody] OrderCreate order){
             var submit = new Order{
                 PizzaId = order.pizzeriaId,
                 Quantity = order.quantity,
@@ -37,17 +34,16 @@ namespace PizzaTimeApi.Controllers
         }
 
         [HttpPost("/order/cancel")]
-        public ActionResult CancelOrder([FromBody] int orderId){
+        public IActionResult CancelOrder([FromBody] int orderId){
             return PerformBridgeOp(()=> _bridge.UpdateOrder(orderId,Order.OrderState.CANCELLED), true, "Something went wrong");
         }
 
         public record OrderUpdate(int orderId, Order.OrderState state);
 
         [HttpPost("/order/update")]
-        public ActionResult UpdateOrderStatus([FromBody] OrderUpdate update){
+        public IActionResult UpdateOrderStatus([FromBody] OrderUpdate update){
             return PerformBridgeOp(() => _bridge.UpdateOrder(update.orderId,update.state), true, "something went wrong");
         }
-
-
+        
     }
 }

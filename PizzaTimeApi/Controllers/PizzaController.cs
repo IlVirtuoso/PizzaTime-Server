@@ -21,7 +21,7 @@ public class PizzaController: ControllerBase
         _bridge = bridge;
     }
 
-    protected ActionResult PerformBridgeOp<T>(Func<T> func, T expected, string errorReason){
+    protected IActionResult PerformBridgeOp<T>(Func<T> func, T expected, string errorReason){
         T res = func() ?? throw new ArgumentException("null value not allowed here");
         if(res.Equals(expected)){
             return new JsonResult(new OkMessage());
