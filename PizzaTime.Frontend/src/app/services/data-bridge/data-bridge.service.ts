@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
+import { ConfigProviderService } from '../config-provider/config-provider.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataBridgeService {
+export class DataBridgeService{
 
-  constructor() { }
+  constructor(private configuration: ConfigProviderService) {
+
+  }
+
+
 }
