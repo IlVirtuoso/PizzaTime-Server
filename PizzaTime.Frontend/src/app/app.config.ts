@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
         return new MockBridgeService();
       }
       else return new DataBridgeService();
-    }}, provideAnimationsAsync(), provideAnimationsAsync()
+    }}, provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync()
   ]
 
 
