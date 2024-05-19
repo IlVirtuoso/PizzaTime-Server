@@ -10,7 +10,7 @@ import { MockBridgeService } from './services/mock-bridge/mock-bridge.service';
 
 
 export class Configuration{
-  static demoMode : boolean = false;
+  static demoMode : boolean = true;
 }
 
 export const appConfig: ApplicationConfig = {
