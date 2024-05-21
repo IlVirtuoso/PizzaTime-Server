@@ -1,0 +1,28 @@
+.inline{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: aliceblue;
+}
+
+mat-icon{
+    color: aliceblue;
+      display: inline;
+      margin: auto;
+}
+
+
+
+mat-card-title{
+  align-items: center;
+  color: aliceblue;
+  display: inline;
+  margin: auto;
+}
+
+mat-card-header{
+  justify-content: flex-start;
+  align-items: center;
+
+}
+

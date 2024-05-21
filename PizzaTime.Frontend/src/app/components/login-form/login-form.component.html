@@ -4,13 +4,13 @@
   <mat-card-content class="centered">
       <mat-form-field appearance="fill">
     <mat-label>username</mat-label>
-    <input matInput placeholder="Placeholder" id="username" [value]="username">
+    <input matInput placeholder="Placeholder" id="username" [(ngModel)]="username" >
   </mat-form-field>
   </mat-card-content>
   <mat-card-content class="centered">
   <mat-form-field appearance="fill">
     <mat-label>password</mat-label>
-    <input matInput placeholder="Placeholder" type="password" id="password" [value]="password" >
+    <input matInput placeholder="Placeholder" type="password" id="password" [(ngModel)]="password" >
   </mat-form-field>
   </mat-card-content>
   <mat-card-content class="centered">

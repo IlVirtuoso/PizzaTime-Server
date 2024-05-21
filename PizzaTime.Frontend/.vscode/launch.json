@@ -2,12 +2,19 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+
     {
-      "name": "ng serve",
+      "name": "chromium",
       "type": "chrome",
       "request": "launch",
-      "preLaunchTask": "npm: start",
-      "url": "http://localhost:4200/"
+      "runtimeExecutable": "/usr/bin/chromium-browser",
+            "runtimeArgs": [
+              "--new-window",
+              "--user-data-dir=${workspaceFolder}/DevProfile",
+              "--remote-debugging-port=9222",
+              "--disable-background-networking"
+            ],
+    "url": "http://localhost:4200",
     },
     {
       "name": "ng test",

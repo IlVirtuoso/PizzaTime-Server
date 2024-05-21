@@ -1,10 +1,14 @@
-export abstract class User {
+
+
+export class User {
   public constructor(
-    email: string,
-    phone: string,
-    address: string
-  ){}
+    public username : string,
+    public email: string = "",
+    public phone: string = "",
+    public address: string = "",
+    public name: string= "",
+    public surname: string = ""
+  ) {
 
-
+  }
 }
-

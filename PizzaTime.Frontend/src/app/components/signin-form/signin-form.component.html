@@ -4,19 +4,19 @@
     <mat-card-content class="centered">
         <mat-form-field appearance="fill">
       <mat-label>username</mat-label>
-      <input matInput placeholder="Placeholder" id="username" [value]="username">
+      <input matInput placeholder="username" [(ngModel)]="username">
     </mat-form-field>
     </mat-card-content>
     <mat-card-content class="centered">
     <mat-form-field appearance="fill">
       <mat-label>password</mat-label>
-      <input matInput placeholder="password" type="password" id="password" [value]="password" >
+      <input matInput placeholder="password" type="password" id="password" [(ngModel)]="password" >
     </mat-form-field>
     </mat-card-content>
     <mat-card-content class="centered">
         <mat-form-field appearance="fill">
           <mat-label>password_confirmation</mat-label>
-          <input matInput placeholder="password_confirmation" type="password" id="password" [value]="password_confirmation" >
+          <input matInput placeholder="password_confirmation" type="password" id="password_confirmation" [(ngModel)]="password_confirmation" >
         </mat-form-field>
         </mat-card-content>
     <mat-card-content class="centered">
@@ -26,4 +26,3 @@
       <mat-label style="color:red;">{{errorMessage}}</mat-label>
     </mat-card-content>
   </mat-card>
-  

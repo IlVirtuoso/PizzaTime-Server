@@ -8,13 +8,14 @@ import {MatButtonModule} from '@angular/material/button';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-login-form',
   styleUrl: './login-form.component.css',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatSelectModule,MatCardModule,MatButtonModule],
+  imports: [MatFormFieldModule, MatInputModule, MatSelectModule,MatCardModule,MatButtonModule, FormsModule],
   templateUrl: './login-form.component.html',
 })
 export class LoginFormComponent {
@@ -26,11 +27,10 @@ export class LoginFormComponent {
   }
 
   public async login(){
-    console.log("Login");
     let result = await this.service.login(this.username, this.password);
     if(result){
       console.log("Login success");
-      this.router.navigateByUrl("/userhome");
+      this.router.navigateByUrl("/home");
     }
     else{
       this.errorMessage = "invalid credentials";

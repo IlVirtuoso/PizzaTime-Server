@@ -1,6 +1,5 @@
-import { User } from "./User";
 
-export class Pizzeria extends User {
+export class Pizzeria {
   public constructor(
     email: string,
     phone: string,
@@ -8,6 +7,6 @@ export class Pizzeria extends User {
     name: string,
     address: string
   ) {
-    super(email, phone, address);
+
   }
 }
