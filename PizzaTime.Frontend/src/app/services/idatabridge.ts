@@ -12,4 +12,7 @@ export abstract class IDataBridge {
   public abstract getPizza(id: string) : Promise<Pizza | null>;
   public abstract getAuthenticatedUser() : User |  null;
   public abstract setUserData(username : string, user:User) : Promise<boolean>;
+  public abstract getUserBalance(username:string) : Promise<number>;
+  public abstract registerPizzeria(pizzeria: Pizzeria): Promise<boolean>;
+  public abstract addPizzeriaWorker(piva : String, username: String) : Promise<boolean>;
 }

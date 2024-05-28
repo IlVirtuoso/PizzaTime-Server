@@ -17,6 +17,18 @@ class UserAuth {
   providedIn: 'root',
 })
 export class MockBridgeService extends IDataBridge {
+
+  public override addPizzeriaWorker(piva: String, username: String): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
+  public override registerPizzeria(pizzeria: Pizzeria): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
+
+  public override getUserBalance(username: string): Promise<number> {
+    return this.async(()=> Math.random()*1000);
+  }
+
   private async<T>(f: () => T, timeout: number = 300): Promise<T> {
     return new Promise((t) => {
       t(f());
@@ -70,6 +82,7 @@ export class MockBridgeService extends IDataBridge {
   public override getPizzeria(piva: string): Promise<Pizzeria> {
     throw new Error('Method not implemented.');
   }
+
   public override async login(
     username: string,
     password: string

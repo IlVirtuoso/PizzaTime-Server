@@ -11,7 +11,11 @@ mat-icon{
       margin: auto;
 }
 
-
+.presentation_text{
+  color: aliceblue  ;
+  display: inline;
+  margin: auto;
+}
 
 mat-card-title{
   align-items: center;
@@ -26,3 +30,7 @@ mat-card-header{
 
 }
 
+.card-body{
+  display: inline;
+  margin: auto;
+}

@@ -21,7 +21,7 @@ export const appConfig: ApplicationConfig = {
       }
       else return new DataBridgeService();
     }}, provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync()
-  ]
+  ],
 
 
 };

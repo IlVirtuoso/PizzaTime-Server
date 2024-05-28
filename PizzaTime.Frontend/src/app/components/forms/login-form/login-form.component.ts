@@ -9,25 +9,28 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NgTemplateOutlet } from '@angular/common';
 
 
 @Component({
   selector: 'app-login-form',
   styleUrl: './login-form.component.css',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatSelectModule,MatCardModule,MatButtonModule, FormsModule],
+  imports: [MatFormFieldModule, MatInputModule, MatSelectModule,MatCardModule,MatButtonModule, FormsModule,NgTemplateOutlet],
   templateUrl: './login-form.component.html',
 })
 export class LoginFormComponent {
-  protected username = "";
-  protected password = "";
+
   protected errorMessage = "";
+
+  protected formFields = ["",""]
+
   public constructor( private service : IDataBridge, private router: Router){
 
   }
 
   public async login(){
-    let result = await this.service.login(this.username, this.password);
+    let result = await this.service.login(this.formFields[0], this.formFields[1]);
     if(result){
       console.log("Login success");
       this.router.navigateByUrl("/home");

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ToolBarComponent } from './components/tool-bar/tool-bar.component';
+import { ToolBarComponent } from './components/views/tool-bar/tool-bar.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 @Component({
