@@ -47,5 +47,11 @@ export class PizzeriaRegistrarComponent {
 
   register(): void {
     let pizzeria = new Pizzeria(this.email,this.phone,this.piva,this.name,this.address);
+    if(!this.bridge.registerPizzeria(pizzeria)){
+      this.errorMessage = this.bridge.lastError;
+    }
+    else{
+      this.router.navigateByUrl('pizzeriaAdmin');
+    }
   }
 }
