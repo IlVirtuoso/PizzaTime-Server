@@ -1,0 +1,19 @@
+.ToolBar{
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+}
+
+.Spacer{
+    margin: 5em;
+}
+
+.ListView{
+    margin: auto;
+    padding: 2rem;
+}
+

@@ -8,6 +8,8 @@ import {
 import { Pizza } from '@data/Pizza';
 import { Pizzeria } from '@data/Pizzeria';
 import { User } from '@data/User';
+import { Ingredient } from '@data/Ingredient';
+import { Order } from '@data/Order';
 
 class UserAuth {
   public constructor(public user: User, public password: string) {}
@@ -17,6 +19,24 @@ class UserAuth {
   providedIn: 'root',
 })
 export class MockBridgeService extends IDataBridge {
+  public override validatePizza(pizza: Pizza): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
+  public override getOrdersForUser(username: String): Promise<Order[] | null> {
+    throw new Error('Method not implemented.');
+  }
+  public override getOrdersForPizzeria(piva: String): Promise<Order[] | null> {
+    throw new Error('Method not implemented.');
+  }
+  public override getPizzeriaWorkers(piva: string): Promise<User[] | null> {
+    throw new Error('Method not implemented.');
+  }
+  public override getPizzeriaOrders(piva: string): Promise<Order[] | null> {
+    throw new Error('Method not implemented.');
+  }
+  public override getAvailableIngredients(): Promise<Ingredient[] | null> {
+    throw new Error('Method not implemented.');
+  }
 
   public override addPizzeriaWorker(piva: String, username: String): Promise<boolean> {
     throw new Error('Method not implemented.');

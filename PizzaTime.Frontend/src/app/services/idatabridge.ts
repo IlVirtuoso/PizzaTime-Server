@@ -19,6 +19,9 @@ export abstract class IDataBridge {
   public abstract addPizzeriaWorker(piva : String, username: String) : Promise<boolean>;
   public abstract getPizzeriaWorkers(piva: string): Promise<User[] | null>;
   public abstract getPizzeriaOrders(piva: string): Promise<Order[] | null>;
-  public abstract getAvailableIngredients(address: String, distance : number) : Promise<Ingredient[] | null>;
+  public abstract getAvailableIngredients() : Promise<Ingredient[] | null>;
+  public abstract getOrdersForUser(username: String) : Promise<Order[]|null>;
+  public abstract getOrdersForPizzeria(piva: String) : Promise<Order[]| null>;
+  public abstract validatePizza(pizza: Pizza) : Promise<boolean>;
 
 }
