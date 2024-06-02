@@ -1,7 +1,7 @@
 import { Time } from "@angular/common";
 import { Timestamp } from "rxjs";
 
-enum OrderStatus{
+export enum OrderStatus{
     QUEUED = 0,
     SERVING = 1,
     SERVED = 2,
@@ -9,12 +9,11 @@ enum OrderStatus{
 }
 
 export class Order{
-    
+
     public constructor(
-        partyId : String,
-        partyLink: String,
-        totalPrice: number,
-        date:EpochTimeStamp,
-        orderStatus: OrderStatus
+        public orderId : String,
+        public totalPrice: number,
+        public date:EpochTimeStamp,
+        public orderStatus: OrderStatus
     ){}
 }

@@ -1,22 +1,16 @@
-
-<ng-template #formField let-obj>
-  <mat-card-content class="centered">
-      <mat-form-field appearance="fill">
-    <mat-label>{{obj.name}}</mat-label>
-    <input matInput placeholder="{{obj.name}}" type="{{obj.type}}" id="{{obj.name}}" [(ngModel)]="formFields[obj.index]" >
-  </mat-form-field>
-  </mat-card-content>
-</ng-template>
-
-<mat-card appearance="raised">
-  <mat-card-header>
-  </mat-card-header>
-  <ng-container *ngTemplateOutlet="formField;context:{$implicit:{name: 'username', index:0, type:'text'}}" ></ng-container>
-  <ng-container  *ngTemplateOutlet="formField;context:{$implicit:{name: 'password', index:1 ,type:'password'}}" ></ng-container>
-  <mat-card-content class="centered">
-    <button  mat-raised-button color="primary" type="submit" (click)="login()" >Login</button>
-  </mat-card-content>
-  <mat-card-content class="centered">
-    <mat-label style="color:red;">{{errorMessage}}</mat-label>
-  </mat-card-content>
-</mat-card>
+<p-card styleClass="ComponentCard" header="Login">
+<div class="centered">
+    <form name="LoginForm">
+      <p-floatLabel class="formfield">
+    <input pInputText id="username" [(ngModel)]="username"  name="username" />
+    <label for="username">Username</label>
+  </p-floatLabel>
+<p-floatLabel class="formfield">
+    <p-password [(ngModel)]="password" [feedback]="false" name="password"/>
+    <label for="password">Password</label>
+</p-floatLabel>
+<p-button label="Login" class="formfield centered" (onClick)="login()"/>
+<p class="centered errorText">{{errorMessage}}</p>
+  </form>
+</div>
+</p-card>

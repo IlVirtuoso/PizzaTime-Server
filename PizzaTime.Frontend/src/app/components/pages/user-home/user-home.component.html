@@ -1,29 +1,23 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-content class="inline">
-      <mat-card-title class="presentation_text">User Home</mat-card-title>
-    </mat-card-content>
-  </mat-card-header>
-  <div class="card-body">
-    <mat-card-content class="inline">
-          <mat-icon matSuffix class="material-icons" id="account_icon">account_circle</mat-icon>
-    <span class="presentation_text">Username : {{user?.username}}</span>
-    </mat-card-content>
-  <mat-card-content class="inline">
-    <mat-icon matSuffix class="material-icons" id="email_icon">email</mat-icon>
-    <span class="presentation_text">Email : {{user?.email}}</span>
-  </mat-card-content>
-  <mat-card-content class="inline">
-    <mat-icon matSuffic class="material-icons" id="card-icon">card</mat-icon>
-    <span class="presentation_text">Name: {{user?.name}}</span>
-  </mat-card-content>
-    <mat-card-content class="inline">
-    <mat-icon matSuffic class="material-icons" id="card-icon">card</mat-icon>
-    <span class="presentation_text">Surname: {{user?.surname}}</span>
-  </mat-card-content>
-    <mat-card-content class="inline">
-    <mat-icon matSuffic class="material-icons" id="card-icon">card</mat-icon>
-    <span class="presentation_text">Address: {{user?.address}}</span>
-  </mat-card-content>
+<!-- User profile template-->
+
+
+
+<!-- Order visualization template-->
+<ng-template #orderVisualization> </ng-template>
+
+<!--Main view manager-->
+<p-card styleClass="ComponentCard">
+  <p-tabMenu
+    [model]="menu_items"
+    (activeItemChange)="onTabChange($event)"
+    [activeItem]="active_item"
+  />
+
+  <div *ngIf="active_item == menu_items[0]">
+    <app-user-profile-view [user]="user"/>
   </div>
-</mat-card>
+
+  <div *ngIf="active_item == menu_items[1]">
+    <app-order-list-view [orderList]="orderList" [listMode]="mode" />
+  </div>
+</p-card>

@@ -10,27 +10,33 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgTemplateOutlet } from '@angular/common';
+import { CardModule } from 'primeng/card';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
   selector: 'app-login-form',
   styleUrl: './login-form.component.css',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatSelectModule,MatCardModule,MatButtonModule, FormsModule,NgTemplateOutlet],
+  imports: [CardModule,FormsModule,PasswordModule,InputTextModule,FloatLabelModule,ButtonModule],
   templateUrl: './login-form.component.html',
 })
 export class LoginFormComponent {
 
   protected errorMessage = "";
 
-  protected formFields = ["",""]
+  protected password= "";
+  protected username = "";
 
   public constructor( private service : IDataBridge, private router: Router){
 
   }
 
   public async login(){
-    let result = await this.service.login(this.formFields[0], this.formFields[1]);
+    let result = await this.service.login(this.username, this.password);
     if(result){
       console.log("Login success");
       this.router.navigateByUrl("/home");

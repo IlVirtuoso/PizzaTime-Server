@@ -1,8 +1,33 @@
-@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/themes/lara-dark-blue/theme.css";
 @import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
 
 body {
     margin: 0;
     padding: 0;
     background-color: black;
   }
+
+.ComponentCard{
+  margin: 2rem;
+}
+
+
+.errorText{
+  color: red;
+}
+
+
+.formfield {
+  margin: 2rem;
+}
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spacer{
+  margin: 2rem;
+}

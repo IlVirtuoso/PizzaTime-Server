@@ -1,0 +1,39 @@
+<ng-template #orderView let-order>
+  <div class="flex  gap-3  mt-1">
+    <p>Id: {{ order.orderId }}</p>
+    <p>Status: {{ order.orderStatus }}</p>
+    <p>Date: {{ order.date }}</p>
+    <p>Price: {{ order.totalPrice }}</p>
+  </div>
+</ng-template>
+
+<p-dataView #ordersView [value]="orderList">
+  <ng-template pTemplate="list" let-orderList let-index="index">
+    <div *ngFor="let order of orderList">
+      <!--List only mode-->
+      <div *ngIf="listMode == 'List'">
+        <p-card class="flex gap-3" header="{{ order.orderId }}">
+          <ng-container
+            *ngTemplateOutlet="orderView; context: { $implicit: order }"
+          />
+        </p-card>
+      </div>
+      <!--List with accept reject buttons-->
+      <div *ngIf="listMode == 'AcceptReject'">
+        <p-card class="flex gap-3 mt-1" header="{{ order.orderId }}">
+          <ng-container
+            *ngTemplateOutlet="orderView; context: { $implicit: order }"
+          />
+          <p-button (onClick)="accept(order)" label="" icon="pi pi-check " />
+          <span class="spacer"></span>
+          <p-button
+            (onClick)="reject(order)"
+            label=""
+            icon="pi pi-times"
+            severity="danger"
+          />
+        </p-card>
+      </div>
+    </div>
+  </ng-template>
+</p-dataView>

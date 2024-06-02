@@ -7,54 +7,59 @@ import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/fo
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { IDataBridge } from 'app/services/idatabridge';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-signin-form',
   standalone: true,
-  imports: [MatLabel,MatFormFieldModule,MatCardModule,MatInputModule,MatButtonModule,FormsModule, NgTemplateOutlet],
+  imports: [
+    CardModule,
+    FormsModule,
+    PasswordModule,
+    InputTextModule,
+    FloatLabelModule,
+    ButtonModule,
+  ],
   templateUrl: './signin-form.component.html',
-  styleUrl: './signin-form.component.css'
+  styleUrl: './signin-form.component.css',
 })
 export class SigninFormComponent {
 
-  protected formFields = ["","",""];
+  protected  username = "";
 
-  protected get username(): string{
-    return this.formFields[0];
-  }
+  protected  password = "";
 
-  protected get password(){return this.formFields[1];}
-  protected get password_confirmation(){return this.formFields[2];}
+  protected password_confirmation  = "";
 
 
-  protected errorMessage = "";
+  protected errorMessage = '';
 
-  public constructor(private router: Router, private bridge: IDataBridge){
+  public constructor(private router: Router, private bridge: IDataBridge) {}
 
-  }
-
-
-
-  public async signin(){
-    console.debug("trying to login with username " + this.username)
-    if(this.password == "" || this.password_confirmation == ""){
-      this.errorMessage = "Passwords cannot be blank";
+  public async signin() {
+    console.debug('trying to login with username ' + this.username);
+    if (this.password == '' || this.password_confirmation == '') {
+      this.errorMessage = 'Passwords cannot be blank';
       return;
     }
-    if(this.password != this.password_confirmation){
+    if (this.password != this.password_confirmation) {
       this.errorMessage = "Password doesn't match";
       return;
     }
     let t = await this.bridge.getUser(this.username);
-    if(t != null){
-      this.errorMessage = "User already exists";
+    if (t != null) {
+      this.errorMessage = 'User already exists';
       return;
     }
     let result = await this.bridge.signin(this.username, this.password);
-    if(!result){
-      this.errorMessage = "Something went wrong";
+    if (!result) {
+      this.errorMessage = 'Something went wrong';
       return;
     }
-    this.router.navigateByUrl("login");
+    this.router.navigateByUrl('login');
   }
 }

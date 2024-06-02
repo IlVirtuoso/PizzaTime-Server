@@ -1,0 +1,21 @@
+  <p-dataView #userView [value]="fields">
+    <ng-template pTemplate="list" let-fields let-index="index">
+      <div *ngFor="let field of fields">
+        <div *ngIf="field.editable">
+          <p-floatLabel>
+            <input
+              pInputText
+              id="{{ field.fieldName }}"
+              [(ngModel)]="field.value"
+              name="username"
+            />
+            <label for="{{ field.fieldName }}">{{ field.fieldName }}</label>
+          </p-floatLabel>
+        </div>
+        <div *ngIf="!field.editable">
+          <span>{{field.fieldName}}: {{field.value}}</span>
+        </div>
+        <p-button [label]="field.editable? 'Save':'edit'" (onClick)="field.editable? saveEditedField(field):setEditableField(field)"/>
+      </div>
+    </ng-template>
+  </p-dataView>
