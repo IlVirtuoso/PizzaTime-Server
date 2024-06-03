@@ -61,7 +61,14 @@ export class MockBridgeService extends IDataBridge {
     });
   }
 
-  private authenticated: User | null = null;
+  private authenticated: User | null = {
+    username:'drfaust',
+    address:'',
+    email:'',
+    name:'',
+    phone:'',
+    surname:'',
+  }
 
   public override getAuthenticatedUser(): User | null {
     return this.authenticated;

@@ -13,11 +13,17 @@
     [activeItem]="active_item"
   />
 
+
   <div *ngIf="active_item == menu_items[0]">
-    <app-user-profile-view [user]="user"/>
+    <app-user-profile-view [user]="user" *ngIf="user != null"/>
+    <p *ngIf="user == null" class="errorText centered">Error user not authenticated</p>
   </div>
 
   <div *ngIf="active_item == menu_items[1]">
     <app-order-list-view [orderList]="orderList" [listMode]="mode" />
+  </div>
+
+  <div *ngIf="active_item == menu_items[2]">
+    <app-pizza-list-view [items]="userPizzas"/>
   </div>
 </p-card>

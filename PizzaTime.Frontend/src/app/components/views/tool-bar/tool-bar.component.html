@@ -1,12 +1,27 @@
-<div class="toolbar">
-  <mat-toolbar id="toolbar">
-    <button mat-button class="example-icon" aria-label="Menu">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span>My App</span>
+<ng-template #itemView let-item let-root>
+  <a pRipple class="flex align-items-center p-menuitem-link">
+    <span [class]="item.icon"></span>
+    <span class="ml-2">{{ item.label }}</span>
+    <p-badge *ngIf="item.badge" [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
+    <span *ngIf="item.shortcut" class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">{{
+      item.shortcut }}</span>
+    <i *ngIf="item.items" [ngClass]="['pi', root ? 'pi-angle-down ml-2' : 'pi-angle-right ml-auto']"></i>
+  </a>
+</ng-template>
+
+<p-menubar [model]="items">
+  <ng-template pTemplate="start">
+    <p-image src="https://th.bing.com/th/id/OIP.holHmftzMUgONoL-6n_dTQHaE7?w=288&h=192&c=7&r=0&o=5&pid=1.7" width="40px"/>
     <span class="spacer"></span>
-    <button mat-button class="icon" aria-label="Example icon-button with share icon">
-      <mat-icon>share</mat-icon>
-    </button>
-  </mat-toolbar>
-</div>
+  </ng-template>
+  <ng-template pTemplate="item" let-item let-root="root">
+    <a pRipple class="flex align-items-center p-menuitem-link">
+      <span [class]="item.icon"></span>
+      <span class="ml-2">{{ item.label }}</span>
+      <p-badge *ngIf="item.badge" [ngClass]="{ 'ml-auto': !root, 'ml-2': root }" [value]="item.badge" />
+      <span *ngIf="item.shortcut" class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">{{
+        item.shortcut }}</span>
+      <i *ngIf="item.items" [ngClass]="['pi', root ? 'pi-angle-down ml-2' : 'pi-angle-right ml-auto']"></i>
+    </a>
+  </ng-template>
+</p-menubar>

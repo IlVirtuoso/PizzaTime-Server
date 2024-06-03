@@ -17,6 +17,9 @@ import { ButtonModule } from 'primeng/button';
 import { UserProfileViewComponent } from 'app/components/views/user-profile-view/user-profile-view.component';
 import { ListMode, OrderListViewComponent } from 'app/components/views/order-list-view/order-list-view.component';
 import { Order, OrderStatus } from '@data/Order';
+import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
+import { PizzaListViewComponent } from 'app/components/views/pizza-list-view/pizza-list-view.component';
+import { Pizza } from '@data/Pizza';
 
 @Component({
   selector: 'app-user-home',
@@ -35,29 +38,37 @@ import { Order, OrderStatus } from '@data/Order';
     InputTextModule,
     OrderListViewComponent,
     ButtonModule,
-    UserProfileViewComponent
+    UserProfileViewComponent,
+    ImportsModule,
+    PizzaListViewComponent
   ],
   templateUrl: './user-home.component.html',
   styleUrl: './user-home.component.css',
 })
 export class UserHomeComponent implements OnInit {
-  private _user: User | undefined = undefined;
+  private _user: User | null = null;
 
-  protected get user() {
+  protected get user() : User| null {
     return this._user;
   }
 
   protected menu_items: MenuItem[] = [
     { label: 'Profile', icon: 'pi pi-home' },
     { label: 'Orders', icon: 'pi pi-shopping-cart' },
+    {label: 'Pizzas', icon: 'pi pi-heart-fill'},
+    {label: 'Friends', icon:'pi pi-user'}
   ];
 
 
 
-  protected active_item = this.menu_items[1];
+  protected active_item = this.menu_items[2];
 
   protected orderList : Order[] = [];
   protected mode : ListMode = ListMode.AcceptReject;
+
+  protected userPizzas : Pizza[]= [
+    {id:'123', name:'hellopizza',price:10.99}
+  ];
 
   public onTabChange(event: any) {
     this.active_item = event;
@@ -67,10 +78,7 @@ export class UserHomeComponent implements OnInit {
 
   public constructor(private router: Router, private bridge: IDataBridge) {}
   ngOnInit(): void {
-    this._user = new User('test', 'test@test.com', 'test', 'test');
-    this.orderList = [
-      {orderId: '12341-123', date:Date.now(), orderStatus: OrderStatus.SERVING, totalPrice:10.0},
-    ]
+    this._user = this.bridge.getAuthenticatedUser();
   }
 
 

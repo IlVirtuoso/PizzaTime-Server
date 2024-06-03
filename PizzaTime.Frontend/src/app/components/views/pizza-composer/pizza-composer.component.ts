@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Ingredient } from '@data/Ingredient';
-import { Pizza } from '@data/Pizza';
+
 import { IDataBridge } from 'app/services/idatabridge';
 import { ButtonModule } from 'primeng/button';
 import { OrderListModule } from 'primeng/orderlist';
 import { PickListModule } from 'primeng/picklist';
 import { CardModule } from 'primeng/card';
+import { Ingredient, Pizza } from '@data/data-module.module';
+
+
 @Component({
   selector: 'app-pizza-composer',
   standalone: true,
