@@ -11,7 +11,7 @@ import {
   input,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Order } from '@data/Order';
+import { Order } from '@data';
 import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
 
 export enum ListMode{

@@ -26,4 +26,8 @@
   <div *ngIf="active_item == menu_items[2]">
     <app-pizza-list-view [items]="userPizzas"/>
   </div>
+
+  <div *ngIf="active_item == menu_items[3]">
+  <app-user-list-view [users]="friends"/>
+  </div>
 </p-card>

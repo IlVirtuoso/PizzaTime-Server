@@ -7,7 +7,7 @@
       "components": [
         "./dist/components"
       ],
-      "@data/*":["app/data/*"]
+      "@data":["app/data/data.module.ts"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

@@ -3,23 +3,23 @@ import { Component, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angu
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { User } from '@data/User';
+import { User } from '@data';
 import { IDataBridge } from 'app/services/idatabridge';
 import { CardModule } from 'primeng/card';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuItem } from 'primeng/api';
 import { DataViewModule } from 'primeng/dataview';
-import { UserField } from '../../views/user-profile-view/userfield';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { UserProfileViewComponent } from 'app/components/views/user-profile-view/user-profile-view.component';
 import { ListMode, OrderListViewComponent } from 'app/components/views/order-list-view/order-list-view.component';
-import { Order, OrderStatus } from '@data/Order';
+import { Order, OrderStatus } from '@data';
 import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
 import { PizzaListViewComponent } from 'app/components/views/pizza-list-view/pizza-list-view.component';
-import { Pizza } from '@data/Pizza';
+import { Pizza } from '@data';
+import { UserListViewComponent } from 'app/components/views/user-list-view/user-list-view.component';
 
 @Component({
   selector: 'app-user-home',
@@ -40,7 +40,8 @@ import { Pizza } from '@data/Pizza';
     ButtonModule,
     UserProfileViewComponent,
     ImportsModule,
-    PizzaListViewComponent
+    PizzaListViewComponent,
+    UserListViewComponent
   ],
   templateUrl: './user-home.component.html',
   styleUrl: './user-home.component.css',
@@ -61,13 +62,23 @@ export class UserHomeComponent implements OnInit {
 
 
 
-  protected active_item = this.menu_items[2];
+  protected active_item = this.menu_items[3];
 
   protected orderList : Order[] = [];
   protected mode : ListMode = ListMode.AcceptReject;
 
   protected userPizzas : Pizza[]= [
-    {id:'123', name:'hellopizza',price:10.99}
+    
+  ];
+
+
+  protected friends : User[]= [
+    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
+    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
+    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
+    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
+    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
+    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
   ];
 
   public onTabChange(event: any) {

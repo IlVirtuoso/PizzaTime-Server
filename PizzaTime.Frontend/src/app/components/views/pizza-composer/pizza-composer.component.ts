@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { OrderListModule } from 'primeng/orderlist';
 import { PickListModule } from 'primeng/picklist';
 import { CardModule } from 'primeng/card';
-import { Ingredient, Pizza } from '@data/data-module.module';
+import { Ingredient, Pizza } from '@data';
 
 
 @Component({

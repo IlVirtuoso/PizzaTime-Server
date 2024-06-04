@@ -11,6 +11,7 @@ export * from './Pizza';
 export * from './PizzaParty';
 export * from './Pizzeria';
 export * from './User';
+export * from './Role';
 
 @NgModule({
   declarations: [

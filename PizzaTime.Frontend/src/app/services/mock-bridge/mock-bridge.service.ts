@@ -5,11 +5,8 @@ import {
   colors,
   uniqueNamesGenerator,
 } from 'unique-names-generator';
-import { Pizza } from '@data/Pizza';
-import { Pizzeria } from '@data/Pizzeria';
-import { User } from '@data/User';
-import { Ingredient } from '@data/Ingredient';
-import { Order } from '@data/Order';
+import { Ingredient, Order, Pizza, Pizzeria, Role, User } from '@data';
+
 
 class UserAuth {
   public constructor(public user: User, public password: string) {}
@@ -19,6 +16,9 @@ class UserAuth {
   providedIn: 'root',
 })
 export class MockBridgeService extends IDataBridge {
+  public override getRolesForUser(): Promise<Role[] | null> {
+    throw new Error('Method not implemented.');
+  }
   public override validatePizza(pizza: Pizza): Promise<boolean> {
     throw new Error('Method not implemented.');
   }

@@ -1,9 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Ingredient } from "@data/Ingredient";
-import { Order } from "@data/Order";
-import { Pizza } from "@data/Pizza";
-import { Pizzeria } from "@data/Pizzeria";
-import { User } from "@data/User";
+import { Ingredient, Order, Pizza, Pizzeria, Role, User } from "@data";
 
 export abstract class IDataBridge {
   lastError: string = "";
@@ -23,5 +19,5 @@ export abstract class IDataBridge {
   public abstract getOrdersForUser(username: String) : Promise<Order[]|null>;
   public abstract getOrdersForPizzeria(piva: String) : Promise<Order[]| null>;
   public abstract validatePizza(pizza: Pizza) : Promise<boolean>;
-
+  public abstract getRolesForUser() : Promise<Role[]| null>;
 }

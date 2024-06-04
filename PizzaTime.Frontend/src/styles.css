@@ -36,6 +36,13 @@ body {
 
 .data-row{
   margin: 2rem;
+  padding: 1rem;
+  border-bottom: solid 1px ;
+}
+
+.selectable:hover{
+  background: grey;
+  cursor: pointer;
 }
 
 

@@ -1,7 +1,7 @@
-<p-dataView #userView [value]="items">
+<p-dataView #userView [value]="items" paginator="true" rows="5" >
     <ng-template pTemplate="list" let-items let-index="index">
-        <div *ngFor="let pizza of items">
-            <div class="data-row flex">
+        <div *ngFor="let pizza of items; let first = first" class="data-row" >
+            <div class="flex">
                 <p-image src="https://th.bing.com/th/id/OIP.holHmftzMUgONoL-6n_dTQHaE7?rs=1&pid=ImgDetMain"
                     width="192px" />
                 <p>Name : {{pizza.name}}</p>
@@ -10,7 +10,6 @@
                     <p-button icon="pi pi-shopping-cart" />
                 </div>
             </div>
-
         </div>
     </ng-template>
 </p-dataView>
