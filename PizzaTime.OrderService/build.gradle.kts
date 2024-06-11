@@ -24,6 +24,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("com.rabbitmq:amqp-client:5.21.0")
 	runtimeOnly("com.h2database:h2")
 	project(":PizzaTime.Communication")
 	runtimeOnly("org.postgresql:postgresql")

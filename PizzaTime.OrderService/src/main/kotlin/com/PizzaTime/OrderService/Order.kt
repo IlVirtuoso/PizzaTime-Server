@@ -17,8 +17,8 @@ enum class OrderStatus {
 @Table(name = "pizza_order")
 class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id : Long = 0;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id : String = "";
     var totalPrice: Double = 0.0;
     var date : Date = Date.from(Instant.now());
     var orderStatus: OrderStatus = OrderStatus.QUEUED;

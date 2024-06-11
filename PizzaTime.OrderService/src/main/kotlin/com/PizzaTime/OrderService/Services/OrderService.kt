@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class OrderService(private val orderRepository: IOrderRepository) {
-    fun getOrderById(id : Long) : Order{
+
+    fun getOrderById(id : String) : Order{
         return orderRepository.getReferenceById(id);
     }
 }
