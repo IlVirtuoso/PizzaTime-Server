@@ -22,6 +22,8 @@ class Order {
     var totalPrice: Double = 0.0;
     var date : Date = Date.from(Instant.now());
     var orderStatus: OrderStatus = OrderStatus.QUEUED;
+    var userId : String = "";
+    var pizzeriaId : String = ""
 
     @ElementCollection
     var pizzas : List<Long>? = null;

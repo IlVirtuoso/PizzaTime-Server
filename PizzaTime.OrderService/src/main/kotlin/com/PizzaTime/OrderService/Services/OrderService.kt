@@ -12,12 +12,19 @@ class OrderService(private val orderRepository: IOrderRepository) {
         return orderRepository.getReferenceById(id);
     }
 
-
-
-    @PostMapping("api/v1/order/submit")
-    fun submitOrder(){
-
+    fun save(order : Order){
+        orderRepository.save(order);
     }
+
+    fun delete(order: Order){
+        orderRepository.delete(order)
+    }
+
+    fun deleteOrderId(id : String){
+        orderRepository.deleteById(id)
+    }
+
+
 
 
 

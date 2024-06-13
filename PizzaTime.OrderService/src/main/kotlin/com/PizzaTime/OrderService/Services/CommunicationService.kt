@@ -16,4 +16,11 @@ class CommunicationService(final val environment: Environment) : BaseCommunicati
     fun getUserFromToken(token: String): String {
         throw NotImplementedError();
     }
+
+    fun getAllPizzasPrice(ids : List<Long>): Double {
+        throw NotImplementedError();
+    }
+
+
+
 }
