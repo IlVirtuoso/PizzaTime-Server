@@ -8,5 +8,6 @@ interface IOrderService
     fun save(order : Order);
     fun delete(order: Order);
     fun deleteOrderId(id : String);
-    fun getPizzeriaFromId(id : String);
+    fun getPizzeriaFromId(id : String) : String;
+    fun getPizzeriaOrders(pizzeriaId : String) : Collection<Order>;
 }

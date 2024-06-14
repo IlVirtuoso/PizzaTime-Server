@@ -24,8 +24,12 @@ class OrderService(private val orderRepository: IOrderRepository) : IOrderServic
         orderRepository.deleteById(id)
     }
 
-    override fun getPizzeriaFromId(id: String) {
+    override fun getPizzeriaFromId(id: String): String {
         TODO("Not yet implemented")
+    }
+
+    override fun getPizzeriaOrders(pizzeriaId: String): Collection<Order> {
+        return orderRepository.findAllOrdersForPizzeria(pizzeriaId);
     }
 
 

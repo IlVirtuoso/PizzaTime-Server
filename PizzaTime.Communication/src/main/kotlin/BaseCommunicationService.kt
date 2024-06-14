@@ -9,8 +9,11 @@ open class BaseCommunicationService(var amqpUser : String, var amqpPassword: Str
     companion object{
         fun create_connection(user: String, password: String, host: String):Connection {
             val factory = ConnectionFactory()
-            factory.setUri("amqp://$user:$password@$host")
-            return factory.newConnection();
+            factory.host = host
+            factory.port = 5672
+            factory.username = user;
+            factory.password = password;
+            return factory.newConnection("server");
         }
     }
 
