@@ -1,3 +1,4 @@
+import com.rabbitmq.client.AMQP.Queue
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.Channel

@@ -6,9 +6,11 @@ import java.util.*
 
 
 enum class OrderStatus {
-    QUEUED ,
+    QUEUED,
+    REFUSED,
+    ACCEPTED,
     SERVING,
-    SERVED ,
+    COMPLETED ,
     CANCELED
 }
 

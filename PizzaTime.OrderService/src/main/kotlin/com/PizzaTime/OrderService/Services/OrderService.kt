@@ -6,26 +6,27 @@ import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.PostMapping
 
 @Service
-class OrderService(private val orderRepository: IOrderRepository) {
+class OrderService(private val orderRepository: IOrderRepository) : IOrderService{
 
-    fun getOrderById(id : String) : Order{
+    override fun getOrderById(id : String) : Order{
         return orderRepository.getReferenceById(id);
     }
 
-    fun save(order : Order){
+    override fun save(order : Order){
         orderRepository.save(order);
     }
 
-    fun delete(order: Order){
+    override fun delete(order: Order){
         orderRepository.delete(order)
     }
 
-    fun deleteOrderId(id : String){
+    override fun deleteOrderId(id : String){
         orderRepository.deleteById(id)
     }
 
-
-
+    override fun getPizzeriaFromId(id: String) {
+        TODO("Not yet implemented")
+    }
 
 
 }
