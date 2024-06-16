@@ -21,7 +21,7 @@ open class BaseCommunicationService(var amqpUser : String, var amqpPassword: Str
 
     open val connection: Connection = create_connection(amqpUser, amqpPassword,amqpHost)
 
-    open val channel: Channel ; get() {
+    val channel: Channel ; get() {
         return connection.createChannel();
     }
 

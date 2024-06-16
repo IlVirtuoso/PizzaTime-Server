@@ -18,15 +18,16 @@ class OrderServiceApplicationTests {
 	private lateinit var orderController: OrderController
 
 	@Autowired
-	private lateinit var communicationService: ICommunicationService;
+	private lateinit var communicationService : CommunicationService;
 
 	@Autowired
 	private lateinit var orderService: OrderService;
 
 	@Test
-	fun contextLoads() {
-		var httpResponse = MockHttpServletResponse();
+	fun submitOrder() {
+		val httpResponse = MockHttpServletResponse();
 		orderController = OrderController(orderService,communicationService,httpResponse);
+
 	}
 
 

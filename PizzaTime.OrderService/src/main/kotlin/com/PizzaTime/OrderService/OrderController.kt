@@ -42,8 +42,8 @@ class OrderController(
     }
 
     private suspend fun SetOrderState(userToken: String, id: String, state: OrderStatus): Boolean {
-        var userId = communicationService.getUserFromToken(userToken);
-        var order = orderService.getOrderById(id);
+        val userId = communicationService.getUserFromToken(userToken);
+        val order = orderService.getOrderById(id);
         if (order.orderStatus < state) {
             order.orderStatus = state;
             orderService.save(order);
