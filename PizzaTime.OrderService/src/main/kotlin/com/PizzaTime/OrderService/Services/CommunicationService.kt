@@ -5,6 +5,8 @@ import ExchangeType
 import com.rabbitmq.client.AMQP.Queue
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.ConnectionFactory
+import com.rabbitmq.client.RpcClient
+import com.rabbitmq.client.RpcServer
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.coroutineScope
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +25,9 @@ class CommunicationService : BaseCommunicationService, ICommunicationService {
         const val user_admins = "useradmins";
     }
 
+
+
+
     constructor(environment: Environment) : super(
         environment.get("amqp.user")!!,
         environment.get("amqp.password")!!,
@@ -32,6 +37,8 @@ class CommunicationService : BaseCommunicationService, ICommunicationService {
         channel.queueDeclare(DECLARATION.user_ids, true, false, false, null);
         channel.queueDeclare(DECLARATION.user_admins, true, false, false, null);
     }
+
+
 
 
     override suspend fun getUserFromToken(token: String): Deferred<String> {
