@@ -3,9 +3,6 @@ import com.sun.security.ntlm.Server
 import org.junit.jupiter.api.Test
 import java.util.concurrent.CountDownLatch
 
-class MockCommunicationService: BaseCommunicationService(
-    "guest","guest","localhost"
-)
 
 class AmqpExtensionTest {
 
