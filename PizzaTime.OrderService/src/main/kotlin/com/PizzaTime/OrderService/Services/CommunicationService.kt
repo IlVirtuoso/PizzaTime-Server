@@ -2,6 +2,7 @@ package com.PizzaTime.OrderService.Services
 
 import BaseCommunicationService
 import ExchangeType
+import com.PizzaTime.OrderService.Order
 import com.rabbitmq.client.AMQP.Queue
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.ConnectionFactory
@@ -18,42 +19,31 @@ import java.util.concurrent.Future
 import java.util.concurrent.FutureTask
 
 @Service
-class CommunicationService : BaseCommunicationService, ICommunicationService {
-    object DECLARATION{
-        const val user_exchange = "user_values";
-        const val user_ids = "userid";
-        const val user_admins = "useradmins";
+class CommunicationService(environment: Environment) : BaseCommunicationService(
+    environment.get("amqp.user")!!,
+    environment.get("amqp.password")!!,
+    environment.get("amqp.host")!!
+), ICommunicationService {
+    companion object {
+        const val saga_exchange = "OrderService/saga/json/requests";
+        const val saga_send = "OrderService/json/send"
     }
 
 
-
-
-    constructor(environment: Environment) : super(
-        environment.get("amqp.user")!!,
-        environment.get("amqp.password")!!,
-        environment.get("amqp.host")!!
-    ) {
-        channel.exchangeDeclare(DECLARATION.user_exchange,ExchangeType.DIRECT.type);
-        channel.queueDeclare(DECLARATION.user_ids, true, false, false, null);
-        channel.queueDeclare(DECLARATION.user_admins, true, false, false, null);
+    init {
+        channel.exchangeDeclare(saga_exchange,ExchangeType.DIRECT.type)
+        channel.queueDeclare("sagarequests", true, false, false, null)
     }
 
-
-
-
-    override suspend fun getUserFromToken(token: String): Deferred<String> {
+    override fun notifyOrderCreate(sessionToken: String, order: Order) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun sumPizzasPrice(pizzas: List<Long>): Deferred<Double> {
+    override fun notifyOrderAccepted(order: Order) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun isUserAdminForPizzeria(userToken: String, piva: String): Deferred<Boolean> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun searchAvailablePizzeriaForOrder(userId: String, pizzas: List<Long>): Deferred<String> {
+    override fun notifyOrderServing(order: Order) {
         TODO("Not yet implemented")
     }
 

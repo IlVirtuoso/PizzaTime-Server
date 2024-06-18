@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*
 class OrderController(
     var orderService: IOrderService,
     var communicationService: ICommunicationService,
-    private val httpServletResponse: HttpServletResponse
 ) {
 
 
@@ -22,95 +21,26 @@ class OrderController(
         return orderService.getOrderById(id);
     }
 
-    class OrderSubmitRequest {
-        var pizzeriaId: String = "";
-        var pizzas: List<Long>? = null;
-    }
 
-    @PostMapping("/api/v1/order/submit")
-    suspend fun submitOrder(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) userToken: String,
-        @RequestBody submitRequest: OrderSubmitRequest
-    ): Unit? {
-        var userId = communicationService.getUserFromToken(userToken);
+    @PostMapping("/api/v1/order/create")
+    fun create_order(@RequestHeader(HttpHeaders.AUTHORIZATION) sessionToken: String, @RequestBody pizzas: List<Long>) : String {
         var order = Order();
-        order.pizzeriaId = submitRequest.pizzeriaId;
-        order.totalPrice = communicationService.sumPizzasPrice(submitRequest.pizzas!!).await();
-        order.pizzas = submitRequest.pizzas;
-        order.userId = userId.await();
-        return orderService.save(order);
+        order.pizzas = pizzas;
+        order = orderService.save(order);
+        communicationService.notifyOrderCreate(sessionToken,order);
+        return order.id;
     }
 
-    private suspend fun SetOrderState(userToken: String, id: String, state: OrderStatus): Boolean {
-        val userId = communicationService.getUserFromToken(userToken);
-        val order = orderService.getOrderById(id);
-        if (order.orderStatus < state) {
-            order.orderStatus = state;
-            orderService.save(order);
-            return true;
-        }
-        httpServletResponse.status = HttpServletResponse.SC_UNAUTHORIZED;
-        return false;
+    fun confirm_authorization(orderId: String){
+        var order = orderService.getOrderById(orderId)
+        order.orderStatus = OrderStatus.ACCEPTED;
+        communicationService.notifyOrderAccepted(order)
     }
 
-
-    @PostMapping("/api/v1/order/{id}/cancel")
-    suspend fun cancelOrder(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) userToken: String,
-        @PathVariable id: String
-    ): Boolean {
-        return SetOrderState(userToken, id, OrderStatus.CANCELED);
-    }
-
-    @PostMapping("/api/v1/order/{id}/accept")
-    suspend fun acceptOrder(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) userToken: String,
-        @PathVariable id: String
-    ): Boolean {
-        val order = orderService.getOrderById(id);
-        if (!communicationService.isUserAdminForPizzeria(userToken, order.pizzeriaId).await()) {
-            httpServletResponse.status = HttpServletResponse.SC_UNAUTHORIZED;
-            return false;
-        }
-        return SetOrderState(userToken, id, OrderStatus.SERVING);
-    }
-
-    @PostMapping("/api/v1/order/{id}/refuse")
-    suspend fun refuseOrder(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) userToken: String,
-        @PathVariable id: String
-    ): Boolean {
-        val order = orderService.getOrderById(id);
-        if (!communicationService.isUserAdminForPizzeria(userToken, order.pizzeriaId).await()) {
-            httpServletResponse.status = HttpServletResponse.SC_UNAUTHORIZED;
-            return false;
-        }
-        return SetOrderState(userToken, id, OrderStatus.REFUSED);
-    }
-
-    @PostMapping("/api/v1/order/{id}/complete")
-    suspend fun completeOrder(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) userToken: String,
-        @PathVariable id: String
-    ): Boolean {
-        val order = orderService.getOrderById(id);
-        if (!communicationService.isUserAdminForPizzeria(userToken, order.pizzeriaId).await()) {
-            httpServletResponse.status = HttpServletResponse.SC_UNAUTHORIZED;
-            return false;
-        }
-        return SetOrderState(userToken, id, OrderStatus.COMPLETED);
-    }
-
-    @GetMapping("/api/v1/order/getOrdersForPizzeria")
-    suspend fun getOrdersForPizzeria(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) userToken: String,
-        pizzeriaId: String
-    ): List<Order> {
-        if (communicationService.isUserAdminForPizzeria(userToken, pizzeriaId).await()) {
-            return orderService.getPizzeriaOrders(pizzeriaId).toList();
-        }
-        httpServletResponse.status = HttpServletResponse.SC_UNAUTHORIZED;
-        return emptyList();
+    fun confirm_accepted(orderId: String, piva: String ){
+        val order = orderService.getOrderById(orderId)
+        order.orderStatus = OrderStatus.SERVING;
+        communicationService.notifyOrderServing(order)
     }
 
 

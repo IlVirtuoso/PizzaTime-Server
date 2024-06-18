@@ -6,6 +6,8 @@ import java.util.*
 
 
 enum class OrderStatus {
+    PENDING_AUTHORIZATION,
+    READY,
     QUEUED,
     REFUSED,
     ACCEPTED,
@@ -23,9 +25,10 @@ class Order {
     var id : String = "";
     var totalPrice: Double = 0.0;
     var date : Date = Date.from(Instant.now());
-    var orderStatus: OrderStatus = OrderStatus.QUEUED;
+    var orderStatus: OrderStatus = OrderStatus.PENDING_AUTHORIZATION;
     var userId : String = "";
     var pizzeriaId : String = ""
+
 
     @ElementCollection
     var pizzas : List<Long>? = null;

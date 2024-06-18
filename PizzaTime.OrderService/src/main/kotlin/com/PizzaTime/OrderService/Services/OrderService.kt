@@ -12,8 +12,8 @@ class OrderService(private val orderRepository: IOrderRepository) : IOrderServic
         return orderRepository.getReferenceById(id);
     }
 
-    override fun save(order : Order){
-        orderRepository.save(order);
+    override fun save(order : Order) : Order{
+        return orderRepository.save(order);
     }
 
     override fun delete(order: Order){
@@ -22,10 +22,6 @@ class OrderService(private val orderRepository: IOrderRepository) : IOrderServic
 
     override fun deleteOrderId(id : String){
         orderRepository.deleteById(id)
-    }
-
-    override fun getPizzeriaFromId(id: String): String {
-        TODO("Not yet implemented")
     }
 
     override fun getPizzeriaOrders(pizzeriaId: String): Collection<Order> {
