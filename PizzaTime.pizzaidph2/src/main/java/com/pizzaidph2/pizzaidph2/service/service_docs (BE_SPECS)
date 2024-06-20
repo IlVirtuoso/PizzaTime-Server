@@ -1,0 +1,130 @@
+
+// THIS NOTE ARE FOR BE CALLERS
+// ACCOUNT UTILITIES
+
+    //getAccountInfo
+    /**
+     * Servizio che ritorna le informazioni dell'utente autenticato
+     * @param id - id di tipo long dell'utente di cui si richiedono le informazioni
+     * @return una response contenente "statusCode" 0 e l'oggetto Account nell'omonimo campo, oppure "statusCode" 401 in caso di utenza inesistente.
+     */
+        //RESPONSE_EXAMPLE
+            {
+                "statusCode": 0,
+                "statusReason": "OK",
+                "time": "16-06-2024 22:17:31",
+                "account": {
+                    "id": 1,
+                    "firstName": "Mattia",
+                    "lastName": "Borrelli",
+                    "email": "mattia.borrelli@edu.unito.it",
+                    "phone": "342434",
+                    "address": "1234567",
+                    "isRegistered": true,
+                    "username": "mattia.borrelli@edu.unito.it"
+                }
+            }
+                //RESPONSE_EXAMPLE
+                CASE 0 success
+                    {
+                        "statusCode": 0,
+                        "statusReason": "OK",
+                        "time": "16-06-2024 22:17:31",
+                        "account": {
+                            "id": 1,
+                            "firstName": "Mattia",
+                            "lastName": "Borrelli",
+                            "email": "mattia.borrelli@edu.unito.it",
+                            "phone": "342434",
+                            "address": "1234567",
+                            "isRegistered": true,
+                            "username": "mattia.borrelli@edu.unito.it"
+                        }
+                    }
+
+
+    //setAccountInfo
+    /**
+     * Servizio che ritorna le informazioni dell'utente autenticato
+     * @param id identitificativo univoco dell'utente da modificare
+     * @param account Oggetto di tipo account contenente i nuovi valori da modificare
+     * @return una response contenente il campo intero "statusCode" che può valere:
+     *  0 -> l'account è stato modificato con successo
+     *          il campo "Account" è valorizzato con l'oggetto account modificato
+     *  400 -> la modifica richiesta non è valida
+     *  401 -> autenticazione fallita: l'utente non esiste
+     */
+        //RESPONSE_EXAMPLE
+            {
+                "statusCode": 0,
+                "statusReason": "OK",
+                "time": "16-06-2024 19:01:24",
+                "account": {
+                    "id": 2,
+                    "firstName": "myName is",
+                    "lastName": "333",
+                    "email": "gigyamaster@mail.lol",
+                    "mobile": "ok",
+                    "phone": "ok",
+                    "address": "new address",
+                    "isRegistered": true,
+                    "username": "gigyamaster@mail.lol"
+                }
+            }
+
+
+    //getJWT
+    /**
+     * Servizio che ritorna un JWT general purpose (ID_TOKEN) per l'utente autenticato
+     * L'ID token può essere passato a external-BE e validato per garantire l'autenticità della chiamata FE to external-BE
+     * @param account per cui si richiede il jwt generico
+     * @return una response contenente statusCode 0 ed il jwt nel campo "idToken", oppure statusCode 401.
+     */
+        //RESPONSE_EXAMPLE
+            {
+                "statusCode": 0,
+                "statusReason": "OK",
+                "time": "16-06-2024 23:12:03",
+                "idToken": "eyJhbGciOiJ....."
+            }
+
+
+    //deleteAccount
+    /**
+     * Servizio per gestire la richiesta di cancellazione dell'utente autenticato
+     * @param id identificativo univivoco dell'utente che si intende cancellare
+     * @return una response contenente statusCode 0 se l'utente è stato eliminato, oppure statusCode 401 se l'utente non esiste.
+     */
+        //RESPONSE_EXAMPLE
+            {
+                "statusCode": 0,
+                "statusReason": "OK",
+                "time": "16-06-2024 19:12:59"
+            }
+
+
+// JWT UTILITIES
+
+    //verifyJWT
+    /**
+     * Servizio di verifica completa di un generico JWT
+     * Regole di validità:
+     *  - Il JWT è stato staccato in uan data passata "iat" < NOW
+     *  - Il JWT non è ancora scaduto > NOW
+     *  - (non valutato) Il token non è stato ancora usato. "nbf" < NOW
+     * @param token
+     * @return Il payload decodificato in JSON del JWT validato, o "null" altrimenti
+     */
+    public String verifyAndDecodeJWT(String token) {
+        //RESPONSE_EXAMPLE
+            {
+                "statusCode": 0,
+                "statusReason": "OK",
+                "time": "16-06-2024 23:12:07",
+                "decodedToken": {
+                    "iss": "pizzapartyidp",
+                    "sub": "1",
+                    "iat": 1718570279,
+                    "exp": 1718573879
+                }
+            }
