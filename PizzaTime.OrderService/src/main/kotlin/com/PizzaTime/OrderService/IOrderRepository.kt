@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository
 @Repository
 interface IOrderRepository : JpaRepository<Order, String> {
 
-    @Query("select p from Order p where p.pizzeriaId =: pizzeriaId")
-    fun findAllOrdersForPizzeria(pizzeriaId : String): Collection<Order>;
+    @Query("select p from Order p where p.pizzeriaId =: pizzeriaId and p.orderStatus =: orderStatus")
+    fun findAllOrdersForPizzeria(pizzeriaId: String, orderStatus: String): Collection<Order>;
+
+
 }
 

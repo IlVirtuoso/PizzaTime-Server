@@ -6,9 +6,13 @@ import SagaMessage
 import com.PizzaTime.OrderService.Order
 import com.rabbitmq.client.*
 import kotlinx.serialization.json.Json
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.context.annotation.Profile
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
+
+
 
 class SagaListenerService(val channel: Channel): Consumer{
 
@@ -58,6 +62,13 @@ class SagaListenerService(val channel: Channel): Consumer{
 
 }
 
+
+@ConditionalOnProperty(
+    prefix = "order.sagaservice",
+    value = ["enabled"],
+    havingValue = "true",
+    matchIfMissing = true
+)
 @Service
 class SagaNotifyService(environment: Environment) : BaseCommunicationService(
     environment.get("amqp.user")!!,

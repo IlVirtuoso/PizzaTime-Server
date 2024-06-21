@@ -2,6 +2,7 @@ package com.PizzaTime.OrderService.Services
 
 import com.PizzaTime.OrderService.IOrderRepository
 import com.PizzaTime.OrderService.Order
+import com.PizzaTime.OrderService.OrderStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.PostMapping
 
@@ -24,9 +25,13 @@ class OrderService(private val orderRepository: IOrderRepository) : IOrderServic
         orderRepository.deleteById(id)
     }
 
-    override fun getPizzeriaOrders(pizzeriaId: String): Collection<Order> {
-        return orderRepository.findAllOrdersForPizzeria(pizzeriaId);
+
+    override fun getOrdersForPizzeria(pizzeriaId: String, orderStatus: OrderStatus): Collection<Order> {
+        return orderRepository.findAllOrdersForPizzeria(pizzeriaId,orderStatus.status);
     }
+
+
+
 
 
 }

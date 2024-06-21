@@ -1,6 +1,7 @@
 package com.PizzaTime.OrderService.Services
 
 import com.PizzaTime.OrderService.Order
+import com.PizzaTime.OrderService.OrderStatus
 
 interface IOrderService
 {
@@ -8,5 +9,5 @@ interface IOrderService
     fun save(order : Order) : Order;
     fun delete(order: Order);
     fun deleteOrderId(id : String);
-    fun getPizzeriaOrders(pizzeriaId : String) : Collection<Order>;
+    fun getOrdersForPizzeria(pizzeriaId : String, orderStatus: OrderStatus) : Collection<Order>;
 }
