@@ -17,3 +17,4 @@ export class Order{
         public orderStatus: OrderStatus
     ){}
 }
+
