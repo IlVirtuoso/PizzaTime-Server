@@ -1,0 +1,412 @@
+// THIS NOTE ARE FOR FE & BE CALLERS
+// MAIN CONTROLLER FOR ACCOUNT HANDLING
+
+
+    //account/v1/register
+    /**
+     * API di registrazione standard nuovi utenti.
+     * Registra un nuovo utente con credenziali standard
+     * @param account Oggetto JSON rappresentante l'account da registrare.
+     *                Campi accettati:
+     *                "username" -> Necessario
+     *                "password" -> Necessario
+     *                "firstName" -> Facoltativo
+     *                "lastName"  -> Facoltativo
+     *                Ulteriori campi vengono ignorati
+     * @return Un oggetto JSON response con un codice numerico nel campo "statusCode" che rappresenta l'esito dell'operazione:
+     *      0 -> registrazione avvenuta con successo e utente registrato con tutti i campi obbligatori.
+     *      206 -> account pending registration, viene ritornato quando l'utente non ha completato tutti i campi obbligatori
+     *          Nel campo regToken è disponibile un JWT per richiamare l'API di Registration Completion
+     *      202 -> La password non rispetta la password policy
+     *      400 -> Parametri obbligatori mancanti o non validi
+     *      500 -> Errore Generico
+     */
+        //SPRING_DEF
+            @PostMapping("/register")
+            public String register(@RequestBody() Account account) {
+        //REQUEST_HEADER_EXAMPLE
+
+        //REQUEST_BODY_EXAMPLE
+            {
+                "username":"gigyamaster@mail234.lol",
+                "password":"1234567",
+                "firstName":"gigya",
+                "lastName":"master"
+            }
+        //RESPONSE_EXAMPLE
+            CASO 206 Pending Registration
+                {
+                    "statusCode": 206,
+                    "statusReason": "Account Pending Registration",
+                    "time": "16-06-2024 18:54:40",
+                    "account": {
+                        "id": 1,
+                        "firstName": "gigya",
+                        "lastName": "master",
+                        "email": "gigyamaster@mail234.lol",
+                        "isRegistered": false,
+                        "username": "gigyamaster@mail234.lol"
+                    },
+                    "regToken": "eyJhbGciOiJSUzI1........"
+                    }
+
+    //account/v1/login
+    /**
+     * API di Login standard per utenti già registrati
+     * @param account Oggetto JSON rappresentante l'account da registrare.
+     *      *                Campi accettati:
+     *      *                "username" -> Necessario
+     *      *                "password" -> Necessario
+     *      *                Ulteriori campi vengono ignorati.
+     * @return un JSON response con un codice numerico nel campo "statusCode" che rappresneta l'esito dell'operazione:
+     *      0 -> login avvenuta con successo.
+     *          Nel campo "sessionToken" della response viene passato un cookie di sessione.
+     *      206 -> login avvenuta con successo ma l'utente deve ancora completare la registrazione.
+     *          Nel campo regToken è disponibile un JWT per richiamare l'API di Registration Completion
+     *      201 -> username o password non validi
+     *      400 -> Parametri obbligatori mancanti o non validi
+     *      500 -> Errore Generico
+     */
+        //SPRING_DEF
+            @PostMapping("/login")
+            public String login(@RequestBody Account account) {
+        //REQUEST_HEADER_EXAMPLE
+
+        //REQUEST_BODY_EXAMPLE
+              {
+                  "username":"gigyamaster@mail.lol",
+                  "password":"1234567"
+              }
+        //RESPONSE_EXAMPLE
+            CASO 201 failed Login
+                {
+                    "statusCode": 201,
+                    "statusReason": "Invalid login or Password",
+                    "time": "16-06-2024 19:13:05"
+                }
+            CASO 0 SUCCESS
+                {
+                    "statusCode": 0,
+                    "statusReason": "OK",
+                    "time": "16-06-2024 23:53:10",
+                    "account": {
+                        "id": 2,
+                        "firstName": "gigya",
+                        "lastName": "master",
+                        "email": "gigyamaster@mail234.lol",
+                        "phone": "342434",
+                        "address": "1234567",
+                        "isRegistered": true,
+                        "username": "gigyamaster@mail234.lol"
+                    },
+                    "sessionToken": "eyJhbGciOiJSUzI1NiIsInR5c....."
+                }
+
+    //account/v1/socialLogin
+    /**
+     * API per la gestione della social login (con Google).
+     * Permette anche di gestire la registrazione in caso di utente nuovo.
+     * @param oauthToken il Token OAuth 2.0 fornito da Google
+     * @return un JSON response con un codice numerico nel campo "statusCode" che rappresenta l'esito dell'operazione:
+     *      0 -> login avvenuta con successo
+     *          il campo "sessionToken" è valorizzato con il jwt di sessione
+     *      206 -> account pending registration, l'utente non ha ancora inserito alcuni campi obbligatori.
+     *      401 -> Autenticazione non valida, corrisponde ad un errore di validazione del token OAuth
+     *      500 -> Errore Generico
+     */
+        //SPRING_DEF
+            @PostMapping("/socialLogin")
+            public String login(@RequestHeader(value = "Authorization", required = false) String oauthToken) {
+
+        //REQUEST_HEADER_EXAMPLE
+            Authorization: eyJhbGciOiJSUzI1NiI...
+        //REQUEST_BODY_EXAMPLE
+
+        //RESPONSE_EXAMPLE
+            CASO 401 Authentication failed
+                {
+                    "statusCode": 401,
+                    "statusReason": "Wrong Authentication",
+                    "time": "16-06-2024 23:56:27"
+                }
+             CASO 206 Pending Registration (torna il regToken da usare nella finalizeRegistration)
+                {
+                    "statusCode": 206,
+                    "statusReason": "Account Pending Registration",
+                    "time": "16-06-2024 18:54:40",
+                    "account": {
+                        "id": 1,
+                        "firstName": "gigya",
+                        "lastName": "master",
+                        "email": "gigyamaster@mail234.lol",
+                        "isRegistered": false,
+                        "username": "gigyamaster@mail234.lol"
+                    },
+                    "regToken": "eyJhbGciOiJSUzI1........"
+                    }
+            CASO 0 SUCCESS (utente loggato)
+                 {
+                     "statusCode": 0,
+                     "statusReason": "OK",
+                     "time": "16-06-2024 22:17:37",
+                     "sessionToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMSIsImlhdCI6MTcxODU2OTA1NywiZXhwIjoxNzE4NTcyNjU3LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMTYgMjI6MTc6MzcifQ.b7X3cMKxYpl0w6Xyl7U9i-o7aBa-mRcyrY0VUgF-sdEnYT6gBJrHaazwV4UgT2_zJjUp8NcRKvuM0QBUE3einZbE5kdqFDtuI_E9X_W3bB_GuSmGMZVVwnV5SRD8gmYOc7hsqCZm3bxEbwb2tPWoxZOym78Tcu3sMt1u5s61ClKm7tofhHiVnCRcRzXmggtEuCBA8Yod77zIu9RmrWpUa8dv5Lve0fRMOWH1niOippxyvUP7xiZGIYZhcHYDSBRib7ByoRQnSaYeb82FnhixXnF1WxytDYnkYvN8S-teNrNQF85bdFtkhtp8XUb1dFaHaRTtsowcp6w0qtnNbltFsw"
+                 }
+
+
+    //account/v1/finalizeRegistration
+    /**
+     * API di finalizzazione della registrazione.
+     * L'aunteticazione avviene solo mediante verifica del regToken.
+     * L'API permette di settare le informazioni necessarie a completare il profilo e risultare regitrati completamente.
+     * @param regToken token di autenticazione da passare nell'HEADER HTTP
+     * @param account Oggetto JSON rappresentante l'account da registrare.
+     *                Campi accettati:
+     *                "firstName" -> Facoltativo
+     *                "lastName"  -> Facoltativo
+     *                "mobile" -> Facoltativo
+     *                "phone" -> Facoltativo
+     *                "address" -> Facoltativo
+     *                Ulteriori campi vengono ignorati
+     * @return un JSON response con un codice numerico nel campo "statusCode" che rappresenta l'esito dell'operazione:
+     *      0 -> Registrazione avvenuta con successon e auto login avvenuta con successo.
+     *          Nel campo "sessionToken" della response viene passato un cookie di sessione.
+     *      203 -> L'utente non ha completato la finalizzazione per mancanza di informazioni: ripetere.
+     *      400 -> Parametri obbligatori mancanti o non validi. In particolare, l'utente è già registrato e non può chiamare questa API
+     *      401 -> Autenticazione non valida, corrisponde ad un errore di validazione del regToken
+     *      500 -> Errore Generico
+     */
+        //SPRING_DEF
+            @PostMapping("/finalizeRegistration")
+            public String finalizeRegistration(@RequestHeader(value = "Authorization", required = false) String regToken,
+        //REQUEST_HEADER_EXAMPLE
+            Authorization: eyJhbGciOiJSUzI1NiI...
+        //REQUEST_BODY_EXAMPLE
+            {
+                "firstName":"nome"
+                "address":"1234567",
+                "phone":"342434"        //o "mobile":"..." o entrambi i campi
+            }
+        //RESPONSE_EXAMPLE
+            CASO 401 Authentication failed
+                {
+                    "statusCode": 401,
+                    "statusReason": "Wrong Authentication",
+                    "time": "16-06-2024 23:56:27"
+                }
+            CASO 400 Invalid Parameter
+                {
+                    "statusCode": 400,
+                    "statusReason": "Invalid Parameter Value",
+                    "time": "16-06-2024 23:56:27"
+                }
+            CASO 203 informazioni sbagliate o non sufficienti a completare l'utenza
+                {
+                    "statusCode": 203,
+                    "statusReason": "Missing Required Informations",
+                    "time": "16-06-2024 23:56:27"
+                }
+            CASO 0 SUCCESS (utente automaticamente loggato)
+                 {
+                     "statusCode": 0,
+                     "statusReason": "OK",
+                     "time": "16-06-2024 22:17:37",
+                     "sessionToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMSIsImlhdCI6MTcxODU2OTA1NywiZXhwIjoxNzE4NTcyNjU3LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMTYgMjI6MTc6MzcifQ.b7X3cMKxYpl0w6Xyl7U9i-o7aBa-mRcyrY0VUgF-sdEnYT6gBJrHaazwV4UgT2_zJjUp8NcRKvuM0QBUE3einZbE5kdqFDtuI_E9X_W3bB_GuSmGMZVVwnV5SRD8gmYOc7hsqCZm3bxEbwb2tPWoxZOym78Tcu3sMt1u5s61ClKm7tofhHiVnCRcRzXmggtEuCBA8Yod77zIu9RmrWpUa8dv5Lve0fRMOWH1niOippxyvUP7xiZGIYZhcHYDSBRib7ByoRQnSaYeb82FnhixXnF1WxytDYnkYvN8S-teNrNQF85bdFtkhtp8XUb1dFaHaRTtsowcp6w0qtnNbltFsw"
+                 }
+
+
+     //account/v1/getAccountInfo
+     /**
+     * API che ritorna le informazioni dell'utente autenticato
+     * @param sessionToken da passare nel campo "Authorization" del request header
+     * @return una response contenente statusCode 0 e l'oggetto "Account", oppure statusCode 401 (autenticazione fallita).
+     */
+        //SPRING_DEF
+           @GetMapping("/getAccountInfo")
+           public String getAccountInfo(@RequestHeader(value = "Authorization", required = false) String sessionToken) {
+        //REQUEST_HEADER_EXAMPLE
+           Authorization: eyJhbGciOiJSUzI1NiI...
+        //REQUEST_PARAMS_EXAMPLE
+
+        //RESPONSE_EXAMPLE
+            CASO 401 Authentication failed
+                {
+                    "statusCode": 401,
+                    "statusReason": "Wrong Authentication",
+                    "time": "16-06-2024 23:56:27"
+                }
+           CASO 0 success
+                {
+                    "statusCode": 0,
+                    "statusReason": "OK",
+                    "time": "16-06-2024 22:17:31",
+                    "account": {
+                        "id": 1,
+                        "firstName": "Mattia",
+                        "lastName": "Borrelli",
+                        "email": "mattia.borrelli@edu.unito.it",
+                        "phone": "342434",
+                        "address": "1234567",
+                        "isRegistered": true,
+                        "username": "mattia.borrelli@edu.unito.it"
+                    }
+                }
+
+    //account/v1/getJWT
+    /**
+     * API che ritorna un JWT general purpose (ID_TOKEN) per l'utente autenticato
+     * L'ID token può essere passato a external-BE e validato per garantire l'autenticità della chiamata FE to external-BE
+     * @param sessionToken campo Authorization del request header
+     * @return una response contenente statusCode 0 ed il jwt nel campo "idToken", oppure statusCode 401.
+     */
+        //SPRING_DEF
+            @GetMapping("/getJWT")
+            public String getJWT(@RequestHeader(value = "Authorization", required = false) String sessionToken) {
+        //REQUEST_HEADER_EXAMPLE
+           Authorization: eyJhbGciOiJSUzI1NiI...
+        //REQUEST_PARAMS_EXAMPLE
+
+        //RESPONSE_EXAMPLE
+            CASO 401 Authentication failed
+                {
+                    "statusCode": 401,
+                    "statusReason": "Wrong Authentication",
+                    "time": "16-06-2024 23:56:27"
+                }
+           CASO 0 success
+                {
+                    "statusCode": 0,
+                    "statusReason": "OK",
+                    "time": "16-06-2024 23:12:03",
+                    "idToken": "eyJhbGciOiJSUz..."
+                }
+
+    //account/v1/verifyJWT
+    /**
+     * API che verifica un JWT general purpose (ID_TOKEN) per l'utente autenticato
+     * @param token per cui si richiede la verifica
+     * @return una response contenente statusCode 0 ed il jwt con payload decodificato nel campo "decodedToken", oppure statusCode 401.
+     */
+        //SPRING_DEF
+            @GetMapping("/verifyJWT")
+            public String verifyJWT(@RequestParam(value = "jwt", required = false) String token) {
+        //REQUEST_HEADER_EXAMPLE
+        //REQUEST_PARAMS_EXAMPLE
+            ?jwt=asdadsasdasd....
+        //RESPONSE_EXAMPLE
+            CASO 401 Authentication failed
+                {
+                    "statusCode": 401,
+                    "statusReason": "Wrong Authentication",
+                    "time": "16-06-2024 23:56:27"
+                }
+           CASO 0 success
+                {
+                    "statusCode": 0,
+                    "statusReason": "OK",
+                    "time": "16-06-2024 23:12:07",
+                    "decodedToken": {
+                        "iss": "pizzapartyidp",
+                        "sub": "1",
+                        "iat": 1718570279,
+                        "exp": 1718573879
+                    }
+                }
+
+
+
+    //account/v1/setAccountInfo
+    /**
+     * API per settare  le informazioni di un utente autenticato.
+     * L'API permette di settare le informazioni indicate nel body  profilo
+     * @param sessionToken token di autenticazione da passare nell'HEADER HTTP
+     * @param account Oggetto JSON rappresentante l'account da registrare.
+     *                Campi accettati:
+     *                "firstName" -> Facoltativo
+     *                "lastName"  -> Facoltativo
+     *                "mobile" -> Facoltativo
+     *                "phone" -> Facoltativo
+     *                "address" -> Facoltativo
+     *                Ulteriori campi vengono ignorati
+     * @return un JSON response con un codice numerico nel campo "statusCode" che rappresenta l'esito dell'operazione:
+     *      0 -> info modifcate con successo (l'API non setta valori vuoti o nulli)
+     *      401 -> Autenticazione fallita: l'utente non esiste o il JWT non è valido
+     *      400 -> Parametri obbligatori mancanti o non validi.
+     *      500 -> Errore Generico
+     */
+        //SPRING_DEF
+               @PostMapping("/setAccountInfo")
+               public String setAccountInfo(@RequestHeader(value = "Authorization", required = false) String sessionToken,
+                                                  @RequestBody() Account account) {
+        //REQUEST_HEADER_EXAMPLE
+            Authorization: eyJhbGciOiJSUzI1NiI...
+        //REQUEST_BODY_EXAMPLE
+            {
+                "firstName":"nome"
+                "address":"1234567",
+                "phone":"342434"        //o "mobile":"..." o entrambi i campi
+            }
+        //RESPONSE_EXAMPLE
+            CASO 401 Authentication failed
+                {
+                    "statusCode": 401,
+                    "statusReason": "Wrong Authentication",
+                    "time": "16-06-2024 23:56:27"
+                }
+            CASO 400 Invalid Parameter
+                {
+                    "statusCode": 400,
+                    "statusReason": "Invalid Parameter Value",
+                    "time": "16-06-2024 23:56:27"
+                }
+            CASO 0 SUCCESS (utente automaticamente loggato)
+                 {
+                     "statusCode": 0,
+                     "statusReason": "OK",
+                     "time": "16-06-2024 19:01:24",
+                     "account": {
+                         "id": 2,
+                         "firstName": "myName is",
+                         "lastName": "333",
+                         "email": "gigyamaster@mail.lol",
+                         "mobile": "ok",
+                         "phone": "ok",
+                         "address": "new address",
+                         "isRegistered": true,
+                         "username": "gigyamaster@mail.lol"
+                     }
+                 }
+
+
+
+    //account/v1/deleteAccount
+    /**
+     * API per gestire la richiesta di cancellazione dell'utente autenticato
+     * @param sessionToken campo Authorization del request header
+     * @return una response contenente statusCode 0 se l'utente è stato eliminato, oppure statusCode 401 (autenticazione fallita).
+     */
+       //SPRING_DEF
+            @GetMapping("/deleteAccount")
+            public String deleteAccount(@RequestHeader(value="Authorization", required = false) String sessionToken){
+       //REQUEST_HEADER_EXAMPLE
+            Authorization: eyJhbGciOiJSUzI1NiI...
+        //REQUEST_PARAMS_EXAMPLE
+
+        //RESPONSE_EXAMPLE
+         CASO 401 Authentication failed
+            {
+                "statusCode": 401,
+                "statusReason": "Wrong Authentication",
+                "time": "16-06-2024 23:56:27"
+            }
+        CASO 0 SUCCESS
+            {
+                "statusCode": 0,
+                "statusReason": "OK",
+                "time": "16-06-2024 19:12:59"
+            }
+
+    //account/v1/registerComplete
+    //ONLY FOR DEBUG
+    //SPRING_DEF
+        @PostMapping("/registerComplete")
+        public String registerFinalize(@RequestBody() Account account) {
