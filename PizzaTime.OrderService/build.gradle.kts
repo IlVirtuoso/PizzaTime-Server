@@ -4,7 +4,7 @@ plugins {
 	war
 	id("org.springframework.boot") version "3.3.0"
 	id("io.spring.dependency-management") version "1.1.5"
-	kotlin("jvm") version "1.9.24"
+	kotlin("jvm") version "2.0.0"
 	kotlin("plugin.spring") version "1.9.24"
 }
 
@@ -24,20 +24,22 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+	implementation("com.rabbitmq:amqp-client:5.21.0")
 	runtimeOnly("com.h2database:h2")
+	implementation(project(":PizzaTime.Communication"))
 	runtimeOnly("org.postgresql:postgresql")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 kotlin {
-	compilerOptions {
-		freeCompilerArgs.addAll("-Xjsr305=strict")
-		jvmTarget = JvmTarget.JVM_21
-	}
+	jvmToolchain(21)
 }
-
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+
