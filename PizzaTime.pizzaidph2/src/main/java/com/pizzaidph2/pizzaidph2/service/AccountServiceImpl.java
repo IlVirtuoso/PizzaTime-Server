@@ -1,7 +1,6 @@
 package com.pizzaidph2.pizzaidph2.service;
 
 
-import com.pizzaidph2.pizzaidph2.Component.Auth0JWT;
 import com.pizzaidph2.pizzaidph2.Component.GenericResponse;
 import com.pizzaidph2.pizzaidph2.Component.InvalidEmailFormatException;
 import com.pizzaidph2.pizzaidph2.Component.PWDUtilities;

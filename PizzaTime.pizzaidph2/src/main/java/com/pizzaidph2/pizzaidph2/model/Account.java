@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import com.pizzaidph2.pizzaidph2.Component.Auth0JWT;
 import com.pizzaidph2.pizzaidph2.Component.InvalidEmailFormatException;
@@ -64,6 +65,10 @@ public class Account {
     @Expose
     //@Column(name="socialIdentity")
     private Boolean socialIdentity;
+
+    //NEL DB E' DA 255 CARATTERI... CAPIRE SE BASTA...
+    @Expose
+    private String sessionList;
 
 
     /*

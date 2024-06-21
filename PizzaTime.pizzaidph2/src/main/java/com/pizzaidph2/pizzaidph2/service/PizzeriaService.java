@@ -31,9 +31,11 @@ public class PizzeriaService {
 
             Account manager = optManager.get();
 
-            if (obj != null && obj.getVatNumber() != null && !obj.getVatNumber().isEmpty() && !obj.getVatNumber().isBlank()) {
+            if (obj != null && obj.getVatNumber() != null && !obj.getVatNumber().isEmpty() && !obj.getVatNumber().isBlank()
+                    && obj.getAddress() != null && !obj.getAddress().isEmpty() && !obj.getAddress().isBlank()) {
                 Pizzeria target = new Pizzeria();
                 target.setVatNumber(obj.getVatNumber().trim());
+                target.setAddress(obj.getAddress().trim());
                 target.setManagerId(userID);
 
                 manager.setVendor(true);

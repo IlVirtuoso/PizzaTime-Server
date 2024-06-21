@@ -1,6 +1,5 @@
 package com.pizzaidph2.pizzaidph2.repository;
 
-import com.pizzaidph2.pizzaidph2.model.Account;
 import com.pizzaidph2.pizzaidph2.model.Pizzeria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
