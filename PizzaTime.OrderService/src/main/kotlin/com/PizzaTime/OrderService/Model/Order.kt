@@ -1,11 +1,8 @@
-package com.PizzaTime.OrderService
+package com.PizzaTime.OrderService.Model
 
 import jakarta.persistence.*
 import java.time.Instant
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
-import kotlin.reflect.KClass
 
 
 enum class OrderStatus(val status: String) {
@@ -28,14 +25,11 @@ class Order {
     var totalPrice: Double = 0.0;
     var date : Date = Date.from(Instant.now());
     var orderStatus: String = OrderStatus.READY.status;
-    var userId : String = "";
+    var userId : Long = -1;
     var pizzeriaId : String = ""
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "order_pizza", joinColumns = [JoinColumn(name = "order_id")])
-    var pizzas : Set<Long> = HashSet<Long>();
-
-
+    @OneToMany
+    var orderRows: Set<OrderRow> = HashSet();
 }
 
 

@@ -22,7 +22,7 @@ class OrderServiceApplicationTests {
 	@Test
 	fun submitOrder() {
 		val httpResponse = MockHttpServletResponse();
-		orderController = OrderController(orderService,communicationService);
+
 
 	}
 

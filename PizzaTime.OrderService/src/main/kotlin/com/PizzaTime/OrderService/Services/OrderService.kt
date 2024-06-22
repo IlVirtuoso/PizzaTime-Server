@@ -1,19 +1,18 @@
 package com.PizzaTime.OrderService.Services
 
 import com.PizzaTime.OrderService.IOrderRepository
-import com.PizzaTime.OrderService.Order
-import com.PizzaTime.OrderService.OrderStatus
+import com.PizzaTime.OrderService.Model.Order
+import com.PizzaTime.OrderService.Model.OrderStatus
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.PostMapping
 
 @Service
 class OrderService(private val orderRepository: IOrderRepository) : IOrderService{
 
-    override fun getOrderById(id : String) : Order{
+    override fun getOrderById(id : String) : Order {
         return orderRepository.getReferenceById(id);
     }
 
-    override fun save(order : Order) : Order{
+    override fun save(order : Order) : Order {
         return orderRepository.save(order);
     }
 

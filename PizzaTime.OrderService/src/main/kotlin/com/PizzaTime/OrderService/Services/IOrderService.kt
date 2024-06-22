@@ -1,7 +1,7 @@
 package com.PizzaTime.OrderService.Services
 
-import com.PizzaTime.OrderService.Order
-import com.PizzaTime.OrderService.OrderStatus
+import com.PizzaTime.OrderService.Model.Order
+import com.PizzaTime.OrderService.Model.OrderStatus
 
 interface IOrderService
 {

@@ -1,8 +1,6 @@
 package com.PizzaTime.OrderService.Services
 
-import com.PizzaTime.OrderService.Order
-import kotlinx.coroutines.Deferred
-import java.util.concurrent.Future
+import com.PizzaTime.OrderService.Model.Order
 
 interface ICommunicationService {
     fun notifyOrderCreate(userId: String, order: Order);
