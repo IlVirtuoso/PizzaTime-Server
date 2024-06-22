@@ -1,4 +1,4 @@
-package com.PizzaTime.OrderService
+package com.PizzaTime.OrderService.Repositories
 
 
 import com.PizzaTime.OrderService.Model.Order

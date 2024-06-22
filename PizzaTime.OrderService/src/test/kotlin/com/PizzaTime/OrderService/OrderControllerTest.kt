@@ -56,6 +56,7 @@ class OrderControllerTest {
     @Test
     fun order_add_row(){
         val response = MockHttpServletResponse();
+        val sessionToken= "ciao";
         userAuthorizationService.onValidateUserToken = {userid: String ->
             UserToken<UserAccount>(200,UserAccount(
                 10,
@@ -63,8 +64,12 @@ class OrderControllerTest {
             ));
         }
 
-        val order = orderController.create_order("ciao", response).let { t-> (t as ResponseMessage<Order>).payload };
-
+        var order = orderController.create_order(sessionToken, response).let { t-> (t as ResponseMessage<Order>).payload };
+        orderController.add_row(sessionToken,order.id,response,OrderController.OrderRowRequest(11,10, listOf(3,2,1),1));
+        order = orderController.getById(sessionToken,order.id,response).let { t-> t as ResponseMessage<Order> }.payload;
+        assert(order.orderStatus == OrderStatus.READY.status);
+        assert(order.userId == 10.toLong())
+        assert(order.orderRows.size == 1);
     }
 
 }

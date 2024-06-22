@@ -28,7 +28,7 @@ class Order {
     var userId : Long = -1;
     var pizzeriaId : String = ""
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     var orderRows: Set<OrderRow> = HashSet();
 }
 
