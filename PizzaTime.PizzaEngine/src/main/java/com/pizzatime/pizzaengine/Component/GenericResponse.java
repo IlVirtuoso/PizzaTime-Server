@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import com.pizzatime.pizzaengine.Model.Menu;
+import com.pizzatime.pizzaengine.Model.Pizza;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -45,6 +47,10 @@ public class GenericResponse {
     public static final int UNKNOWN_USER_CODE = 205;
     public static final String UNKNOWN_USER_MESSAGE = "Unknown User";
 
+    public static final int ALREADY_EXISTING_ITEM_CODE = 207;
+    public static final String ALREADY_EXISTING_ITEM_MESSAGE = "This Item Already Exists";
+
+
     public String mapCodeToResponse(int code){
         if(code==OK_CODE) return OK_MESSAGE;
         if(code==GENERIC_ERROR_CODE) return GENERIC_ERROR_MESSAGE;
@@ -56,6 +62,7 @@ public class GenericResponse {
         if(code==MISSING_INFORMATION_CODE) return MISSING_INFORMATION_MESSAGE;
         if(code==UNKNOWN_USER_CODE) return UNKNOWN_USER_MESSAGE;
         if(code==NEW_SOCIAL_CODE) return NEW_SOCIAL_MESSAGE;
+        if(code==ALREADY_EXISTING_ITEM_CODE) return ALREADY_EXISTING_ITEM_MESSAGE;
         return GENERIC_ERROR_MESSAGE;
     }
 
@@ -71,6 +78,13 @@ public class GenericResponse {
     String sessionToken;
     @Expose
     String regToken;
+
+    @Expose
+    Pizza pizza;
+
+    @Expose
+    Menu menu;
+
     @Expose
     String customObj;
     @Expose
@@ -125,4 +139,7 @@ public class GenericResponse {
         this.decodedToken = decodedToken;
     }
 
+    public void setPizza(Pizza target) { this.pizza = target; }
+
+    public void setMenu(Menu menu) { this.menu = menu; }
 }
