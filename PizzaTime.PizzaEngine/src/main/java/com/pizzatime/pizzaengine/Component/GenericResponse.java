@@ -34,7 +34,6 @@ public class GenericResponse {
     public static final int NEW_SOCIAL_CODE = 207;
     public static final String NEW_SOCIAL_MESSAGE = "New Social User Must Be Registered Before Access";
 
-
     public static final int INVALID_PASSWORD_CODE = 202;
     public static final String INVALID_PASSWORD_MESSAGE = "Password doesn't meet complexity requirements";
 
@@ -50,6 +49,10 @@ public class GenericResponse {
     public static final int ALREADY_EXISTING_ITEM_CODE = 207;
     public static final String ALREADY_EXISTING_ITEM_MESSAGE = "This Item Already Exists";
 
+    public static final int NOT_EXISTING_ITEM_CODE = 208;
+    public static final String NOT_EXISTING_ITEM_MESSAGE = "This Item doesn't exist, you should create it before";
+
+
 
     public String mapCodeToResponse(int code){
         if(code==OK_CODE) return OK_MESSAGE;
@@ -63,6 +66,7 @@ public class GenericResponse {
         if(code==UNKNOWN_USER_CODE) return UNKNOWN_USER_MESSAGE;
         if(code==NEW_SOCIAL_CODE) return NEW_SOCIAL_MESSAGE;
         if(code==ALREADY_EXISTING_ITEM_CODE) return ALREADY_EXISTING_ITEM_MESSAGE;
+        if(code==NOT_EXISTING_ITEM_CODE) return NOT_EXISTING_ITEM_MESSAGE;
         return GENERIC_ERROR_MESSAGE;
     }
 

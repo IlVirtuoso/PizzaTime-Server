@@ -5,6 +5,7 @@ import com.pizzatime.pizzaengine.Model.*;
 import com.pizzatime.pizzaengine.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class MenuService {
         }
     }
 
-    public String addPizzaRow(long menuId, String commonName, long pizzaId, float cost ){
+    public GenericResponse addPizzaRow(long pizzeriaId, String commonName, long pizzaId, float cost ){
         GenericResponse resp = new GenericResponse();
 
         MenuRowPizza mrp = new MenuRowPizza();
@@ -63,47 +64,55 @@ public class MenuService {
         }else{
             resp.setStatusCode(GenericResponse.INVALID_PARAMETER_CODE);
             resp.setStatusReason(GenericResponse.INVALID_PARAMETER_MESSAGE);
-            return resp.jsonfy();
+            return resp;
         }
-        return addPizzaRow(menuId, mrp);
+        return addPizzaRow(pizzeriaId, mrp);
     }
 
-    public String addPizzaRow(long menuId, MenuRowPizza mrp){
+    @Transactional
+    public GenericResponse addPizzaRow(long pizzeriaId, MenuRowPizza mrp){
         GenericResponse resp = new GenericResponse();
 
-        Optional<Menu> mTarget = repoMenu.findById(menuId);
+        System.out.println("time to add a new row");
+        Optional<Menu> mTarget = repoMenu.findByPizzeriaId(pizzeriaId);
         if(mTarget.isPresent() && mrp != null){
+            System.out.println("I found the menu and check the row");
             if(isPizzaInMenu(mTarget.get(), mrp.getPizza()) == null) {
-                // CREATE AND ADD THE NEW ROW
+                System.out.println("CREATE AND ADD THE NEW ROW");
+                Pizza p = genService.getOnePizzaPerfectMatch(mrp.getPizza().getSeasonings());
+                mrp.setPizza(p);
                 MenuRowPizza newMenuRow = repoMenuPizza.save(mrp);
                 Menu m = mTarget.get();
                 m.getPizzaRows().add(newMenuRow);
                 repoMenu.save(m);
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
-                return resp.jsonfy();
+                return resp;
             }else{
-                //IT IS SUFFICIENT TO MODIFY THE ROW
+                System.out.println("IT IS SUFFICIENT TO MODIFY THE ROW");
                 MenuRowPizza rowToEdit = isPizzaInMenu(mTarget.get(), mrp.getPizza());
-                rowToEdit.setPizza(mrp.getPizza());
+                Pizza p = genService.getOnePizzaPerfectMatch(mrp.getPizza().getSeasonings());
+                rowToEdit.setPizza(p);
                 rowToEdit.setCommonName(mrp.getCommonName());
                 rowToEdit.setCost(mrp.getCost());
-                repoMenuPizza.save(mrp);
+                repoMenuPizza.save(rowToEdit);
                 Menu m = mTarget.get();
                 repoMenu.save(m);
 
                 System.out.println("Edit an already Existing pizza row");
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
-                return resp.jsonfy();
+                return resp;
             }
+        }else{
+        resp.setStatusCode(GenericResponse.NOT_EXISTING_ITEM_CODE);
+        resp.setStatusReason(GenericResponse.NOT_EXISTING_ITEM_MESSAGE);
+        return resp;
         }
-        resp.setStatusCode(GenericResponse.INVALID_PARAMETER_CODE);
-        resp.setStatusReason(GenericResponse.INVALID_PARAMETER_MESSAGE);
-        return resp.jsonfy();
     }
 
-    public String addIngredientRow(long menuId,  String commonName, long ingrId, float cost ) {
+    @Transactional
+    public GenericResponse addIngredientRow(long pizzeriaId, String commonName, long ingrId, float cost ) {
         GenericResponse resp = new GenericResponse();
 
         MenuRowIngredient mri = new MenuRowIngredient();
@@ -117,27 +126,28 @@ public class MenuService {
         }else{
             resp.setStatusCode(GenericResponse.INVALID_PARAMETER_CODE);
             resp.setStatusReason(GenericResponse.INVALID_PARAMETER_MESSAGE);
-            return resp.jsonfy();
+            return resp;
         }
-        return addIngredientRow(menuId, mri);
+        return addIngredientRow(pizzeriaId, mri);
     }
 
-        public String addIngredientRow(long menuId, MenuRowIngredient mri){
+    @Transactional
+    public GenericResponse addIngredientRow(long pizzeriaId, MenuRowIngredient mri){
         GenericResponse resp = new GenericResponse();
 
-        Optional<Menu> mTarget = repoMenu.findById(menuId);
+        Optional<Menu> mTarget = repoMenu.findByPizzeriaId(pizzeriaId);
         if(mTarget.isPresent() && mri != null){
             if(isIngrInMenu(mTarget.get(), mri.getIngredient()) == null) {
-                // CREATE AND ADD THE NEW ROW
+                System.out.println("CREATE AND ADD THE NEW ROW");
                 MenuRowIngredient newMenuRow = repoMenuIngr.save(mri);
                 Menu m = mTarget.get();
                 m.getIngrRows().add(newMenuRow);
                 repoMenu.save(m);
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
-                return resp.jsonfy();
+                return resp;
             }else{
-                //IT IS SUFFICIENT TO MODIFY THE ROW
+                System.out.println("IT IS SUFFICIENT TO MODIFY THE ROW");
                 MenuRowIngredient rowToEdit = isIngrInMenu(mTarget.get(), mri.getIngredient());
                 rowToEdit.setIngredient(mri.getIngredient());
                 rowToEdit.setCommonName(mri.getCommonName());
@@ -149,15 +159,15 @@ public class MenuService {
                 System.out.println("Edit an already existing ingredient row");
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
-                return resp.jsonfy();
+                return resp;
             }
         }
         resp.setStatusCode(GenericResponse.INVALID_PARAMETER_CODE);
         resp.setStatusReason(GenericResponse.INVALID_PARAMETER_MESSAGE);
-        return resp.jsonfy();
+        return resp;
     }
 
-
+    @Transactional
     public MenuRowPizza isPizzaInMenu(Menu m, Pizza p){
         Pizza target = genService.getOnePizzaPerfectMatch(p.getSeasonings());
         if(target!=null){
