@@ -24,5 +24,6 @@ public interface HybernatePizzaRepositoryImpl extends JpaRepository<Pizza, Long>
     //List<Pizza> findBySeasonings(@Param("pizza") Pizza pizza);
 
 
+
 }
 

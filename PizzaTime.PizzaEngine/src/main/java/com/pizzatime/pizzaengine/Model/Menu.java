@@ -35,7 +35,6 @@ public class Menu {
         return pizzeriaId;
     }
 
-
     public void setId(Long id) {
         this.id = id;
     }

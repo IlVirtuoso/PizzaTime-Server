@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class MenuService {
@@ -193,6 +190,44 @@ public class MenuService {
         }return null;
     }
 
+    public List<Menu> searchMenuForPizza(long pizzaId) {
+        Optional<Pizza> p = repoPizza.findById(pizzaId);
+        if(p.isPresent()){
+            List<Menu> l = new  ArrayList<Menu>();
+            l = repoMenu.findByPizza(p.get().getId());
+            if(!l.isEmpty()){
+                for(Menu m : l){
+                    System.out.println("Menu from Pizzeria "+m.getPizzeriaId());
+                }
+                return l;
+            }else{
+                System.out.println("No menu has this pizza");
+                return null;
+            }
+        }
+        System.out.println("This pizza doesn't exist");
+        return null;
+    }
+
+    public List<Menu> searchMenuForAddition(long additionId) {
+        Optional<Ingredient> p = repoIngr.findById(additionId);
+        if(p.isPresent()){
+            List<Menu> l = new  ArrayList<Menu>();
+            l = repoMenu.findByIngredient(p.get().getId());
+            if(!l.isEmpty()){
+                for(Menu m : l){
+                    System.out.println("Menu from Pizzeria "+m.getPizzeriaId());
+                }
+                return l;
+            }else{
+                System.out.println("No menu has this addition");
+                return null;
+            }
+        }
+        System.out.println("This ingredient doesn't exist");
+        return null;
+    }
+
 
     /** DEBUG METHOD */
 
@@ -210,5 +245,32 @@ public class MenuService {
             }
         }
 
+    }
+
+    public void debugSearchMenuForAddition(long additionId) {
+        Optional<Ingredient> p = repoIngr.findById(additionId);
+        if(p.isPresent()){
+            List<Menu> l = new  ArrayList<Menu>();
+            l = repoMenu.findByIngredient(p.get().getId());
+            if(!l.isEmpty()){
+                for(Menu m : l){
+                    System.out.println("Menu from Pizzeria "+m.getPizzeriaId());
+                }
+            }else{
+                System.out.println("No menu has this addition");
+            }
+        }
+    }
+
+    public Menu debugSearchMenuRowForPizza(long pizzaId, long pizzeriaId) {
+        Optional<Pizza> p = repoPizza.findById(pizzaId);
+        if(p.isPresent()){
+            Set<MenuRowPizza> l = new HashSet<>();
+            Menu newMenu = new Menu();
+            l = (HashSet)repoMenu.findRowByPizza(p.get().getId(), pizzeriaId);
+            newMenu.setPizzaRows((Set)l);
+            return newMenu;
+        }
+        return null;
     }
 }
