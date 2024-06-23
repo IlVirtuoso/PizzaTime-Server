@@ -3,7 +3,7 @@ package com.PizzaTime.OrderService.Services
 import com.PizzaTime.OrderService.Model.Order
 
 interface ICommunicationService {
-    fun notifyOrderCreate(userId: String, order: Order);
-    fun notifyOrderAccepted(order: Order);
-    fun notifyOrderServing(order: Order);
+    fun notifyOrderCreate(order: Order);
+    fun notifyOrderStatusChanged(order: Order);
+    fun notifyOrderCancellation(order: Order);
 }

@@ -11,8 +11,9 @@ interface IOrderService
     fun save(order : Order) : Order;
     fun delete(order: Order);
     fun deleteOrderId(id : String);
-    fun getOrdersForPizzeria(pizzeriaId : String, orderStatus: OrderStatus) : Collection<Order>;
-    fun saveRow(orderRow: OrderRow) : OrderRow;
+    fun getOrdersForPizzeria(pizzeriaId : String) : Set<Order>;
+    fun getPizzeriaHistory(pizzeriaId : String) : Set<Order>;
+    fun saveRow(order: Order,orderRow: OrderRow) : OrderRow;
     fun findRowById(orderId : String, id : Long) : Optional<OrderRow>;
-    fun deleteOrderRow(orderId: String, lineId : Long);
+    fun deleteOrderRow(order: Order, orderRow: OrderRow);
 }

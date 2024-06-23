@@ -9,22 +9,22 @@ import org.springframework.stereotype.Service
 @Service
 class MockResponder(val environment: Environment): ICommunicationService{
 
-    var onOrderCreate : ((userid: String, order: Order)-> Unit)? = null;
-    var onOrderAccepted : ((order: Order)-> Unit)? = null;
-    var onOrderServing : ((order: Order)-> Unit)? = null;
+    var onOrderCreate : ((order: Order)-> Unit)? = null;
+    var onOrderStatusChanged : ((order: Order)-> Unit)? = null;
 
 
-    override fun notifyOrderCreate(sessionToken: String, order: Order) {
-        onOrderCreate?.invoke(sessionToken, order)
+    override fun notifyOrderCreate(order: Order) {
+        onOrderCreate?.invoke(order)
     }
 
-    override fun notifyOrderAccepted(order: Order) {
-        onOrderAccepted?.invoke(order);
+    override fun notifyOrderStatusChanged(order: Order) {
+        onOrderStatusChanged?.invoke(order);
     }
 
-    override fun notifyOrderServing(order: Order) {
-        onOrderServing?.invoke(order);
+    override fun notifyOrderCancellation(order: Order) {
+        TODO("Not yet implemented")
     }
+
 }
 
 @Service

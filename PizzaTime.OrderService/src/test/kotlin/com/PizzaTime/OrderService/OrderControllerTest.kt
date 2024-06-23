@@ -5,6 +5,7 @@ import com.PizzaTime.OrderService.Messages.ResponseMessage
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.OrderStatus
 import com.PizzaTime.OrderService.Services.*
+import com.google.gson.Gson
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -18,6 +19,9 @@ import org.springframework.mock.web.MockHttpServletResponse
     ]
 )
 class OrderControllerTest {
+
+    @Autowired
+    private lateinit var mockResponder: MockResponder
 
     @Qualifier("mockUserService")
     @Autowired
@@ -67,9 +71,35 @@ class OrderControllerTest {
         var order = orderController.create_order(sessionToken, response).let { t-> (t as ResponseMessage<Order>).payload };
         orderController.add_row(sessionToken,order.id,response,OrderController.OrderRowRequest(11,10, listOf(3,2,1),1));
         order = orderController.getById(sessionToken,order.id,response).let { t-> t as ResponseMessage<Order> }.payload;
+        println("Serialized order: ${order.toJson()}");
         assert(order.orderStatus == OrderStatus.READY.status);
         assert(order.userId == 10.toLong())
         assert(order.orderRows.size == 1);
+    }
+
+    @Test
+    fun order_delete_row(){
+        val response = MockHttpServletResponse();
+        val sessionToken= "ciao";
+        userAuthorizationService.onValidateUserToken = {userid: String ->
+            UserToken<UserAccount>(200,UserAccount(
+                10,
+                "via san mazzari"
+            ));
+        }
+
+        mockResponder.onOrderCreate ={ order: Order ->
+
+        }
+
+        var order = orderController.create_order(sessionToken, response).let { t-> (t as ResponseMessage<Order>).payload };
+        orderController.add_row(sessionToken,order.id,response,OrderController.OrderRowRequest(11,10, listOf(3,2,1),1));
+        orderController.remove_row(sessionToken,order.id,response,1);
+        order = orderController.getById(sessionToken,order.id,response).let { t-> t as ResponseMessage<Order> }.payload;
+        println("Serialized order: ${order.toJson()}");
+        assert(order.orderStatus == OrderStatus.READY.status);
+        assert(order.userId == 10.toLong())
+        assert(order.orderRows.isEmpty());
     }
 
 }

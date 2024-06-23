@@ -8,6 +8,7 @@ import com.PizzaTime.OrderService.Repositories.IOrderRowRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.*
+import kotlin.collections.HashSet
 
 @Service
 class OrderService(private val orderRepository: IOrderRepository, private val rowRepo: IOrderRowRepository) :
@@ -33,13 +34,22 @@ class OrderService(private val orderRepository: IOrderRepository, private val ro
     }
 
     @Transactional
-    override fun getOrdersForPizzeria(pizzeriaId: String, orderStatus: OrderStatus): Collection<Order> {
-        return orderRepository.findAllOrdersForPizzeria(pizzeriaId, orderStatus.status);
+    override fun getOrdersForPizzeria(pizzeriaId: String): Set<Order> {
+        return orderRepository.findAllOrdersForPizzeria(pizzeriaId);
     }
 
     @Transactional
-    override fun saveRow(orderRow: OrderRow): OrderRow {
-        return rowRepo.save(orderRow);
+    override fun getPizzeriaHistory(pizzeriaId: String): Set<Order> {
+        return orderRepository.getPizzeriaHistory(pizzeriaId);
+    }
+
+    @Transactional
+    override fun saveRow(order: Order, orderRow: OrderRow): OrderRow {
+        var row = orderRow;
+        row = rowRepo.save(row)
+        order.orderRows = HashSet(order.orderRows) + row
+        orderRepository.save(order);
+        return row;
     }
 
 
@@ -49,8 +59,10 @@ class OrderService(private val orderRepository: IOrderRepository, private val ro
     }
 
     @Transactional
-    override fun deleteOrderRow(orderId: String, lineId: Long) {
-        rowRepo.deleteOrderRowById(orderId, lineId);
+    override fun deleteOrderRow(order: Order, orderRow: OrderRow) {
+        order.orderRows -= orderRow;
+        save(order);
+        rowRepo.deleteById(orderRow.id!!);
     }
 
 

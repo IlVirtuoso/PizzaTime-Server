@@ -2,21 +2,28 @@ package com.PizzaTime.OrderService.Services
 
 import BaseCommunicationService
 import ExchangeType
+import SagaFlow
+import TransactionalSagaStep.Companion.transaction
+import com.PizzaTime.OrderService.Model.IJsonSerializable
 import com.PizzaTime.OrderService.Model.Order
 import com.rabbitmq.client.*
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
+import sagaFlow
 
 
-
-class SagaListenerService(val channel: Channel): Consumer{
+class SagaListenerService(val channel: Channel, orderService: OrderService): Consumer{
 
     companion object{
-        const val saga_exchange = "PizzaTime/Saga"
-        const val order_key = "OrderServiceRequest"
+        const val saga_exchange = "PizzaTime.Order"
+        const val order_key = "OrderRequests/Json"
     }
+
+
+
+
 
     var queue: String = ""
     init {
@@ -44,6 +51,8 @@ class SagaListenerService(val channel: Channel): Consumer{
     override fun handleRecoverOk(consumerTag: String?) {
         TODO("Not yet implemented")
     }
+
+
 
     override fun handleDelivery(
         consumerTag: String?,
@@ -73,7 +82,10 @@ class SagaNotifyService(environment: Environment) : BaseCommunicationService(
     environment.get("amqp.host")!!
 ), ICommunicationService {
     companion object {
-        const val saga_notification_exchange = "PizzaTime/Saga"
+        const val saga_notification_exchange = "PizzaTime.Order"
+        const val created_order_key = "OrderEvents/Json/OrderCreated"
+        const val order_changed = "OrderEvents/Json/OrderStatusChanged"
+        const val order_canceled = "OrderEvents/Json/OrderCanceled"
     }
 
 
@@ -81,18 +93,41 @@ class SagaNotifyService(environment: Environment) : BaseCommunicationService(
         channel.exchangeDeclare(saga_notification_exchange,ExchangeType.DIRECT.type)
     }
 
-    override fun notifyOrderCreate(sessionToken: String, order: Order) {
-        TODO("Not yet implemented")
+    override fun notifyOrderCreate( order: Order) {
+        channel.basicPublish(
+            saga_notification_exchange,
+            created_order_key,
+            AMQP.BasicProperties.Builder()
+                .type("OrderCreationNotification")
+                .contentType("application/json")
+            .build(),
+            order.toJson().encodeToByteArray()
+        )
     }
 
-    override fun notifyOrderAccepted(order: Order) {
-        TODO("Not yet implemented")
+    override fun notifyOrderStatusChanged(order: Order) {
+        channel.basicPublish(
+            saga_notification_exchange,
+            order_changed,
+            AMQP.BasicProperties().builder()
+                .type("OrderStatusChangedNotification")
+                .contentType("application/json")
+                .build(),
+            order.toJson().encodeToByteArray()
+        )
     }
 
-    override fun notifyOrderServing(order: Order) {
-        TODO("Not yet implemented")
+    override fun notifyOrderCancellation(order: Order) {
+        channel.basicPublish(
+            saga_notification_exchange,
+            order_canceled,
+            AMQP.BasicProperties().builder()
+                .type("OrderCancellationNotification")
+                .contentType("application/json")
+                .build()
+            ,order.toJson().encodeToByteArray()
+        )
     }
-
 
 
 }
