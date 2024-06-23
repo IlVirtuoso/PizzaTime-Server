@@ -21,5 +21,8 @@ public interface HybernateMenuRepositoryImpl extends JpaRepository<Menu, Long> {
     //@Query("SELECT * FROM Pizza p WHERE p.email = :email")
     //List<Menu> findByPizza(@Param("pizzas") Set<Pizza> pizzas, @Param("size") long size);
 
+    @Query("SELECT m1 FROM Menu m1 JOIN m1.pizzaRows m1r2 JOIN m1r2.pizza p WHERE p.id = :pizzaId GROUP BY m1")
+    List<Menu> findByPizza(@Param("pizzaId") Long pizzaId);
+
 }
 

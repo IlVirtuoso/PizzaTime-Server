@@ -2,10 +2,13 @@ package com.pizzatime.pizzaengine.Service;
 
 import com.pizzatime.pizzaengine.Component.GenericResponse;
 import com.pizzatime.pizzaengine.Model.Ingredient;
+import com.pizzatime.pizzaengine.Model.Pastry;
 import com.pizzatime.pizzaengine.Model.Pizza;
 import com.pizzatime.pizzaengine.Model.Seasoning;
 import com.pizzatime.pizzaengine.Repository.HybernateIngredientRepositoryImpl;
+import com.pizzatime.pizzaengine.Repository.HybernatePastryRepositoryImpl;
 import com.pizzatime.pizzaengine.Repository.HybernatePizzaRepositoryImpl;
+import com.pizzatime.pizzaengine.Repository.HybernateSeasoningRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,13 @@ public class PizzaService {
 
     @Autowired
     HybernateIngredientRepositoryImpl repoIngr;
+
+    @Autowired
+    HybernatePastryRepositoryImpl repoPastry;
+
+    @Autowired
+    HybernateSeasoningRepositoryImpl repoSeasoning;
+
 
     /**
      *
@@ -86,4 +96,47 @@ public class PizzaService {
     }
 
 
+    public String getAllPizzas() {
+        GenericResponse resp = new GenericResponse();
+        List<Pizza> l = new ArrayList<Pizza>();
+        l = repoPizza.findAll();
+
+        resp.setStatusCode(GenericResponse.OK_CODE);
+        resp.setStatusReason(GenericResponse.OK_MESSAGE);
+        resp.setPizzas(l);
+        return resp.jsonfy();
+    }
+
+    public String getAllSeasoning() {
+        GenericResponse resp = new GenericResponse();
+        List<Seasoning> l = new ArrayList<Seasoning>();
+        l = repoSeasoning.findAll();
+
+        resp.setStatusCode(GenericResponse.OK_CODE);
+        resp.setStatusReason(GenericResponse.OK_MESSAGE);
+        resp.setSeasonings(l);
+        return resp.jsonfy();
+    }
+
+    public String getAllPastry() {
+        GenericResponse resp = new GenericResponse();
+        List<Pastry> l = new ArrayList<Pastry>();
+        l = repoPastry.findAll();
+
+        resp.setStatusCode(GenericResponse.OK_CODE);
+        resp.setStatusReason(GenericResponse.OK_MESSAGE);
+        resp.setPastries(l);
+        return resp.jsonfy();
+    }
+
+    public String getAllIngredient() {
+        GenericResponse resp = new GenericResponse();
+        List<Ingredient> l = new ArrayList<Ingredient>();
+        l = repoIngr.findAll();
+
+        resp.setStatusCode(GenericResponse.OK_CODE);
+        resp.setStatusReason(GenericResponse.OK_MESSAGE);
+        resp.setIngredients(l);
+        return resp.jsonfy();
+    }
 }

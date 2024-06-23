@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -192,4 +194,21 @@ public class MenuService {
     }
 
 
+    /** DEBUG METHOD */
+
+    public void debugSearchMenuForPizza(long pizzaId) {
+        Optional<Pizza> p = repoPizza.findById(pizzaId);
+        if(p.isPresent()){
+            List<Menu> l = new  ArrayList<Menu>();
+            l = repoMenu.findByPizza(p.get().getId());
+            if(!l.isEmpty()){
+                for(Menu m : l){
+                    System.out.println("Menu from Pizzeria "+m.getPizzeriaId());
+                }
+            }else{
+                System.out.println("No menu has this pizza");
+            }
+        }
+
+    }
 }

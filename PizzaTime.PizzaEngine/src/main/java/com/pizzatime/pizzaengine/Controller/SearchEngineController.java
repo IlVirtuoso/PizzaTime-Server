@@ -26,7 +26,25 @@ public class SearchEngineController {
     MenuService menuService;
 
 
+    @GetMapping("/getAllPizza")
+    public String getAllPizza(){
+        return pizzaService.getAllPizzas();
+    }
 
+    @GetMapping("/getAllPastry")
+    public String getAllPastry(){
+        return pizzaService.getAllPastry();
+    }
+
+    @GetMapping("/getAllSeasoning")
+    public String getAllSeasoning(){
+        return pizzaService.getAllSeasoning();
+    }
+
+    @GetMapping("/getAllIngredient")
+    public String getAllIngredient(){
+        return pizzaService.getAllIngredient();
+    }
 
     /** DEBUG METHODS*/
 
@@ -83,6 +101,13 @@ public class SearchEngineController {
         System.out.println(searchUtilities.searchPizzaDemo());
         return null;
     }
+
+    @GetMapping("/debugSearchMenuForPizza")
+    public String debugSearchMenuForPizza(@RequestParam(name="pizzaId") long pizzaId){
+        menuService.debugSearchMenuForPizza(pizzaId);
+        return null;
+    }
+
 
 
 }

@@ -4,14 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-import com.pizzatime.pizzaengine.Model.Menu;
-import com.pizzatime.pizzaengine.Model.Pizza;
+import com.pizzatime.pizzaengine.Model.*;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Component
 public class GenericResponse {
@@ -87,6 +88,18 @@ public class GenericResponse {
     Pizza pizza;
 
     @Expose
+    Collection<Pizza> pizzas;
+
+    @Expose
+    Collection<Pastry> pastries;
+
+    @Expose
+    Collection<Seasoning> seasonings;
+
+    @Expose
+    Collection<Ingredient> ingredients;
+
+    @Expose
     Menu menu;
 
     @Expose
@@ -146,4 +159,20 @@ public class GenericResponse {
     public void setPizza(Pizza target) { this.pizza = target; }
 
     public void setMenu(Menu menu) { this.menu = menu; }
+
+    public void setPizzas(Collection<Pizza> pizzas) {
+        this.pizzas = pizzas;
+    }
+
+    public void setPastries(Collection<Pastry> pastries) {
+        this.pastries = pastries;
+    }
+
+    public void setSeasonings(Collection<Seasoning> seasonings) {
+        this.seasonings = seasonings;
+    }
+
+    public void setIngredients(Collection<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
 }

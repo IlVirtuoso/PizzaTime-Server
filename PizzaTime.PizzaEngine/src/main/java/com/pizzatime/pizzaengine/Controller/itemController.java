@@ -58,7 +58,6 @@ public class itemController {
         public ArrayList<AddIngredientRequestComponent> additions;
     }
 
-
     /**
      * API di creazione della pizza
      * @param request
@@ -117,7 +116,7 @@ public class itemController {
         resp.setStatusReason(GenericResponse.INVALID_PARAMETER_MESSAGE);
         //CALL THE VALIDATION OF THE JWT TO EXTRACT THE PIZZERIA ID
         if(debug){
-            id = 1;
+            id = 3;
         }
 
         if(pizzas !=null && pizzas.pizzas!=null && !pizzas.pizzas.isEmpty()){
@@ -161,7 +160,7 @@ public class itemController {
         AddIngredientRequest row = gson.fromJson(json, AddIngredientRequest.class);
 
         if(debug){
-            id = 1;
+            id = 3;
         }
 
         if(row!=null && row.additions !=null && !row.additions.isEmpty()){
