@@ -114,16 +114,16 @@ public class AccountControllerImpl {
                     Account target = genService.getInternalAccountInfo(id);
 
                     if(result == resp.OK_CODE) {
-                        // User completed registration and logged in correctly
+                        System.out.println("User completed registration and logged in correctly");
                         String sessionToken = jwtService.getSessionToken(target);
                         //target.addSession(sessionToken);
                         //accountService.saveUser(target);
                         resp.setSessionToken(sessionToken);
                     }
                     if(result == resp.PENDING_REGISTRATION_CODE){
-                        // User must complete registration before proceeding
+                        System.out.println("User must complete registration before proceeding");
                         String regToken = jwtService.getRegToken(target);
-                        resp.setSessionToken(regToken);
+                        resp.setRegToken(regToken);
                     }
                     resp.setStatusCode(result);
                     resp.setAccount(target.makeSafeCopy());
@@ -312,6 +312,12 @@ public class AccountControllerImpl {
         return resp.jsonfy();
     }
 
+    /**
+     * API di cambio password
+     * @param sessionToken
+     * @param pwdData
+     * @return
+     */
     @PostMapping("/changePassword")
     public String changePassword(@RequestHeader(value="Authorization", required = false) String sessionToken,
                                  @RequestBody() PwdRequest  pwdData){
@@ -321,6 +327,44 @@ public class AccountControllerImpl {
         DecodedJWT jwt = jwtService.verifySession(sessionToken);
         if(jwt!=null && !jwt.equals("")) {
             return accountService.changePasswordService(Long.parseLong(jwt.getSubject()), pwdData.oldPassword.trim(), pwdData.newPassword.trim());
+        }
+        resp.setStatusCode(GenericResponse.FAILED_AUTHENTICATION_CODE);
+        resp.setStatusReason(GenericResponse.FAILED_AUTHENTICATION_MESSAGE);
+        return resp.jsonfy();
+    }
+
+    /**
+     * API di ricarica del portafoglio
+     * @param sessionToken
+     * @param value
+     * @return
+     */
+    @GetMapping("/rechargeBalance")
+    public String rechargeBalance(@RequestHeader(value="Authorization", required = false) String sessionToken,
+                                    @RequestParam(value="value") float value){
+        GenericResponse resp = new GenericResponse();
+        DecodedJWT jwt = jwtService.verifySession(sessionToken);
+        if(jwt!=null && !jwt.equals("")) {
+            return accountService.rechargeBalance(Long.parseLong(jwt.getSubject()), value);
+        }
+        resp.setStatusCode(GenericResponse.FAILED_AUTHENTICATION_CODE);
+        resp.setStatusReason(GenericResponse.FAILED_AUTHENTICATION_MESSAGE);
+        return resp.jsonfy();
+    }
+
+    /**
+     * API di aggiornamento del portafoglio per pagamento
+     * @param sessionToken
+     * @param value
+     * @return
+     */
+    @GetMapping("/chargeOnBalance")
+    public String chargeOnBalance(@RequestHeader(value="Authorization", required = false) String sessionToken,
+                                  @RequestParam(value="value") float value){
+        GenericResponse resp = new GenericResponse();
+        DecodedJWT jwt = jwtService.verifySession(sessionToken);
+        if(jwt!=null && !jwt.equals("")) {
+            return accountService.chargeOnBalance(Long.parseLong(jwt.getSubject()), value);
         }
         resp.setStatusCode(GenericResponse.FAILED_AUTHENTICATION_CODE);
         resp.setStatusReason(GenericResponse.FAILED_AUTHENTICATION_MESSAGE);
@@ -340,9 +384,6 @@ public class AccountControllerImpl {
     public boolean isAvaillableLoginId(@RequestParam(name="loginId") String email) {
         return regService.isAvaillableLoginIdService(email);
     }
-
-
-
 
 
 

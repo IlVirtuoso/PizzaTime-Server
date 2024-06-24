@@ -59,7 +59,7 @@ public class PizzeriaService {
         }
     }
 
-
+    //This API is deprecated
     public String openPizzeriaService(long id){
         GenericResponse resp = new GenericResponse();
         Pizzeria target = genService.getInternalPizzeriaInfo(id);
