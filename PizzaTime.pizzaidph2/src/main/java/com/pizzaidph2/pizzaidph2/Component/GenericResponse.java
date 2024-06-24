@@ -48,9 +48,6 @@ public class GenericResponse {
     public static final int UNKNOWN_USER_CODE = 205;
     public static final String UNKNOWN_USER_MESSAGE = "Unknown User";
 
-    public static final int NOT_ENOUGH_MONEY_CODE = 220;
-    public static final String NOT_ENOUGH_MONEY_MESSAGE = "User hasn't enough money to satisfay this charge";
-
     public String mapCodeToResponse(int code){
         if(code==OK_CODE) return OK_MESSAGE;
         if(code==GENERIC_ERROR_CODE) return GENERIC_ERROR_MESSAGE;
@@ -62,7 +59,6 @@ public class GenericResponse {
         if(code==MISSING_INFORMATION_CODE) return MISSING_INFORMATION_MESSAGE;
         if(code==UNKNOWN_USER_CODE) return UNKNOWN_USER_MESSAGE;
         if(code==NEW_SOCIAL_CODE) return NEW_SOCIAL_MESSAGE;
-        if(code==NOT_ENOUGH_MONEY_CODE) return NOT_ENOUGH_MONEY_MESSAGE;
         return GENERIC_ERROR_MESSAGE;
     }
 

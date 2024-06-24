@@ -17,6 +17,7 @@ public class Pizzeria{
     @Expose
     private String name;
 
+    @Expose
     private Boolean availlability = false;
 
     @Expose
