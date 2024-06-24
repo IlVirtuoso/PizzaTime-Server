@@ -140,8 +140,70 @@ public class AccountServiceImpl {
             resp.setStatusReason(GenericResponse.FAILED_AUTHENTICATION_MESSAGE);
             return resp.jsonfy();
         }
-
     }
+
+    /**
+     * Servizio di ricarica del portafloglio
+     * @param userId
+     * @param value
+     * @return
+     */
+    public String rechargeBalance(long userId, float value) {
+        GenericResponse resp = new GenericResponse();
+        Optional<Account> optTarget = repo.findById(userId);
+        if (optTarget.isPresent() && optTarget.get().getRegistered()!=null && optTarget.get().getRegistered() && value > 0){
+            Account target = optTarget.get();
+            if(target.getBalance()==null){
+                target.setBalance((float)0.0);
+            }
+            float newBalance = target.getBalance()+Math.round(value * 100.0f) / 100.0f;
+            target.setBalance(newBalance);
+            target = repo.save(target);
+            resp.setStatusCode(GenericResponse.OK_CODE);
+            resp.setStatusReason(GenericResponse.OK_MESSAGE);
+            resp.setAccount(target);
+            return resp.jsonfy();
+        }else{
+            resp.setStatusCode(GenericResponse.GENERIC_ERROR_CODE);
+            resp.setStatusReason(GenericResponse.GENERIC_ERROR_MESSAGE);
+            return resp.jsonfy();
+        }
+    }
+
+    /**
+     * Servizio di "pagamento" dal portafloglio
+     * @param userId
+     * @param value
+     * @return
+     */
+    public String chargeOnBalance(long userId, float value) {
+        GenericResponse resp = new GenericResponse();
+        Optional<Account> optTarget = repo.findById(userId);
+        if (optTarget.isPresent() && optTarget.get().getRegistered()!=null && optTarget.get().getRegistered() && value > 0){
+            Account target = optTarget.get();
+            if(target.getBalance() >= Math.round(value * 100.0f) / 100.0f ){
+                if(target.getBalance()==null){
+                    target.setBalance((float)0.0);
+                }
+                float newBalance = target.getBalance() - Math.round(value * 100.0f) / 100.0f;
+                target.setBalance(newBalance);
+                target = repo.save(target);
+                resp.setStatusCode(GenericResponse.OK_CODE);
+                resp.setStatusReason(GenericResponse.OK_MESSAGE);
+                resp.setAccount(target);
+                return resp.jsonfy();
+            }else{
+                resp.setStatusCode(GenericResponse.NOT_ENOUGH_MONEY_CODE);
+                resp.setStatusReason(GenericResponse.NOT_ENOUGH_MONEY_MESSAGE);
+                return resp.jsonfy();
+            }
+        }else{
+            resp.setStatusCode(GenericResponse.GENERIC_ERROR_CODE);
+            resp.setStatusReason(GenericResponse.GENERIC_ERROR_MESSAGE);
+            return resp.jsonfy();
+        }
+    }
+
 
     /**
      * Servizio che ritorna un JWT general purpose (ID_TOKEN) per l'utente autenticato
@@ -297,6 +359,7 @@ public class AccountServiceImpl {
         resp.setStatusReason(resp.GENERIC_ERROR_MESSAGE);
         return resp.jsonfy();
     }
+
 
 
 
