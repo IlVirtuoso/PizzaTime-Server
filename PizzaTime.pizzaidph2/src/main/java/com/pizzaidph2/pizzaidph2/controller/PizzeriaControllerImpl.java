@@ -54,11 +54,10 @@ public class PizzeriaControllerImpl {
 
 
 
-    /**
+    /** LO FA PIZZAENGINE
      * API che apre/chiude una pizzeria
      * @param sessionToken
      * @return
-     */
     @GetMapping("/openPizzeria")
     public String openPizzeria(@RequestHeader(value="Authorization", required = false) String sessionToken){
         GenericResponse resp = new GenericResponse();
@@ -70,6 +69,7 @@ public class PizzeriaControllerImpl {
         resp.setStatusReason(GenericResponse.FAILED_AUTHENTICATION_MESSAGE);
         return resp.jsonfy();
     }
+    */
 
     /**
      * API che resituisce tutte le informazioni su una pizzeria
