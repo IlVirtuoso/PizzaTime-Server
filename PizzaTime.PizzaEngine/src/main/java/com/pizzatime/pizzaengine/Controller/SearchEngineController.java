@@ -37,6 +37,7 @@ public class SearchEngineController {
     }
 
     public class Order{
+        public Long pizzeriaId;
         public ArrayList<OrderRows> order;
     }
 
@@ -68,6 +69,13 @@ public class SearchEngineController {
         return menuService.searchPizzeriaForOrder(order);
     }
 
+    @PostMapping("getMenuForOrder")
+    public List<Menu> getMenuForOrder(@RequestBody() String json){
+        Gson gson = new Gson();
+        Order order = gson.fromJson(json, Order.class);
+        return menuService.getMenuForOrder(order);
+    }
+
 
 
 
@@ -83,7 +91,6 @@ public class SearchEngineController {
     public Set<Menu> searchMenuForAddition(@RequestParam(name="additionId") long additionId){
         return menuService.searchMenuForAddition(additionId);
     }
-
 
 
 

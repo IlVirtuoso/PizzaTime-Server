@@ -286,6 +286,130 @@ public class MenuService {
         return null;
     }
 
+    public List<Menu> getMenuForOrder(SearchEngineController.Order order){
+        List<Menu> targetMenus = new ArrayList<>();
+
+        if(order.pizzeriaId!=null && order.pizzeriaId>=0 && order.order!=null && !order.order.isEmpty()){
+            long pizzeriaId = order.pizzeriaId;
+            Optional<Menu> optMenu = repoMenu.findByPizzeriaId(pizzeriaId);
+            if(optMenu.isPresent()){
+                long i = 0;
+                for(SearchEngineController.OrderRows o : order.order){
+                    if(o.pastryId!=null && o.pizzaId!=null) {
+                        long pastryId = o.pastryId;
+                        long pizzaId = o.pizzaId;
+                        Menu m = new Menu();
+                        if(o.additions!=null && !o.additions.isEmpty()){
+                            System.out.println("search also for addditional ingredients");
+                            m = searchMenuRowForOrder(pastryId,pizzaId,o.additions,pizzeriaId);
+                        }else{ m = searchMenuRowForOrder(pastryId,pizzaId,pizzeriaId); }
+
+                        if(m!=null){
+                            m.setId(i);
+                            m.setPizzeriaId(pizzeriaId);
+                            targetMenus.add(m);
+                            i++;
+                        }else{
+                            System.out.println("Beacause of some missing item the service failed");
+                            return null;
+                        }
+                    }
+                }
+            }
+        }
+        return targetMenus;
+    }
+
+
+    /** INTERNAL USE */
+
+    public Menu searchMenuRowForOrder(long pastryId, long pizzaId, long pizzeriaId) {
+        return searchMenuRowForOrder(pastryId,pizzaId,null,pizzeriaId);
+    }
+
+    public Menu searchMenuRowForOrder(long pastryId, long pizzaId, List<Long> additions, long pizzeriaId) {
+
+        Menu newMenu = new Menu();
+        Set<MenuRowIngredient> additionRow = new HashSet<>();
+        Set<MenuRowPizza> pizzaRow = new HashSet<>();
+        Set<MenuRowIngredient> support = new HashSet<>();
+
+        Optional<Ingredient> pastry = repoIngr.findById(pastryId);
+        if(pastry.isPresent()){
+            additionRow = (HashSet)repoMenu.findRowByIngredient(pastry.get().getId(), pizzeriaId);
+            if(additionRow.isEmpty()){
+                System.out.println("PastryId "+pastryId+" doesn't exist for pizzeria "+pizzeriaId);
+                return null;
+            }
+
+        }else {
+            System.out.println("PastryId "+pastryId+" doesn't exist");
+            return null;
+        }
+
+        Optional<Pizza> pizza = repoPizza.findById(pizzaId);
+        if(pizza.isPresent()){
+            pizzaRow = (HashSet)repoMenu.findRowByPizza(pizza.get().getId(), pizzeriaId);
+            if(pizzaRow.isEmpty()){
+                System.out.println("PizzaId "+pizzaId+" doesn't exist for pizzeria "+pizzeriaId);
+                return null;
+            }
+        }else{
+            System.out.println("PizzaId "+pizzaId+" doesn't exist");
+            return null;
+        }
+
+        if(additions!=null && !additions.isEmpty()){
+            for(Long l : additions){
+                Optional<Ingredient> add = repoIngr.findById(l);
+                if(add.isPresent()){
+                    support = (HashSet)repoMenu.findRowByIngredient(add.get().getId(), pizzeriaId);
+                    if(support.isEmpty()){
+                        System.out.println("AdditionId "+l+" doesn't exist for pizzeria "+pizzeriaId);
+                        return null;
+                    }else{
+                        additionRow.addAll(support);
+                        support.clear();
+                    }
+
+                }else {
+                    System.out.println("AdditionId "+l+" doesn't exist");
+                    return null;
+                }
+            }
+        }
+        newMenu.setIngrRows((Set)additionRow);
+        newMenu.setPizzaRows((Set)pizzaRow);
+
+        return newMenu;
+    }
+
+
+
+    public Menu searchMenuRowForPizza(long pizzaId, long pizzeriaId) {
+        Optional<Pizza> p = repoPizza.findById(pizzaId);
+        if(p.isPresent()){
+            Set<MenuRowPizza> l = new HashSet<>();
+            Menu newMenu = new Menu();
+            l = (HashSet)repoMenu.findRowByPizza(p.get().getId(), pizzeriaId);
+            newMenu.setPizzaRows((Set)l);
+            return newMenu;
+        }
+        return null;
+    }
+
+    public Menu searchMenuRowForIngredient(long additionId, long pizzeriaId) {
+        Optional<Ingredient> p = repoIngr.findById(additionId);
+        if(p.isPresent()){
+            Set<MenuRowIngredient> l = new HashSet<>();
+            Menu newMenu = new Menu();
+            l = (HashSet)repoMenu.findRowByIngredient(p.get().getId(), pizzeriaId);
+            newMenu.setIngrRows((Set)l);
+            return newMenu;
+        }
+        return null;
+    }
+
 
     /** DEBUG METHOD */
 

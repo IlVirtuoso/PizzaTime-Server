@@ -45,7 +45,7 @@ public class itemController {
     }
 
     public class AddPizzaRequest{
-        public long pizzeriaId;
+        public Long pizzeriaId;
         public ArrayList<AddPizzaRequestComponent> pizzas;
     }
 
@@ -56,7 +56,7 @@ public class itemController {
     }
 
     public class AddIngredientRequest{
-        public long pizzeriaId;
+        public Long pizzeriaId;
         public ArrayList<AddIngredientRequestComponent> additions;
     }
 
