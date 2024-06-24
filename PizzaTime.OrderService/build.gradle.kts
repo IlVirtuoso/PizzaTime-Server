@@ -31,7 +31,7 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("io.mockk:mockk:1.13.11")
+	testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

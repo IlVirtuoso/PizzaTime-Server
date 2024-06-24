@@ -97,6 +97,7 @@ class OrderController(
         val token = userAuthStep(sessionToken);
         var order = Order();
         order.userId = token.account!!.id;
+        order.address = token.account!!.address;
         order = orderService.save(order);
         communicationService.notifyOrderCreate(order);
         return@checkSequence order;
@@ -127,24 +128,20 @@ class OrderController(
     }
 
 
-    @PostMapping("/api/v1/order/{pizzeriaId}/{orderId}/accept")
-    fun accept_order(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) adminToken: String,
-        @PathVariable pizzeriaId: String,
+    @PostMapping("/api/v1/order/{orderId}/submit")
+    fun submit_order(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) userToken: String,
         @PathVariable orderId: String,
-        @Autowired httpServletResponse: HttpServletResponse,
-    ): GenericOrderResponse = checkSequence(httpServletResponse) {
-        val token = adminAuthStep(adminToken);
-        var order = orderRetrieveStep(orderId);
-        if (order.orderStatus != OrderStatus.READY.status) {
-            throw IllegalArgumentException("Order already accepted");
-        }
-        order.pizzeriaId = pizzeriaId;
-        order.orderStatus = OrderStatus.ACCEPTED.status;
-        order = orderService.save(order);
-        communicationService.notifyOrderStatusChanged(order)
+        httpServletResponse: HttpServletResponse,
+    ) = checkSequence(httpServletResponse) {
+        val token = userAuthStep(orderId);
+        val order = orderRetrieveStep(orderId);
+        order.orderStatus = OrderStatus.QUEUED.status;
+        orderService.save(order);
+        communicationService.notifyOrderStatusChanged(order);
         return@checkSequence order;
     }
+
 
     data class OrderRowRequest(val baseId: Long, val pizzaId: Long, val ingredients: List<Long>, val quantity: Int = 1)
 
@@ -157,6 +154,9 @@ class OrderController(
     ): GenericOrderResponse = checkSequence(response) {
         val token = userAuthStep(token);
         var order = orderRetrieveStep(orderId);
+        if(order.orderStatus != OrderStatus.READY.status) {
+            throw IllegalArgumentException("Cannot edit a non ready order");
+        }
         var row = OrderRow()
         row.order = order;
         row.baseId = orderRow.baseId
@@ -177,6 +177,9 @@ class OrderController(
     ): GenericOrderResponse = checkSequence(httpServletResponse) {
         userAuthStep(token);
         val order = orderRetrieveStep(orderId);
+        if(order.orderStatus != OrderStatus.READY.status) {
+            throw IllegalArgumentException("Cannot edit a non ready order");
+        }
         val row = order.orderRows.find { t -> t.id == lineId }
         if (row == null) {
             throw IllegalArgumentException("Row not found")
@@ -194,20 +197,8 @@ class OrderController(
     ): GenericOrderResponse = checkSequence(httpServletResponse) {
         userAuthStep(token);
         val order = orderRetrieveStep(orderId);
-        when (order.orderStatus) {
-            OrderStatus.CANCELED.status -> {
-                throw IllegalArgumentException("Cannot cancel already canceled order")
-            }
-
-            OrderStatus.COMPLETED.status -> {
-                throw IllegalArgumentException("Cannot cancel already completed order")
-            }
-
-            OrderStatus.SERVING.status -> {
-                throw IllegalArgumentException("Cannot cancel serving order")
-            }
-
-            else -> {}
+        if(order.orderStatus != OrderStatus.QUEUED.status) {
+            throw IllegalArgumentException("Cannot cancel a non queued order")
         }
         order.orderStatus = OrderStatus.CANCELED.status;
         communicationService.notifyOrderCancellation(order);
@@ -230,6 +221,26 @@ class OrderController(
         communicationService.notifyOrderStatusChanged(order);
         return@checkSequence "OK";
     }
+
+    @PostMapping("/api/v1/order/{pizzeriaId}/{orderId}/accept")
+    fun accept_order(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) adminToken: String,
+        @PathVariable pizzeriaId: String,
+        @PathVariable orderId: String,
+        @Autowired httpServletResponse: HttpServletResponse,
+    ): GenericOrderResponse = checkSequence(httpServletResponse) {
+        val token = adminAuthStep(adminToken);
+        var order = orderRetrieveStep(orderId);
+        if (order.orderStatus != OrderStatus.QUEUED.status) {
+            throw IllegalArgumentException("Cannot accept a non queued order");
+        }
+        order.pizzeriaId = pizzeriaId;
+        order.orderStatus = OrderStatus.ACCEPTED.status;
+        order = orderService.save(order);
+        communicationService.notifyOrderStatusChanged(order)
+        return@checkSequence order;
+    }
+
 
 
 }
