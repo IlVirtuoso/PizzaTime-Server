@@ -2,6 +2,7 @@ package com.PizzaTime.OrderService
 
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Services.*
+import io.mockk.impl.annotations.MockK
 import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
 
@@ -27,25 +28,19 @@ class MockResponder(val environment: Environment): ICommunicationService{
 
 }
 
+
 @Service
 class MockUserService: IUserAuthorizationService{
 
     var onValidateUserToken : ((userid: String)-> UserToken<UserAccount>)? = null;
     var onValidateManagerAccount : ((userid: String) -> UserToken<ManagerAccount>)? = null;
-
-
     override fun validateUserIdToken(token: String): UserToken<UserAccount> {
-        if(onValidateUserToken == null){
-            UserToken<UserAccount>(500,null);
-        }
-        return onValidateUserToken?.invoke(token)!!
+       return onValidateUserToken!!.invoke(token);
     }
 
     override fun validateManagerIdToken(token: String): UserToken<ManagerAccount> {
-        if(onValidateUserToken == null){
-            UserToken<ManagerAccount>(500,null);
-        }
-        return onValidateManagerAccount?.invoke(token)!!
+        return onValidateManagerAccount!!.invoke(token);
     }
+
 
 }

@@ -26,6 +26,10 @@ class Order : IJsonSerializable {
     var id : String = "";
     @Expose
     var totalPrice: Double = 0.0;
+
+    @Expose
+    var address: String? = null;
+
     @Expose
     var date : Date = Date.from(Instant.now());
     @Expose
