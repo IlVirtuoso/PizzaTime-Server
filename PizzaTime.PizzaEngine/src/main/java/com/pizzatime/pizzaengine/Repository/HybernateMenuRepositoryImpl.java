@@ -21,10 +21,10 @@ public interface HybernateMenuRepositoryImpl extends JpaRepository<Menu, Long> {
     //List<Menu> findByPizza(@Param("pizzas") Set<Pizza> pizzas, @Param("size") long size);
 
     @Query("SELECT m1 FROM Menu m1 JOIN m1.pizzaRows m1r2 JOIN m1r2.pizza p WHERE p.id = :pizzaId GROUP BY m1")
-    List<Menu> findByPizza(@Param("pizzaId") Long pizzaId);
+    HashSet<Menu> findByPizza(@Param("pizzaId") Long pizzaId);
 
     @Query("SELECT m1 FROM Menu m1 JOIN m1.ingrRows m1r2 JOIN m1r2.ingredient p WHERE p.id = :additionId GROUP BY m1")
-    List<Menu> findByIngredient(@Param("additionId") Long additionId);
+    HashSet<Menu> findByIngredient(@Param("additionId") Long additionId);
 
     @Query("SELECT m1r2 FROM Menu m1 JOIN m1.pizzaRows m1r2 JOIN m1r2.pizza p WHERE p.id = :pizzaId AND m1.pizzeriaId = :pizzeriaId GROUP BY m1r2")
     HashSet<MenuRowPizza> findRowByPizza(@Param("pizzaId") Long pizzaId, @Param("pizzeriaId") Long pizzeriaId );

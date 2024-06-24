@@ -45,6 +45,7 @@ public class itemController {
     }
 
     public class AddPizzaRequest{
+        public long pizzeriaId;
         public ArrayList<AddPizzaRequestComponent> pizzas;
     }
 
@@ -55,6 +56,7 @@ public class itemController {
     }
 
     public class AddIngredientRequest{
+        public long pizzeriaId;
         public ArrayList<AddIngredientRequestComponent> additions;
     }
 
@@ -116,7 +118,7 @@ public class itemController {
         resp.setStatusReason(GenericResponse.INVALID_PARAMETER_MESSAGE);
         //CALL THE VALIDATION OF THE JWT TO EXTRACT THE PIZZERIA ID
         if(debug){
-            id = 3;
+            id = pizzas.pizzeriaId;
         }
 
         if(pizzas !=null && pizzas.pizzas!=null && !pizzas.pizzas.isEmpty()){
@@ -160,7 +162,7 @@ public class itemController {
         AddIngredientRequest row = gson.fromJson(json, AddIngredientRequest.class);
 
         if(debug){
-            id = 3;
+            id = row.pizzeriaId;
         }
 
         if(row!=null && row.additions !=null && !row.additions.isEmpty()){

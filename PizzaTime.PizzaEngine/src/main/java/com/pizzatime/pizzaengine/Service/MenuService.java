@@ -1,6 +1,7 @@
 package com.pizzatime.pizzaengine.Service;
 
 import com.pizzatime.pizzaengine.Component.GenericResponse;
+import com.pizzatime.pizzaengine.Controller.SearchEngineController;
 import com.pizzatime.pizzaengine.Model.*;
 import com.pizzatime.pizzaengine.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -190,10 +191,10 @@ public class MenuService {
         }return null;
     }
 
-    public List<Menu> searchMenuForPizza(long pizzaId) {
+    public Set<Menu> searchMenuForPizza(long pizzaId) {
         Optional<Pizza> p = repoPizza.findById(pizzaId);
         if(p.isPresent()){
-            List<Menu> l = new  ArrayList<Menu>();
+            Set<Menu> l = new HashSet<>();
             l = repoMenu.findByPizza(p.get().getId());
             if(!l.isEmpty()){
                 for(Menu m : l){
@@ -209,10 +210,10 @@ public class MenuService {
         return null;
     }
 
-    public List<Menu> searchMenuForAddition(long additionId) {
+    public Set<Menu> searchMenuForAddition(long additionId) {
         Optional<Ingredient> p = repoIngr.findById(additionId);
         if(p.isPresent()){
-            List<Menu> l = new  ArrayList<Menu>();
+            Set<Menu> l = new  HashSet<Menu>();
             l = repoMenu.findByIngredient(p.get().getId());
             if(!l.isEmpty()){
                 for(Menu m : l){
@@ -228,13 +229,70 @@ public class MenuService {
         return null;
     }
 
+    public List<Long> searchPizzeriaForOrder(SearchEngineController.Order order) {
+
+        ArrayList<Long> targetPizzeriaIds = new ArrayList<Long>();
+        if(order!= null && !order.order.isEmpty()){
+
+            Collection<Menu> targetMenu = new HashSet<>();
+            Collection<Menu> allMenus = repoMenu.findAll();
+
+
+            int i = 1;
+            for(SearchEngineController.OrderRows o : order.order){
+              if(o.pastryId!=null && o.pizzaId!=null) {
+                  long pastryId = o.pastryId;
+                  long pizzaId = o.pizzaId;
+
+                  System.out.println("Searching Pastry for order's row "+i);
+                  Collection<Menu> pastryMenu = searchMenuForAddition(pastryId);
+
+                  if(pastryMenu==null){
+                      return null;
+                  }
+
+                  System.out.println("Searching Pizza for order's row "+i);
+                  Collection<Menu> pizzaMenu = searchMenuForPizza(pizzaId);
+
+                  if(pizzaMenu==null){
+                      return null;
+                  }
+
+                  allMenus.retainAll(pastryMenu);
+                  allMenus.retainAll(pizzaMenu);
+
+                  if(o.additions!=null && !o.additions.isEmpty()){
+                      List<Long> additions = o.additions;
+                      System.out.println("Searching additions for order's row "+i);
+
+                      for(Long ingrId : additions){
+                          Collection<Menu> additionMenu = searchMenuForAddition(ingrId);
+                            if(additionMenu== null){
+                                return null;
+                            }
+                          allMenus.retainAll(additionMenu);
+                      }
+                  }
+              }
+                i++;
+            }
+            if(allMenus!=null && !allMenus.isEmpty()){
+                for(Menu m: allMenus){
+                    targetPizzeriaIds.add(m.getPizzeriaId());
+                }
+                return targetPizzeriaIds;
+            }
+        }
+        return null;
+    }
+
 
     /** DEBUG METHOD */
 
     public void debugSearchMenuForPizza(long pizzaId) {
         Optional<Pizza> p = repoPizza.findById(pizzaId);
         if(p.isPresent()){
-            List<Menu> l = new  ArrayList<Menu>();
+            Set<Menu> l = new HashSet<>();
             l = repoMenu.findByPizza(p.get().getId());
             if(!l.isEmpty()){
                 for(Menu m : l){
@@ -244,13 +302,12 @@ public class MenuService {
                 System.out.println("No menu has this pizza");
             }
         }
-
     }
 
     public void debugSearchMenuForAddition(long additionId) {
         Optional<Ingredient> p = repoIngr.findById(additionId);
         if(p.isPresent()){
-            List<Menu> l = new  ArrayList<Menu>();
+            Set<Menu> l = new HashSet<>();
             l = repoMenu.findByIngredient(p.get().getId());
             if(!l.isEmpty()){
                 for(Menu m : l){

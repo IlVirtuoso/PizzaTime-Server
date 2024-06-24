@@ -1,9 +1,9 @@
 package com.pizzatime.pizzaengine.Controller;
 
 
+import com.google.gson.Gson;
 import com.pizzatime.pizzaengine.Component.GenericResponse;
 import com.pizzatime.pizzaengine.Model.Menu;
-import com.pizzatime.pizzaengine.Model.Seasoning;
 import com.pizzatime.pizzaengine.Service.MenuService;
 import com.pizzatime.pizzaengine.Service.PizzaEngineService;
 import com.pizzatime.pizzaengine.Service.PizzaService;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +27,18 @@ public class SearchEngineController {
 
     @Autowired
     MenuService menuService;
+
+
+    public class OrderRows{
+        public Long pastryId;
+        public Long pizzaId;
+        public ArrayList<Long> additions;
+        public int quantity;
+    }
+
+    public class Order{
+        public ArrayList<OrderRows> order;
+    }
 
 
     @GetMapping("/getAllPizza")
@@ -48,18 +61,30 @@ public class SearchEngineController {
         return pizzaService.getAllIngredient();
     }
 
+    @PostMapping("searchPizzeriaForOrder")
+    public List<Long> searchPizzeriaForOrder(@RequestBody() String json){
+        Gson gson = new Gson();
+        Order order = gson.fromJson(json, Order.class);
+        return menuService.searchPizzeriaForOrder(order);
+    }
+
+
+
+
+
     /** INTERNAL USE */
 
-
     @GetMapping("/searchMenuForPizza")
-    public List<Menu> searchMenuForPizza(@RequestParam(name="pizzaId") long pizzaId){
+    public Set<Menu> searchMenuForPizza(@RequestParam(name="pizzaId") long pizzaId){
         return menuService.searchMenuForPizza(pizzaId);
     }
 
     @GetMapping("/searchMenuForAddition")
-    public List<Menu> searchMenuForAddition(@RequestParam(name="additionId") long additionId){
+    public Set<Menu> searchMenuForAddition(@RequestParam(name="additionId") long additionId){
         return menuService.searchMenuForAddition(additionId);
     }
+
+
 
 
     /** DEBUG METHODS*/
@@ -129,8 +154,6 @@ public class SearchEngineController {
         menuService.debugSearchMenuForAddition(additionId);
         return null;
     }
-
-
 
     @GetMapping("/debugGetMenuRowForPizza")
     public Menu debugGetMenuRowForPizza(@RequestParam(name="pizzaId") long pizzaId, @RequestParam(name="pizzeriaId") long pizzeriaId){
