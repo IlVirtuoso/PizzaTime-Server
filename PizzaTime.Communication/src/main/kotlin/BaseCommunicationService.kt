@@ -5,7 +5,7 @@ import com.rabbitmq.client.Channel
 
 
 
-open class BaseCommunicationService(var amqpUser : String, var amqpPassword: String, var amqpHost : String){
+open class BaseCommunicationService( amqpUser : String, amqpPassword: String,  amqpHost : String){
     companion object{
         fun create_connection(user: String, password: String, host: String):Connection {
             val factory = ConnectionFactory()
@@ -16,7 +16,6 @@ open class BaseCommunicationService(var amqpUser : String, var amqpPassword: Str
             return factory.newConnection("server");
         }
     }
-
 
 
     open val connection: Connection = create_connection(amqpUser, amqpPassword,amqpHost)

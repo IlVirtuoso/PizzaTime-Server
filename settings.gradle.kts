@@ -3,5 +3,4 @@ plugins {
 }
 rootProject.name = "PizzaTimeService"
 
-include("PizzaTime.Communication", "PizzaTime.OrderService","PizzaTime.Gateway")
-include("PizzaTime.SagaOrchestrator")
+include("PizzaTime.Communication", "PizzaTime.OrderService","PizzaTime.Gateway", "PizzaTime.pizzaidph2")
