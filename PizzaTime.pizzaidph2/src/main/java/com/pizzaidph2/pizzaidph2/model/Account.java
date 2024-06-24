@@ -66,11 +66,8 @@ public class Account {
     //@Column(name="socialIdentity")
     private Boolean socialIdentity;
 
+    //NEL DB E' DA 255 CARATTERI... CAPIRE SE BASTA...
     @Expose
-    private Float balance = (float)5.00;
-
-    // NEL DB E' DA 255 CARATTERI... CAPIRE SE BASTA...
-    // Bisognerebbe creare una nuova entità e fare un array... Capire se ho tempo
     private String sessionList;
 
 
@@ -228,10 +225,6 @@ public class Account {
         isVendor = vendor;
     }
 
-    public Float getBalance() { return balance; }
-
-    public void setBalance(Float balance) { this.balance = balance; }
-
     @Override
     public String toString() {
         return "Account{" +
@@ -266,7 +259,6 @@ public class Account {
         a.setPhone(phone);
         a.setMobile(mobile);
         a.setId(id);
-        a.setBalance(balance);
         return a;
     }
 

@@ -6,11 +6,11 @@ import com.pizzaidph2.pizzaidph2.model.Pizzeria;
 import com.pizzaidph2.pizzaidph2.repository.HybernateAccountRepositoryImpl2;
 import com.pizzaidph2.pizzaidph2.repository.HybernatePizzeriaRepositoryImpl2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Service
+@Repository
 public class GeneralService {
 
     @Autowired
