@@ -137,5 +137,10 @@ public class SearchEngineController {
         return menuService.debugSearchMenuRowForPizza(pizzaId,pizzeriaId);
     }
 
+    @GetMapping("/debugGetMenuRowForIngredient")
+    public Menu debugGetMenuRowForIngredient(@RequestParam(name="additionId") long additionId, @RequestParam(name="pizzeriaId") long pizzeriaId){
+        return menuService.debugSearchMenuRowForIngredient(additionId,pizzeriaId);
+    }
+
 
 }

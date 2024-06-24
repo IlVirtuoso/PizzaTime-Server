@@ -262,6 +262,9 @@ public class MenuService {
         }
     }
 
+    /** Questi metodi li userò uno di seguito all'altro per formattare l'info a FE
+     * Posso usare il campo ID del nuovo oggetto Menù per mettere il numero di righe progressivo*/
+
     public Menu debugSearchMenuRowForPizza(long pizzaId, long pizzeriaId) {
         Optional<Pizza> p = repoPizza.findById(pizzaId);
         if(p.isPresent()){
@@ -273,4 +276,18 @@ public class MenuService {
         }
         return null;
     }
+
+    public Menu debugSearchMenuRowForIngredient(long additionId, long pizzeriaId) {
+        Optional<Ingredient> p = repoIngr.findById(additionId);
+        if(p.isPresent()){
+            Set<MenuRowIngredient> l = new HashSet<>();
+            Menu newMenu = new Menu();
+            l = (HashSet)repoMenu.findRowByIngredient(p.get().getId(), pizzeriaId);
+            newMenu.setIngrRows((Set)l);
+            return newMenu;
+        }
+        return null;
+    }
+
+
 }
