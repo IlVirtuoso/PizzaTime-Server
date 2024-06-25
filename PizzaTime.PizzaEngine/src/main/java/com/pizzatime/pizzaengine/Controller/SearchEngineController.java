@@ -3,6 +3,7 @@ package com.pizzatime.pizzaengine.Controller;
 
 import com.google.gson.Gson;
 import com.pizzatime.pizzaengine.Component.GenericResponse;
+import com.pizzatime.pizzaengine.Component.PizzeriaCostForOrder;
 import com.pizzatime.pizzaengine.Model.Menu;
 import com.pizzatime.pizzaengine.Service.MenuService;
 import com.pizzatime.pizzaengine.Service.PizzaEngineService;
@@ -42,42 +43,84 @@ public class SearchEngineController {
     }
 
 
+    /**
+     * API che restituisce tutte le pizze a catalogo
+     * @return un JSON con uno status code a 0 e un campo array di nome "pizzas" con l'elenco di tutti gli oggetti Pizza a DB
+     */
     @GetMapping("/getAllPizza")
     public String getAllPizza(){
         return pizzaService.getAllPizzas();
     }
 
+
+    /**
+     * API che restituisce tutte le basi/impasti a catalogo
+     * @return un JSON con uno status code a 0 e un campo array di nome "pastries" con l'elenco di tutti gli oggetti Pastry a DB
+     */
     @GetMapping("/getAllPastry")
     public String getAllPastry(){
         return pizzaService.getAllPastry();
     }
 
+
+    /**
+     * API che restituisce tutti i condimenti a catalogo
+     * @return un JSON con uno status code a 0 e un campo array di nome "seasonings" con l'elenco di tutti gli oggetti Seasoning a DB
+     */
     @GetMapping("/getAllSeasoning")
     public String getAllSeasoning(){
         return pizzaService.getAllSeasoning();
     }
 
+
+    /**
+     * PREVALENTEMENTE AD USO INTERNO/TEST
+     * API che restituisce tutti gli ingredienti (Pastry+Seasoning) a catalogo
+     * @return un JSON con uno status code a 0 e un campo array di nome "ingredients" con l'elenco di tutti gli oggetti Ingredient a DB
+     */
     @GetMapping("/getAllIngredient")
     public String getAllIngredient(){
         return pizzaService.getAllIngredient();
     }
 
-    @PostMapping("searchPizzeriaForOrder")
-    public List<Long> searchPizzeriaForOrder(@RequestBody() String json){
+
+    /**
+     * API che dato un ordine restituisce le pizzerie che lo possono soddisfare
+     * @param json contenente un oggetto "order",ossia un array di triplette "pastryId":long, "pizzaId":long e "additions":array<long>. Quest'utlimo è opzionale
+     * @return un json con all'interno un array di coppie "pizzeriaId":long e "cost":float
+     *
+     */
+    @PostMapping("searchOnlyPizzeriaForOrder")
+    public List<Long> searchOnlyPizzeriaForOrder(@RequestBody() String json){
         Gson gson = new Gson();
         Order order = gson.fromJson(json, Order.class);
         return menuService.searchPizzeriaForOrder(order);
     }
 
+
+    /**
+     * API che dato un ordine restituisce le pizzerie ed il conto che lo possono soddisfare
+     * @param json contenente un oggetto "order",ossia un array di triplette "pastryId":long, "pizzaId":long e "additions":array<long>. Quest'utlimo è opzionale
+     * @return un json con all'interno un array di coppie "pizzeriaId":long e "cost":float
+     */
+    @PostMapping("searchPizzeriaForOrder")
+    public List<PizzeriaCostForOrder> searchPizzeriaForOrder(@RequestBody() String json){
+        Gson gson = new Gson();
+        Order order = gson.fromJson(json, Order.class);
+        return menuService.searchPizzeriaForOrderWithCost(order);
+    }
+
+    /**
+     * API ad uso del FE che dato un ordine fatto ad una pizzeria ritorna le entry del menù corrispondenti
+     * @param json contenente un oggetto "order",ossia un array di triplette "pastryId":long, "pizzaId":long e "additions":array<long>. Quest'utlimo è opzionale
+     * @return un array contenente i dettagli dell'ordine richiesto
+     */
     @PostMapping("getMenuForOrder")
     public List<Menu> getMenuForOrder(@RequestBody() String json){
         Gson gson = new Gson();
         Order order = gson.fromJson(json, Order.class);
         return menuService.getMenuForOrder(order);
     }
-
-
-
 
 
     /** INTERNAL USE */

@@ -32,8 +32,8 @@ public class itemController {
     @Autowired
     GenericService genService;
 
-    /** Inner class per la Request della changePassword*/
-    public static class createPizzeriaRequest{
+    /** Inner class per la Request della createPizza*/
+    public static class createPizzaRequest{
         public ArrayList<Long> ingredient;
         public String commonName;
     }
@@ -73,17 +73,16 @@ public class itemController {
 
     /**
      * API di creazione della pizza
-     * @param request
-     * @return
+     * @param request un oggetto JSON contenente un array di ingredienti nel campo "ingredients" ed un common name
+     * @return OK se la pizza è stata integrata con successo
      */
     @PostMapping("/createPizza")
-    public String createPizza(@RequestBody() createPizzeriaRequest request) {
+    public String createPizza(@RequestBody() createPizzaRequest request) {
         GenericResponse resp = new GenericResponse();
         if(!request.ingredient.isEmpty() && !request.commonName.isEmpty()){
             return pizzaService.createPizza(request.commonName, request.ingredient);
         }
         else {
-            resp.setCustomObj("Nothing to say to you!");
             resp.setStatusCode(GenericResponse.INVALID_PARAMETER_CODE);
             resp.setStatusReason(GenericResponse.INVALID_PARAMETER_MESSAGE);
             return resp.jsonfy();
@@ -91,15 +90,21 @@ public class itemController {
     }
 
     /**
-     * Delete pizza
+     * API di cancellazione di una pizza
      * @param pizzaId
-     * @return
+     * @return statusCode a 0 se la pizza è stata cancellata
      */
     @GetMapping("/deletePizza")
     public String deletePizza(@RequestParam(name="pizzaId") Long pizzaId){
         return pizzaService.deletePizza(pizzaId);
     }
 
+    /**
+     * API di creazione del menu di una pizzeria
+     * @param sessionToken nell'header di un utente vendor da cui si estrae il pizzeriaId
+     * @param pizzeriaId solo in modalità debug
+     * @return OK se il menù è stato creato per la pizzeria
+     */
     @GetMapping("/createMenu")
     public String createMenu(@RequestHeader(value = "Authorization", required = false) String sessionToken,
                              @RequestParam(value="pizzeriaId") Long pizzeriaId) {
@@ -117,6 +122,12 @@ public class itemController {
         return resp.jsonfy();
     }
 
+    /**
+     * API di aggiunta di una pizza sconosciuta, indicata cioè per ingredienti, ad un menù
+     * @param sessionToken nell'header di un utente vendor da cui si estrae il pizzeriaId
+     * @param json contenente un array pizzas in cui ogni elemento è composto da "cost":Float, "commonName":String e "ingredients":array di long
+     * @return statusCode 0 se la pizza è stata trovata ed aggiunta al menù
+     */
     @PostMapping("/addPizzaByIngredientsToMenu")
     public String addPizzaByIngredientsToMenu(@RequestHeader(value = "Authorization", required = false) String sessionToken,
                                  @RequestBody() String json){
@@ -166,6 +177,12 @@ public class itemController {
         return resp.jsonfy();
     }
 
+    /**
+     * API di aggiunta di una pizza indicata direttamente (per ID) ad un menù
+     * @param sessionToken nell'header di un utente vendor da cui si estrae il pizzeriaId
+     * @param json contenente un array pizzas in cui ogni elemento è composto da "cost":Float, "commonName":String e "pizzaId":long
+     * @return statusCode 0 se la pizza è stata trovata ed aggiunta al menù
+     */
     @PostMapping("/addPizzaToMenu")
     public String addPizzaToMenu(@RequestHeader(value = "Authorization", required = false) String sessionToken,
                                               @RequestBody() String json){
@@ -184,8 +201,6 @@ public class itemController {
         if(pizzas !=null && pizzas.pizzas!=null && !pizzas.pizzas.isEmpty()){
             for(AddPizzaRequestComponent rc: pizzas.pizzas){
 
-                //System.out.println(rc.ingredients);
-                //System.out.println(rc.cost);
                 MenuRowPizza r = new MenuRowPizza();
                 r.setCost((float)rc.cost);
 
@@ -212,6 +227,12 @@ public class itemController {
         return resp.jsonfy();
     }
 
+    /**
+     * API di aggiunta di un ingrediente (base o condimento) indicato per ID  d un menù
+     * @param sessionToken nell'header di un utente vendor da cui si estrae il pizzeriaId
+     * @param json contenente un array pizzas in cui ogni elemento è composto da "cost":Float, "commonName":String e "addition":long
+     * @return statusCode 0 se l'ingrediente è stata trovata ed aggiunta al menù
+     */
     @PostMapping("/addAdditionToMenu")
     public String addAdditionToMenu(@RequestHeader(value = "Authorization", required = false) String sessionToken,
                                  @RequestBody() String json ){
@@ -249,6 +270,12 @@ public class itemController {
         return resp.jsonfy();
     }
 
+    /**
+     * Richiede il menù di una certa pizzeria
+     * @param sessionToken nell'header di un utente vendor da cui si estrae il pizzeriaId
+     * @param pizzeriaId solo in modalità debug
+     * @return
+     */
     @GetMapping("/getMenu")
     public String addPizzaToMenu(@RequestHeader(value = "Authorization", required = false) String sessionToken,
                                  @RequestParam(name="pizzeriaId") long pizzeriaId) {
