@@ -18,7 +18,7 @@ import java.util.*
 import kotlin.collections.HashSet
 
 
-@Controller
+@RestController
 class OrderController(
     var orderService: IOrderService,
     var communicationService: ICommunicationService,
@@ -168,12 +168,12 @@ class OrderController(
     }
 
 
-    @DeleteMapping("/api/v1/order/{orderId}/removeRow")
+    @DeleteMapping("/api/v1/order/{orderId}/{lineId}removeRow")
     fun remove_row(
         @RequestHeader token: String,
         @PathVariable orderId: String,
         httpServletResponse: HttpServletResponse,
-        @RequestBody lineId: Long,
+        @PathVariable lineId: Long,
     ): GenericOrderResponse = checkSequence(httpServletResponse) {
         userAuthStep(token);
         val order = orderRetrieveStep(orderId);
@@ -189,7 +189,7 @@ class OrderController(
     }
 
 
-    @PostMapping("api/v1/order/{orderId}/cancel")
+    @PostMapping("/api/v1/order/{orderId}/cancel")
     fun cancel_order(
         @RequestHeader token: String,
         @PathVariable orderId: String,
