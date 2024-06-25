@@ -38,10 +38,21 @@ public class itemController {
         public String commonName;
     }
 
-    public class AddPizzaRequestComponent{
+    public class AddPizzaByIngrRequestComponent{
         public Float cost;
         public String commonName;
         public ArrayList<Long> ingredients;
+    }
+
+    public class AddPizzaByIngrRequest{
+        public Long pizzeriaId;
+        public ArrayList<AddPizzaByIngrRequestComponent> pizzas;
+    }
+
+    public class AddPizzaRequestComponent{
+        public Float cost;
+        public String commonName;
+        public Long pizzaId;
     }
 
     public class AddPizzaRequest{
@@ -106,9 +117,58 @@ public class itemController {
         return resp.jsonfy();
     }
 
+    @PostMapping("/addPizzaByIngredientsToMenu")
+    public String addPizzaByIngredientsToMenu(@RequestHeader(value = "Authorization", required = false) String sessionToken,
+                                 @RequestBody() String json){
+        long id =-1;
+        Gson gson = new Gson();
+        AddPizzaByIngrRequest pizzas = gson.fromJson(json, AddPizzaByIngrRequest.class);
+
+        GenericResponse resp = new GenericResponse();
+        resp.setStatusCode(GenericResponse.INVALID_PARAMETER_CODE);
+        resp.setStatusReason(GenericResponse.INVALID_PARAMETER_MESSAGE);
+        //CALL THE VALIDATION OF THE JWT TO EXTRACT THE PIZZERIA ID
+        if(debug){
+            id = pizzas.pizzeriaId;
+        }
+
+        if(pizzas !=null && pizzas.pizzas!=null && !pizzas.pizzas.isEmpty()){
+            for(AddPizzaByIngrRequestComponent rc: pizzas.pizzas){
+                //System.out.println(rc.ingredients);
+                //System.out.println(rc.cost);
+                MenuRowPizza r = new MenuRowPizza();
+                r.setCost((float)rc.cost);
+                Pizza p = new Pizza();
+                ArrayList<Long> a = rc.ingredients;
+                Set<Seasoning> newSet = new HashSet<Seasoning>();
+                for(Long ida : a){
+                    Ingredient i = genService.getIngredientInfoInternal(ida);
+                    if(i!=null){newSet.add((Seasoning) i);}
+                    else{System.out.println("this ingredient doesn't exist");
+                        return resp.jsonfy();}
+                }
+                p.setSeasonings(newSet);
+                r.setPizza(p);
+
+                if(rc.commonName!=null){
+                    System.out.println(rc.commonName);
+                    r.setCommonName(rc.commonName);
+                }else{
+                    r.setCommonName(p.getCommonName());
+                }
+
+                resp = menuService.addPizzaRow(id,r);
+                if(resp.getStatusCode()!=0){
+                    break;
+                }
+            }
+        }
+        return resp.jsonfy();
+    }
+
     @PostMapping("/addPizzaToMenu")
     public String addPizzaToMenu(@RequestHeader(value = "Authorization", required = false) String sessionToken,
-                                 @RequestBody() String json){
+                                              @RequestBody() String json){
         long id =-1;
         Gson gson = new Gson();
         AddPizzaRequest pizzas = gson.fromJson(json, AddPizzaRequest.class);
@@ -123,23 +183,26 @@ public class itemController {
 
         if(pizzas !=null && pizzas.pizzas!=null && !pizzas.pizzas.isEmpty()){
             for(AddPizzaRequestComponent rc: pizzas.pizzas){
-                System.out.println(rc.commonName);
+
                 //System.out.println(rc.ingredients);
                 //System.out.println(rc.cost);
                 MenuRowPizza r = new MenuRowPizza();
-                r.setCost(rc.cost);
-                r.setCommonName(rc.commonName);
+                r.setCost((float)rc.cost);
+
                 Pizza p = new Pizza();
-                ArrayList<Long> a = rc.ingredients;
-                Set<Seasoning> newSet = new HashSet<Seasoning>();
-                for(Long ida : a){
-                    Ingredient i = genService.getIngredientInfoInternal(ida);
-                    if(i!=null){newSet.add((Seasoning) i);}
-                    else{System.out.println("this ingredient doesn't exist");
-                        return resp.jsonfy();}
+                Long pizzaId = rc.pizzaId;
+                p = genService.getPizzaInfoInternal(pizzaId);
+                if(p==null){
+                    System.out.println("this pizza doesn't exist");
+                    return resp.jsonfy();
                 }
-                p.setSeasonings(newSet);
                 r.setPizza(p);
+                if(rc.commonName!=null){
+                    System.out.println(rc.commonName);
+                    r.setCommonName(rc.commonName);
+                }else{
+                    r.setCommonName(p.getCommonName());
+                }
                 resp = menuService.addPizzaRow(id,r);
                 if(resp.getStatusCode()!=0){
                     break;
@@ -168,7 +231,7 @@ public class itemController {
         if(row!=null && row.additions !=null && !row.additions.isEmpty()){
             for(AddIngredientRequestComponent ing: row.additions){
                 MenuRowIngredient r = new MenuRowIngredient();
-                r.setCost(ing.cost);
+                r.setCost((float)ing.cost);
                 r.setCommonName(ing.commonName);
                 Ingredient i = genService.getIngredientInfoInternal(ing.addition);
                 if(i!=null) {
