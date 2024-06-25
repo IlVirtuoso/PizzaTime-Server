@@ -2,7 +2,7 @@ package com.PizzaTime.OrderService
 
 import BaseCommunicationService
 import com.PizzaTime.OrderService.Messages.ErrorResponse
-import com.PizzaTime.OrderService.Messages.ResponseMessage
+import com.PizzaTime.OrderService.Messages.ResultResponse
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.OrderStatus
 import com.PizzaTime.OrderService.Services.*
@@ -57,7 +57,7 @@ class OrderControllerTest {
 
             UserToken<UserAccount>(200, UserAccount(10, "via mazzini"))
         }
-        return orderController.create_order("ciao", response).let { t -> (t as ResponseMessage<Order>).payload };
+        return orderController.create_order("ciao", response).let { t -> (t as ResultResponse<Order>).load };
     }
 
 
@@ -92,7 +92,7 @@ class OrderControllerTest {
             OrderController.OrderRowRequest(11, 10, listOf(3, 2, 1), 1)
         );
         order =
-            orderController.getById(sessionToken, order.id, response).let { t -> t as ResponseMessage<Order> }.payload;
+            orderController.getById(sessionToken, order.id, response).let { t -> t as ResultResponse<Order> }.load;
         println("Serialized order: ${order.toJson()}");
         assert(order.orderStatus == OrderStatus.READY.status);
         assert(order.userId == 10.toLong())
@@ -117,7 +117,7 @@ class OrderControllerTest {
         }
 
         var order =
-            orderController.create_order(sessionToken, response).let { t -> (t as ResponseMessage<Order>).payload };
+            orderController.create_order(sessionToken, response).let { t -> (t as ResultResponse<Order>).load };
         orderController.add_row(
             sessionToken,
             order.id,
@@ -126,7 +126,7 @@ class OrderControllerTest {
         );
         orderController.remove_row(sessionToken, order.id, response, 1);
         order =
-            orderController.getById(sessionToken, order.id, response).let { t -> t as ResponseMessage<Order> }.payload;
+            orderController.getById(sessionToken, order.id, response).let { t -> t as ResultResponse<Order> }.load;
         println("Serialized order: ${order.toJson()}");
         assert(order.orderStatus == OrderStatus.READY.status);
         assert(order.userId == 10.toLong())
@@ -146,7 +146,7 @@ class OrderControllerTest {
             OrderController.OrderRowRequest(11, 10, listOf(3, 2, 1), 1)
         );
         order = orderController.submit_order(sessionToken, order.id, response)
-            .let { t -> t as ResponseMessage<Order> }.payload;
+            .let { t -> t as ResultResponse<Order> }.load;
         assert(order.orderStatus == OrderStatus.QUEUED.status);
     }
 
@@ -168,7 +168,7 @@ class OrderControllerTest {
 
         var order = create_order();
         order = orderController.accept_order(sessionToken, pizzeriaid, order.id, response)
-            .let { t -> t as ResponseMessage<Order> }.payload;
+            .let { t -> t as ResultResponse<Order> }.load;
         assert(order.pizzeriaId == pizzeriaid);
     }
 

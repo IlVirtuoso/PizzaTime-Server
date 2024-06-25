@@ -1,8 +1,6 @@
 package com.PizzaTime.OrderService
 
-import com.PizzaTime.OrderService.Messages.ErrorResponse
-import com.PizzaTime.OrderService.Messages.GenericOrderResponse
-import com.PizzaTime.OrderService.Messages.ResponseMessage
+import com.PizzaTime.OrderService.Messages.*
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.OrderRow
 import com.PizzaTime.OrderService.Model.OrderStatus
@@ -33,7 +31,7 @@ class OrderController(
     private fun <T> checkSequence(httpServletResponse: HttpServletResponse, fn: () -> T): GenericOrderResponse {
         try {
             val result = fn();
-            return ResponseMessage(result)
+            return ResultResponse(result);
         } catch (_: OrderNotExist) {
             httpServletResponse.status = HttpStatus.NOT_FOUND.value()
             return ErrorResponse("Order doesn't exist")
@@ -77,6 +75,9 @@ class OrderController(
         return token;
     }
 
+    /***
+     * @return an order by id
+     */
     @GetMapping("/api/v1/order/{id}")
     fun getById(
         @RequestHeader(HttpHeaders.AUTHORIZATION) sessionToken: String,

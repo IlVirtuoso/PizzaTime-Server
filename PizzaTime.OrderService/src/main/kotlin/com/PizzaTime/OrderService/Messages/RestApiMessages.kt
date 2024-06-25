@@ -1,11 +1,23 @@
 package com.PizzaTime.OrderService.Messages
 
+import com.PizzaTime.OrderService.Model.IJsonSerializable
+
 enum class Type(type: String) {
     RESPONSE("response"),
     ERROR("error"),
 }
 
 
-open class GenericOrderResponse(var type: Type);
-open class ErrorResponse(val reason: String) : GenericOrderResponse(Type.ERROR);
-open class ResponseMessage<T>(val payload:T) : GenericOrderResponse(Type.RESPONSE)
+open class GenericOrderResponse(var type: Type, var reason: String, var payload: String);
+
+open class ResultResponse<T>(var load: T):
+        GenericOrderResponse(
+            Type.RESPONSE,
+            "",
+            (load as IJsonSerializable).toJson()
+        );
+
+
+open class ErrorResponse(
+    var message: String
+): GenericOrderResponse(Type.ERROR,message,"");
