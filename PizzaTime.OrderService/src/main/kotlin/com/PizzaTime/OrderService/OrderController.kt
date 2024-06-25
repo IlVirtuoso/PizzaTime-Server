@@ -169,7 +169,7 @@ class OrderController(
     }
 
 
-    @DeleteMapping("/api/v1/order/{orderId}/{lineId}removeRow")
+    @DeleteMapping("/api/v1/order/{orderId}/{lineId}/removeRow")
     fun remove_row(
         @RequestHeader token: String,
         @PathVariable orderId: String,
