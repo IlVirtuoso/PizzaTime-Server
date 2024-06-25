@@ -1,1 +1,19 @@
-<p>pizzeria-admin-page works!</p>
+<p-card styleClass="ComponentCard">
+  <p-tabMenu
+    [model]="menu_items"
+    (activeItemChange)="onTabChange($event)"
+    [activeItem]="active_item"
+  />
+
+  <p *ngIf="user == null" class="errorText centered">
+    Error user not authenticated
+  </p>
+
+  <div *ngIf="active_item == menu_items[0]"></div>
+
+  <div *ngIf="active_item == menu_items[1]"></div>
+
+  <div *ngIf="active_item == menu_items[2]"></div>
+
+  <div *ngIf="active_item == menu_items[3]"></div>
+</p-card>

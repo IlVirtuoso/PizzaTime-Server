@@ -29,14 +29,14 @@ export class LoginFormComponent {
   protected errorMessage = "";
 
   protected password= "";
-  protected username = "";
+  protected email = "";
 
   public constructor( private service : IDataBridge, private router: Router){
 
   }
 
   public async login(){
-    let result = await this.service.login(this.username, this.password);
+    let result = await this.service.login(this.email, this.password);
     if(result){
       console.log("Login success");
       this.router.navigateByUrl("/home");

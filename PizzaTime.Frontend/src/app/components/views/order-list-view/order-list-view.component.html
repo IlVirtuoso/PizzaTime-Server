@@ -1,4 +1,4 @@
-<ng-template #orderView let-order>
+<ng-template #orderView let-order >
   <div class="flex  gap-3  mt-1">
     <p>Id: {{ order.orderId }}</p>
     <p>Status: {{ order.orderStatus }}</p>
@@ -13,7 +13,7 @@
       <div *ngFor="let order of orderList" class="data-row">
         <!--List only mode-->
         <div *ngIf="listMode == 'List'">
-          <ng-container *ngTemplateOutlet="orderView; context: { $implicit: order }" />
+          <ng-container *ngTemplateOutlet="orderView; context: { $implicit: order }"/>
         </div>
         <!--List with accept reject buttons-->
         <div *ngIf="listMode == 'AcceptReject'">

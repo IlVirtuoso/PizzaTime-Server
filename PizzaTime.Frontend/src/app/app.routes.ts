@@ -12,5 +12,5 @@ export const routes: Routes = [
   {path: 'home', component:UserHomeComponent},
   {path:'composer', component:PizzaComposerComponent},
   {path:'party', component:PizzaPartyComponent},
-  {path:'pizzeriaAdmin', component:PizzeriaAdminPageComponent}
+  {path:'pizzeriamanager', component:PizzeriaAdminPageComponent}
 ];

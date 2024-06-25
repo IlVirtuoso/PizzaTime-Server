@@ -2,19 +2,36 @@ import { Time } from "@angular/common";
 import { Timestamp } from "rxjs";
 
 export enum OrderStatus{
-    QUEUED = 0,
-    SERVING = 1,
-    SERVED = 2,
-    CANCELED = 3
+    READY = "ready",
+    QUEUED = "queued",
+    REFUSED = "refused",
+    ACCEPTED = "accepted",
+    SERVING = "serving",
+    COMPLETED = "completed" ,
+    CANCELED = "canceled"
 }
 
 export class Order{
 
     public constructor(
-        public orderId : String,
+        public id : String,
         public totalPrice: number,
-        public date:EpochTimeStamp,
-        public orderStatus: OrderStatus
+        public date:Date,
+        public userId : number,
+        public pizzeriaId: String,
+        public orderStatus: OrderStatus,
+        public orderRows: Array<OrderRow>
     ){}
 }
+
+
+export class OrderRow{
+  public constructor(
+    public pizzaId : number,
+    public baseId : number,
+    public  toppingsIds : Array<number>,
+    public quantity : number,
+  ){}
+}
+
 

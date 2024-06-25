@@ -29,7 +29,7 @@ import { PasswordModule } from 'primeng/password';
 })
 export class SigninFormComponent {
 
-  protected  username = "";
+  protected  email = "";
 
   protected  password = "";
 
@@ -41,7 +41,7 @@ export class SigninFormComponent {
   public constructor(private router: Router, private bridge: IDataBridge) {}
 
   public async signin() {
-    console.debug('trying to login with username ' + this.username);
+    console.debug('trying to login with username ' + this.email);
     if (this.password == '' || this.password_confirmation == '') {
       this.errorMessage = 'Passwords cannot be blank';
       return;
@@ -50,12 +50,12 @@ export class SigninFormComponent {
       this.errorMessage = "Password doesn't match";
       return;
     }
-    let t = await this.bridge.getUser(this.username);
+    let t = await this.bridge.getUser(this.email);
     if (t != null) {
       this.errorMessage = 'User already exists';
       return;
     }
-    let result = await this.bridge.signin(this.username, this.password);
+    let result = await this.bridge.signin(this.email, this.password);
     if (!result) {
       this.errorMessage = 'Something went wrong';
       return;

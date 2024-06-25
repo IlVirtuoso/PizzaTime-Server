@@ -68,17 +68,17 @@ export class UserHomeComponent implements OnInit {
   protected mode : ListMode = ListMode.AcceptReject;
 
   protected userPizzas : Pizza[]= [
-    
+
   ];
 
 
   protected friends : User[]= [
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
+    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
+    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
+    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
+    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
+    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
+    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
   ];
 
   public onTabChange(event: any) {

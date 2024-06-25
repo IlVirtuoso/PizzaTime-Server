@@ -2,7 +2,7 @@
     <ng-template pTemplate="list" let-items let-index="index">
         <div *ngFor="let user of users" class="data-row selectable">
             <div class="flex" (click)="userSelected(user)">
-                <p>Username: {{user.username}}</p>
+                <p>Email: {{user.email}}</p>
                 <p>Name: {{user.name}}</p>
                 <p>SurName: {{user.surname}}</p>
             </div>

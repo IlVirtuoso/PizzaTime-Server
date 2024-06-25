@@ -17,6 +17,9 @@ import { Ingredient, Pizza } from '@data';
   styleUrl: './pizza-composer.component.css'
 })
 export class PizzaComposerComponent implements OnInit{
+
+  //get all pastry, get all seasoning , get all pizzas
+
   protected sourceIngredients : Ingredient[] = [];
   protected selectedIngredients : Ingredient[] = [];
 

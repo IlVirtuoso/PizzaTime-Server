@@ -5,8 +5,17 @@ import {
   colors,
   uniqueNamesGenerator,
 } from 'unique-names-generator';
-import { Ingredient, Order, Pizza, Pizzeria, Role, User } from '@data';
-
+import {
+  Ingredient,
+  Order,
+  OrderStatus,
+  Pizza,
+  Pizzeria,
+  Role,
+  User,
+} from '@data';
+import { EmailValidator } from '@angular/forms';
+import { Observable, ObservableLike, interval, switchAll, switchMap } from 'rxjs';
 
 class UserAuth {
   public constructor(public user: User, public password: string) {}
@@ -16,37 +25,31 @@ class UserAuth {
   providedIn: 'root',
 })
 export class MockBridgeService extends IDataBridge {
-  public override getRolesForUser(): Promise<Role[] | null> {
+
+  public override getPizzeriaOrders(piva: string): Observable<Order[]> {
     throw new Error('Method not implemented.');
   }
-  public override validatePizza(pizza: Pizza): Promise<boolean> {
+  public override getOrdersForPizzeria(piva: String): Observable<Order[]> {
     throw new Error('Method not implemented.');
   }
-  public override getOrdersForUser(username: String): Promise<Order[] | null> {
-    throw new Error('Method not implemented.');
-  }
-  public override getOrdersForPizzeria(piva: String): Promise<Order[] | null> {
-    throw new Error('Method not implemented.');
-  }
-  public override getPizzeriaWorkers(piva: string): Promise<User[] | null> {
-    throw new Error('Method not implemented.');
-  }
-  public override getPizzeriaOrders(piva: string): Promise<Order[] | null> {
-    throw new Error('Method not implemented.');
-  }
-  public override getAvailableIngredients(): Promise<Ingredient[] | null> {
+  public override getManagedPizzeria(): Promise<Pizzeria | null> {
     throw new Error('Method not implemented.');
   }
 
-  public override addPizzeriaWorker(piva: String, username: String): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  public override getOrdersForUser(username: String): Observable<Order[]> {
+    throw new Error('not implemented');
   }
-  public override registerPizzeria(pizzeria: Pizzeria): Promise<boolean> {
-    throw new Error('Method not implemented.');
+
+
+
+  public override getAvailableIngredients(): Promise<Ingredient[] | null> {
+    return new Promise((t) => {
+      t([new Ingredient('1', 'pomodoro', 'salsa di pomodoro', true)]);
+    });
   }
 
   public override getUserBalance(username: string): Promise<number> {
-    return this.async(()=> Math.random()*1000);
+    return this.async(() => Math.random() * 1000);
   }
 
   private async<T>(f: () => T, timeout: number = 300): Promise<T> {
@@ -62,27 +65,25 @@ export class MockBridgeService extends IDataBridge {
   }
 
   private authenticated: User | null = {
-    username:'drfaust',
-    address:'',
-    email:'',
-    name:'',
-    phone:'',
-    surname:'',
-  }
+    address: '',
+    email: '',
+    name: '',
+    phone: '',
+    surname: '',
+    isVendor: true,
+  };
 
   public override getAuthenticatedUser(): User | null {
     return this.authenticated;
   }
 
   private users: UserAuth[] = [];
-  public override signin(username: string, password: string): Promise<boolean> {
+  public override signin(email: string, password: string): Promise<boolean> {
     return this.async(() => {
-      if (
-        this.users.map((user) => user.user.username).lastIndexOf(username) != -1
-      ) {
+      if (this.users.map((user) => user.user.email).lastIndexOf(email) != -1) {
         return false;
       }
-      this.users.push(new UserAuth(new User(username), password));
+      this.users.push(new UserAuth(new User(email), password));
       return true;
     });
   }
@@ -111,18 +112,16 @@ export class MockBridgeService extends IDataBridge {
   }
 
   public override async login(
-    username: string,
+    email: string,
     password: string
   ): Promise<boolean> {
     return this.async(() => {
-      if (
-        this.users.map((user) => user.user.username).lastIndexOf(username) == -1
-      ) {
+      if (this.users.map((user) => user.user.email).lastIndexOf(email) == -1) {
         return false;
       } else {
         let index = this.users
-          .map((user) => user.user.username)
-          .lastIndexOf(username);
+          .map((user) => user.user.email)
+          .lastIndexOf(email);
         if (this.users[index].password != password) {
           return false;
         } else {

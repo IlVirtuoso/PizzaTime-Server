@@ -2,11 +2,10 @@
 
 export class Ingredient {
   public constructor(
-    id: string,
-    name: string,
-    description: string,
-    price: number,
-    glutinFree: boolean
+    public id: string,
+    public name: string,
+    public description: string,
+    public glutinFree: boolean
   ) { }
 }
 

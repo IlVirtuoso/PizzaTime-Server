@@ -25,7 +25,15 @@ export class ToolBarComponent {
     { label: 'About us', url:'aboutus' ,command: (item) => this.navigate(item.item, false) },
   ];
 
-  public constructor(protected service: IDataBridge, protected router: Router) { }
+  public constructor(protected service: IDataBridge, protected router: Router) {
+    if(this.service.getAuthenticatedUser() != null){
+      if(this.service.getAuthenticatedUser()?.isVendor){
+        this.items.push(
+          { label: 'Pizzeria Manager', url:'pizzeriamanager' ,command: (item) => this.navigate(item.item, true)}
+        )
+      }
+    }
+   }
 
   public navigate(item: MenuItem | MegaMenuItem | undefined, requiresAuthorization: boolean) {
     console.log(item?.label);
