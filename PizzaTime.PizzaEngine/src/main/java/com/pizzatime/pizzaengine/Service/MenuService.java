@@ -1,6 +1,7 @@
 package com.pizzatime.pizzaengine.Service;
 
 import com.pizzatime.pizzaengine.Component.GenericResponse;
+import com.pizzatime.pizzaengine.Component.PizzeriaCostForOrder;
 import com.pizzatime.pizzaengine.Controller.SearchEngineController;
 import com.pizzatime.pizzaengine.Model.*;
 import com.pizzatime.pizzaengine.Repository.*;
@@ -280,10 +281,88 @@ public class MenuService {
                 for(Menu m: allMenus){
                     targetPizzeriaIds.add(m.getPizzeriaId());
                 }
+
+
                 return targetPizzeriaIds;
             }
         }
         return null;
+    }
+
+    public ArrayList<PizzeriaCostForOrder> searchPizzeriaForOrderWithCost(SearchEngineController.Order order){
+
+        List<Long> targetPizzeriaIds = searchPizzeriaForOrder(order);
+        if(targetPizzeriaIds!=null && !targetPizzeriaIds.isEmpty()){
+            return computeCost(order,targetPizzeriaIds);
+        }else{
+            return null;
+        }
+    }
+
+    public ArrayList<PizzeriaCostForOrder> computeCost(SearchEngineController.Order order, List<Long> pizzeriaIds){
+        ArrayList<PizzeriaCostForOrder> targetPizzeriaAndCostIds = new ArrayList<PizzeriaCostForOrder>();
+
+        for(Long pizzeriaId : pizzeriaIds){
+            float cost = 0;
+            for(SearchEngineController.OrderRows o : order.order) {
+                int i = 1;
+                if (o.pastryId != null && o.pizzaId != null) {
+                    long pastryId = o.pastryId;
+                    long pizzaId = o.pizzaId;
+
+                    System.out.println("Searching Pastry'cost for order's row " + i +" and pizzeria "+pizzeriaId );
+                    HashSet<MenuRowIngredient> pastryRow = repoMenu.findRowByIngredient(pastryId,pizzeriaId);
+
+                    if (pastryRow == null || pastryRow.isEmpty() || pastryRow.size()>1) {
+                        System.out.println("Failed to find a pastry for cost computation");
+                        return null;
+                    }else {
+                        for (MenuRowIngredient mri : pastryRow) {
+                            cost = cost + mri.getCost();
+                        }
+                    }
+
+
+
+                    System.out.println("Searching Pizza's cost for order's row " + i +" and pizzeria "+pizzeriaId );
+                    HashSet<MenuRowPizza> pizzaRow = repoMenu.findRowByPizza(pizzaId,pizzeriaId);
+
+                    if (pizzaRow == null || pizzaRow.isEmpty() || pizzaRow.size()>1) {
+                        System.out.println("Failed to find a pizza for cost computation");
+                        return null;
+                    }else {
+                        for (MenuRowPizza mrp : pizzaRow) {
+                            cost = cost + mrp.getCost();
+                        }
+                    }
+
+
+                    if (o.additions != null && !o.additions.isEmpty()) {
+                        List<Long> additions = o.additions;
+                        System.out.println("Searching additions' cost for order's row " + i+" and pizzeria "+pizzeriaId );
+
+                        for (Long ingrId : additions) {
+                            HashSet<MenuRowIngredient> additionRow = repoMenu.findRowByIngredient(ingrId,pizzeriaId);
+
+                            if (additionRow  == null || additionRow .isEmpty() || additionRow .size()>1) {
+                                System.out.println("Failed to find an ingredient for cost computation");
+                                return null;
+                            }else {
+                                for (MenuRowIngredient mri : additionRow) {
+                                    cost = cost + mri.getCost();
+                                }
+                            }
+
+                        }
+                    }
+                }
+                i++;
+            }
+            PizzeriaCostForOrder data = new PizzeriaCostForOrder(pizzeriaId,cost);
+            targetPizzeriaAndCostIds.add(data);
+        }
+
+        return targetPizzeriaAndCostIds;
     }
 
     public List<Menu> getMenuForOrder(SearchEngineController.Order order){

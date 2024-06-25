@@ -82,4 +82,14 @@ public class GenericService {
         }
     }
 
+    public Pizza getPizzaInfoInternal(Long pizzaId){
+        Optional<Pizza> i = repoPizza.findById(pizzaId);
+        if(i.isPresent()){
+            return i.get();
+        }else{
+            return null;
+        }
+    }
+
+
 }
