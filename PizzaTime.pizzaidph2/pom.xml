@@ -122,7 +122,6 @@
 						<configuration>
 							<sourceDirs>
 								<source>src/main/java</source>
-								<source>src</source>
 							</sourceDirs>
 						</configuration>
 					</execution>

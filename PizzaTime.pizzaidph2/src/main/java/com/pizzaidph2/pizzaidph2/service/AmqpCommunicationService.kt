@@ -4,13 +4,26 @@ import com.google.gson.Gson
 import com.pizzaidph2.pizzaidph2.model.Account
 import com.pizzaidph2.pizzaidph2.service.AmqpUserService
 import com.rabbitmq.client.*
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
+import java.util.*
+
+private inline fun <reified T> T.asJson() : String = Gson().toJson(this)
+private inline fun <reified T> T.fromJson(content: String): T = Gson().fromJson(content, T::class.java)
 
 data class AmqpIdpResponse(var isError: Boolean, val payload: String)
-data class AmqpIdpRequest(val token: String);
+data class AmqpIdpRequest(val token: String)
+data class AccountRecord(val id : Long, val address: String, val vatNumber : String);
+
 @Service
+@ConditionalOnProperty(
+    prefix = "idp.RpcChannel",
+    value = ["enabled"],
+    havingValue = "true",
+    matchIfMissing = true
+)
 class AmqpCommunicationService(environment: Environment, var userService: AmqpUserService) :
     RpcServer(build(environment)) {
 
@@ -36,22 +49,43 @@ class AmqpCommunicationService(environment: Environment, var userService: AmqpUs
         mainloop();
     }
 
+    override fun postprocessReplyProperties(
+        request: Delivery?,
+        builder: AMQP.BasicProperties.Builder?
+    ): AMQP.BasicProperties {
+        return super.postprocessReplyProperties(request, builder)
+    }
+
     override fun handleCall(
         requestProperties: AMQP.BasicProperties?,
         requestBody: ByteArray?,
         replyProperties: AMQP.BasicProperties?
     ): ByteArray {
         val request = Gson().fromJson(requestBody?.decodeToString(), AmqpIdpRequest::class.java);
-        when (requestProperties!!.type) {
+
+        if(requestProperties == null){
+            return AmqpIdpResponse(true,"Parameters must be filled").asJson<AmqpIdpResponse>().encodeToByteArray();
+        }
+
+        when (requestProperties.type) {
             "VerifyUserTokenRequest" -> {
                 val opt = userService.VerifyUserToken(request.token);
-                if (opt.isEmpty) {
-                    return Gson().toJson(AmqpIdpResponse(true, "Invalid Token")).encodeToByteArray();
+                if(opt.isPresent){
+                    val info = AccountRecord(opt.get().id,opt.get().address,"");
+                    return AmqpIdpResponse(false,info.asJson()).asJson().encodeToByteArray();
                 }
-                return Gson().toJson(AmqpIdpResponse(false, opt.get().jsonfy())).encodeToByteArray();
+
+            }
+            "VerifyManagerTokenRequest"->{
+                val opt = userService.VerifyManagerToken(request.token);
+                if(opt.isPresent){
+                    val vat = userService.GetVatForManager(opt.get().id).get();
+                    val info = AccountRecord(opt.get().id,opt.get().address,vat);
+                    return AmqpIdpResponse(false,info.asJson()).asJson().encodeToByteArray();
+                }
             }
         }
-        return "ERROR".encodeToByteArray();
+        return AmqpIdpResponse(true,"Invalid Token").asJson<AmqpIdpResponse>().encodeToByteArray();
     }
 
 

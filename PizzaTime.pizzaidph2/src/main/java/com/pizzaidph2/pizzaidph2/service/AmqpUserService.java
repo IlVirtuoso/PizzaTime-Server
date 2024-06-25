@@ -17,4 +17,11 @@ public interface AmqpUserService {
      * @return an account if the token is valid, an empty optional otherwise
      */
     Optional<Account> VerifyManagerToken(String managerToken);
+
+    /***
+     *
+     * @param managerId
+     * @return the vat number manager by the account, empty if not present
+     */
+    Optional<String> GetVatForManager(Long managerId);
 }

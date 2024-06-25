@@ -14,7 +14,7 @@ open class ResultResponse<T>(var load: T):
         GenericOrderResponse(
             Type.RESPONSE,
             "",
-            (load as IJsonSerializable).toJson()
+            (load as IJsonSerializable).asJson()
         );
 
 
