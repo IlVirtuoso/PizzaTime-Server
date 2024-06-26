@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pizzatime.engine
+  labels:
+    role: pizzatime.engine
+spec:
+  hostname: pizzatimengine
+  containers:
+    - name: pizzatimeengine
+      image: pizzatime.engine:latest
+      imagePullPolicy: IfNotPresent
+      ports:
+        - name: https 
+          containerPort: 8080
+      resources:
+        limits:
+          cpu: "1"
+          memory: 2Gi
+        requests:
+          cpu: "500m"
+          memory: 1Gi
+    - name: database
+      image: docker.io/mysql
+      ports: 
+      - name: mysql 
+        containerPort: 3306
+      resources:
+        limits:
+          cpu: "50m"
+          memory: 2Gi
+        requests:
+          cpu: "50m"
+          memory: 1Gi
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: pizzadatabase
+#      volumeMounts:
+#      - name:  database-volume
+#        mountPath: /var/lib/mysql
+      
+#  volumes:
+#  - name:  database-volume
+#    hostPath:
+#      path: ./data/mysql
+#      type: DirectoryOrCreate
+  restartPolicy: Always

@@ -1,0 +1,11 @@
+FROM docker.io/maven:latest as builder
+LABEL authors="drfaust"
+WORKDIR /build
+COPY . .
+RUN ./mvnw package -Dmaven.test.skip
+
+FROM docker.io/bellsoft/liberica-openjre-debian:latest as RUNNER
+WORKDIR app
+COPY --from=builder /build/target/PizzaIdp.jar  .
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/app/PizzaIdp.jar"]

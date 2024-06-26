@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rabbitmqbroker
+  labels:
+    name: rabbitmqbroker
+spec:
+  containers:
+  - name: rabbitmqbroker
+    image: docker.io/rabbitmq:latest
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+    ports:
+      - containerPort: 1883
+        name: mqtt
+      - containerPort: 4369
+        name: clustering
+      - containerPort: 5672
+        name: amqp
+      - containerPort: 15672
+        name: http-management
+    env:
+      - name: RABBITMQ_DEFAULT_USER
+        value: guest
+      - name: RABBITMQ_DEFAULT_PASS
+        value: guest
+#    volumeMounts:
+#      - mountPath: /etc/rabbitmq/
+#        name: rabbitmqfolder 
+#  volumes:
+#    - name:  rabbitmqfolder
+#      hostPath:
+#       path: /home/drfaust/Services/rabbitmq/rabbitmq
+#       type: Directory
