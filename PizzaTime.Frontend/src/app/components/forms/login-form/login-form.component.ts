@@ -15,13 +15,16 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
+import { SignInWithGoogleComponent } from '../sign-in-with-google/sign-in-with-google.component';
 
 
 @Component({
   selector: 'app-login-form',
   styleUrl: './login-form.component.css',
   standalone: true,
-  imports: [CardModule,FormsModule,PasswordModule,InputTextModule,FloatLabelModule,ButtonModule],
+  imports: [CardModule,FormsModule,PasswordModule,InputTextModule,FloatLabelModule,ButtonModule
+    ,SignInWithGoogleComponent
+  ],
   templateUrl: './login-form.component.html',
 })
 export class LoginFormComponent {

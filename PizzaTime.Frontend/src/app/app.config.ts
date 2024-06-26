@@ -6,6 +6,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { DataBridgeService } from './services/data-bridge/data-bridge.service';
 import { IDataBridge } from './services/idatabridge';
 import { MockBridgeService } from './services/mock-bridge/mock-bridge.service';
+import { CookieService } from 'ngx-cookie-service';
+import { Axios } from 'axios';
+import { HttpClient } from '@angular/common/http';
 
 
 
@@ -15,12 +18,7 @@ export class Configuration{
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), provideAnimationsAsync(),
-    {provide:IDataBridge, useFactory: () => {
-      if(Configuration.demoMode){
-        return new MockBridgeService();
-      }
-      else return new DataBridgeService();
-    }}, provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync()
+    {provide:IDataBridge, useClass: MockBridgeService}, provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync(), provideAnimationsAsync()
   ],
 
 
