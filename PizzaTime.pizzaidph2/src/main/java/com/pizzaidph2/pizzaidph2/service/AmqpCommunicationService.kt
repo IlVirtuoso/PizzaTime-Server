@@ -49,13 +49,7 @@ class AmqpCommunicationService(environment: Environment, var userService: AmqpUs
         mainloop();
     }
 
-    override fun postprocessReplyProperties(
-        request: Delivery?,
-        builder: AMQP.BasicProperties.Builder?
-    ): AMQP.BasicProperties {
-        return super.postprocessReplyProperties(request, builder)
-    }
-
+   
     override fun handleCall(
         requestProperties: AMQP.BasicProperties?,
         requestBody: ByteArray?,
