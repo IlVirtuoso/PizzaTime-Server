@@ -36,6 +36,11 @@
 			<version>1.41.7</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+		<dependency>
 			<groupId>com.google.http-client</groupId>
 			<artifactId>google-http-client-apache-v2</artifactId>
 			<version>1.41.7</version>
