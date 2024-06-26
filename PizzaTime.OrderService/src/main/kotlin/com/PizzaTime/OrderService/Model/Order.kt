@@ -19,7 +19,7 @@ enum class OrderStatus(val status: String) {
 
 @Entity
 @Table(name = "pizza_order")
-class Order : IJsonSerializable {
+class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Expose

@@ -1,6 +1,7 @@
 package com.pizzaidph2.pizzaidph2.service;
 
 import com.pizzaidph2.pizzaidph2.model.Account;
+import com.pizzaidph2.pizzaidph2.model.Pizzeria;
 
 import java.util.Optional;
 
@@ -23,5 +24,5 @@ public interface AmqpUserService {
      * @param managerId
      * @return the vat number manager by the account, empty if not present
      */
-    Optional<String> GetVatForManager(Long managerId);
+    Optional<Pizzeria> GetPizzeriaForManagers(Long managerId);
 }

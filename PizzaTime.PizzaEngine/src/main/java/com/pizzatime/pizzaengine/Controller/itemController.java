@@ -3,22 +3,26 @@ package com.pizzatime.pizzaengine.Controller;
 import com.google.gson.Gson;
 import com.pizzatime.pizzaengine.Component.GenericResponse;
 import com.pizzatime.pizzaengine.Model.*;
-import com.pizzatime.pizzaengine.Service.GenericService;
-import com.pizzatime.pizzaengine.Service.MenuService;
-import com.pizzatime.pizzaengine.Service.PizzaEngineService;
-import com.pizzatime.pizzaengine.Service.PizzaService;
+import com.pizzatime.pizzaengine.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/item/v1")
 public class itemController {
 
+
+
+
     public static final boolean debug = true;
+
+    @Autowired
+    IUserAuthorizationService userAuthorizationService;
 
     @Autowired
     PizzaEngineService searchUtilities;
@@ -110,6 +114,7 @@ public class itemController {
     public String addPizzaToMenu(@RequestHeader(value = "Authorization", required = false) String sessionToken,
                                  @RequestBody() String json){
         long id =-1;
+        Optional<ManagerAccount> cose =  userAuthorizationService.validateManagerIdToken(sessionToken);
         Gson gson = new Gson();
         AddPizzaRequest pizzas = gson.fromJson(json, AddPizzaRequest.class);
 

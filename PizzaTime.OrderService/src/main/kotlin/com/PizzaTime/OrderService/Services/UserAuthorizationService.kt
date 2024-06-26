@@ -1,6 +1,6 @@
 package com.PizzaTime.OrderService.Services
 
-import BaseCommunicationService
+
 import com.PizzaTime.OrderService.Model.fromJson
 import com.google.gson.Gson
 import com.rabbitmq.client.*
