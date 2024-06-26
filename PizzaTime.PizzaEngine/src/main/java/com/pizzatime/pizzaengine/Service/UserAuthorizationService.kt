@@ -1,38 +1,44 @@
-package com.PizzaTime.OrderService.Services
+package com.pizzatime.pizzaengine.Service
 
-import BaseCommunicationService
-import com.PizzaTime.OrderService.Model.fromJson
 import com.google.gson.Gson
-import com.rabbitmq.client.*
+import com.google.gson.GsonBuilder
+import com.rabbitmq.client.AMQP
+import com.rabbitmq.client.ConnectionFactory
+import com.rabbitmq.client.RpcClient
+import com.rabbitmq.client.RpcClientParams
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
 import java.util.*
 
-
 data class IdpMessage(var isError: Boolean, var payload: String)
 data class IdpRequest(var token: String)
-
 data class UserAccount(var id: Long, var address: String)
-
 data class ManagerAccount(var id : Long, var address: String, var vat: String)
 
-
-
-interface IUserAuthorizationService {
-    fun validateUserIdToken(token: String): Optional<UserAccount>; //should be the deserialized version of the token
-    fun validateManagerIdToken(token: String): Optional<ManagerAccount>;
+private fun <T> T.asJson(useAttrs : Boolean = false): String {
+    if (useAttrs) {
+        return GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
+    }
+    return Gson().toJson(this)
 }
 
+private inline fun <reified T> fromJson(jsonString: String): T {
+    return Gson().fromJson(jsonString, T::class.java)
+}
+
+
+
+
+@Service
 @ConditionalOnProperty(
-    prefix = "order.userauthservice",
+    prefix = "PizzaEngine.UserAuthService",
     value = ["enabled"],
     havingValue = "true",
     matchIfMissing = true
 )
-@Service
-class UserAuthorizationService(environment: Environment) :  RpcClient(get_client_config(environment)) ,IUserAuthorizationService {
+class UserAuthorizationService(var environment: Environment) : RpcClient(get_client_config(environment)),IUserAuthorizationService {
 
     companion object{
 
@@ -47,7 +53,7 @@ class UserAuthorizationService(environment: Environment) :  RpcClient(get_client
             }.newConnection().createChannel();
 
             RpcClientParams().let {
-                t->
+                    t->
                 t.channel(channel).exchange("PizzaTime.IDP").routingKey("IDPServiceRequest")
                 return t
             }
@@ -56,9 +62,10 @@ class UserAuthorizationService(environment: Environment) :  RpcClient(get_client
 
 
     override fun validateUserIdToken(token: String): Optional<UserAccount> {
-        val result = primitiveCall(AMQP.BasicProperties().builder().type("VerifyUserTokenRequest").build(),
+        val result = primitiveCall(
+            AMQP.BasicProperties().builder().type("VerifyUserTokenRequest").build(),
             Gson().toJson(IdpRequest(token)).encodeToByteArray()
-            );
+        );
         val message = Gson().fromJson(result.decodeToString(), IdpMessage::class.java);
         if(message.isError){
             return Optional.empty();
@@ -76,6 +83,5 @@ class UserAuthorizationService(environment: Environment) :  RpcClient(get_client
         }
         return Optional.of(fromJson<ManagerAccount>(message.payload))
     }
-
 
 }

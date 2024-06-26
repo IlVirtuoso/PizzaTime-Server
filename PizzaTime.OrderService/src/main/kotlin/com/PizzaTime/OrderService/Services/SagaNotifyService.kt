@@ -2,16 +2,13 @@ package com.PizzaTime.OrderService.Services
 
 import BaseCommunicationService
 import ExchangeType
-import SagaFlow
-import TransactionalSagaStep.Companion.transaction
-import com.PizzaTime.OrderService.Model.IJsonSerializable
 import com.PizzaTime.OrderService.Model.Order
+import com.PizzaTime.OrderService.Model.asJson
 import com.rabbitmq.client.*
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
-import sagaFlow
 
 
 class SagaListenerService(val channel: Channel, orderService: OrderService): Consumer{
@@ -101,7 +98,7 @@ class SagaNotifyService(environment: Environment) : BaseCommunicationService(
                 .type("OrderCreationNotification")
                 .contentType("application/json")
             .build(),
-            order.toJson().encodeToByteArray()
+            order.asJson().encodeToByteArray()
         )
     }
 
@@ -113,7 +110,7 @@ class SagaNotifyService(environment: Environment) : BaseCommunicationService(
                 .type("OrderStatusChangedNotification")
                 .contentType("application/json")
                 .build(),
-            order.toJson().encodeToByteArray()
+            order.asJson().encodeToByteArray()
         )
     }
 
@@ -125,7 +122,7 @@ class SagaNotifyService(environment: Environment) : BaseCommunicationService(
                 .type("OrderCancellationNotification")
                 .contentType("application/json")
                 .build()
-            ,order.toJson().encodeToByteArray()
+            ,order.asJson().encodeToByteArray()
         )
     }
 

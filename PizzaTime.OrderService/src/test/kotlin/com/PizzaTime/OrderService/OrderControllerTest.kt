@@ -1,26 +1,15 @@
 package com.PizzaTime.OrderService
 
-import BaseCommunicationService
 import com.PizzaTime.OrderService.Messages.ErrorResponse
 import com.PizzaTime.OrderService.Messages.ResultResponse
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.OrderStatus
 import com.PizzaTime.OrderService.Services.*
-import com.google.gson.Gson
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.or
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
-import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.web.context.WebApplicationContext
 
 @SpringBootTest(
     properties = [
@@ -55,7 +44,7 @@ class OrderControllerTest {
         val response = MockHttpServletResponse();
         userAuthorizationService.onValidateUserToken = { userToken: String ->
 
-            UserToken<UserAccount>(200, UserAccount(10, "via mazzini"))
+             UserAccount(10, "via mazzini")
         }
         return orderController.create_order("ciao", response).let { t -> (t as ResultResponse<Order>).load };
     }
@@ -93,7 +82,7 @@ class OrderControllerTest {
         );
         order =
             orderController.getById(sessionToken, order.id, response).let { t -> t as ResultResponse<Order> }.load;
-        println("Serialized order: ${order.toJson()}");
+        println("Serialized order: ${order.asJson()}");
         assert(order.orderStatus == OrderStatus.READY.status);
         assert(order.userId == 10.toLong())
         assert(order.orderRows.size == 1);
@@ -127,7 +116,7 @@ class OrderControllerTest {
         orderController.remove_row(sessionToken, order.id, response, 1);
         order =
             orderController.getById(sessionToken, order.id, response).let { t -> t as ResultResponse<Order> }.load;
-        println("Serialized order: ${order.toJson()}");
+        println("Serialized order: ${order.asJson()}");
         assert(order.orderStatus == OrderStatus.READY.status);
         assert(order.userId == 10.toLong())
         assert(order.orderRows.isEmpty());
