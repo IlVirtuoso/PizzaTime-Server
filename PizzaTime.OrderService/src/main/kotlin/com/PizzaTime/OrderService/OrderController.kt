@@ -1,8 +1,6 @@
 package com.PizzaTime.OrderService
 
-import com.PizzaTime.OrderService.Messages.ErrorResponse
-import com.PizzaTime.OrderService.Messages.GenericOrderResponse
-import com.PizzaTime.OrderService.Messages.ResponseMessage
+import com.PizzaTime.OrderService.Messages.*
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.OrderRow
 import com.PizzaTime.OrderService.Model.OrderStatus
@@ -18,7 +16,7 @@ import java.util.*
 import kotlin.collections.HashSet
 
 
-@Controller
+@RestController
 class OrderController(
     var orderService: IOrderService,
     var communicationService: ICommunicationService,
@@ -33,7 +31,7 @@ class OrderController(
     private fun <T> checkSequence(httpServletResponse: HttpServletResponse, fn: () -> T): GenericOrderResponse {
         try {
             val result = fn();
-            return ResponseMessage(result)
+            return ResultResponse(result);
         } catch (_: OrderNotExist) {
             httpServletResponse.status = HttpStatus.NOT_FOUND.value()
             return ErrorResponse("Order doesn't exist")
@@ -77,6 +75,9 @@ class OrderController(
         return token;
     }
 
+    /***
+     * @return an order by id
+     */
     @GetMapping("/api/v1/order/{id}")
     fun getById(
         @RequestHeader(HttpHeaders.AUTHORIZATION) sessionToken: String,
@@ -168,12 +169,12 @@ class OrderController(
     }
 
 
-    @DeleteMapping("/api/v1/order/{orderId}/removeRow")
+    @DeleteMapping("/api/v1/order/{orderId}/{lineId}/removeRow")
     fun remove_row(
         @RequestHeader token: String,
         @PathVariable orderId: String,
         httpServletResponse: HttpServletResponse,
-        @RequestBody lineId: Long,
+        @PathVariable lineId: Long,
     ): GenericOrderResponse = checkSequence(httpServletResponse) {
         userAuthStep(token);
         val order = orderRetrieveStep(orderId);
@@ -189,7 +190,7 @@ class OrderController(
     }
 
 
-    @PostMapping("api/v1/order/{orderId}/cancel")
+    @PostMapping("/api/v1/order/{orderId}/cancel")
     fun cancel_order(
         @RequestHeader token: String,
         @PathVariable orderId: String,
