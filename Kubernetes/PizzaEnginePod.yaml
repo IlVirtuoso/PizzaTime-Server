@@ -13,7 +13,7 @@ spec:
       env:
         - name: amqp.host
           value: brokerservice.default.svc.cluster.local
-        - name: amqp.user
+        - name: amqp.username
           value: guest 
         - name: amqp.password
           value: guest
