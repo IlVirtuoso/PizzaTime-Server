@@ -1,0 +1,881 @@
+{
+	"info": {
+		"_postman_id": "ef50f256-3da5-4830-b3cf-329aa804812a",
+		"name": "testTASS_searchEngine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36197717"
+	},
+	"item": [
+		{
+			"name": "premethods",
+			"item": [
+				{
+					"name": "getHelloWorld",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}{{port}}/search/v1/getHelloWorld?print=true",
+							"host": [
+								"{{domain}}{{port}}"
+							],
+							"path": [
+								"search",
+								"v1",
+								"getHelloWorld"
+							],
+							"query": [
+								{
+									"key": "print",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postHelloWorld",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    print:true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}{{port}}/search/v1/getHelloWorld?print=true",
+							"host": [
+								"{{domain}}{{port}}"
+							],
+							"path": [
+								"search",
+								"v1",
+								"getHelloWorld"
+							],
+							"query": [
+								{
+									"key": "print",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "populateDBFirstTime",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}{{port}}/search/v1/testService",
+							"host": [
+								"{{domain}}{{port}}"
+							],
+							"path": [
+								"search",
+								"v1",
+								"testService"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "testMargheritaSearch",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}{{port}}/search/v1/testMargheritaSearch",
+							"host": [
+								"{{domain}}{{port}}"
+							],
+							"path": [
+								"search",
+								"v1",
+								"testMargheritaSearch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "debugSearchMenuForPizza",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}{{port}}/search/v1/debugSearchMenuForPizza?pizzaId=3",
+							"host": [
+								"{{domain}}{{port}}"
+							],
+							"path": [
+								"search",
+								"v1",
+								"debugSearchMenuForPizza"
+							],
+							"query": [
+								{
+									"key": "pizzaId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "debugSearchMenuForAddition",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}{{port}}/search/v1/debugSearchMenuForAddition?pizzaId=2",
+							"host": [
+								"{{domain}}{{port}}"
+							],
+							"path": [
+								"search",
+								"v1",
+								"debugSearchMenuForAddition"
+							],
+							"query": [
+								{
+									"key": "pizzaId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "debugGetMenuRowForPizza",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}{{port}}/search/v1/debugGetMenuRowForPizza?pizzaId=3&pizzeriaId=3",
+							"host": [
+								"{{domain}}{{port}}"
+							],
+							"path": [
+								"search",
+								"v1",
+								"debugGetMenuRowForPizza"
+							],
+							"query": [
+								{
+									"key": "pizzaId",
+									"value": "3"
+								},
+								{
+									"key": "pizzeriaId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "debugGetMenuRowForIngredient",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}{{port}}/search/v1/debugGetMenuRowForIngredient?additionId=7&pizzeriaId=3",
+							"host": [
+								"{{domain}}{{port}}"
+							],
+							"path": [
+								"search",
+								"v1",
+								"debugGetMenuRowForIngredient"
+							],
+							"query": [
+								{
+									"key": "additionId",
+									"value": "7"
+								},
+								{
+									"key": "pizzeriaId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "createPizza",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/search/v1/createPizza",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"search",
+						"v1",
+						"createPizza"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deletePizza",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/item/v1/deletePizza?pizzaId=4",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"item",
+						"v1",
+						"deletePizza"
+					],
+					"query": [
+						{
+							"key": "pizzaId",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addPizzaByIngredientsToMenu",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pizzas\":[{\r\n        \"cost\":4.5,\r\n        \"commonName\":\"la Mia Marinara\",\r\n        \"ingredients\":[6]\r\n    },{\r\n        \"cost\":9.5,\r\n        \"commonName\":\"Pizza OogieBoogye\",\r\n        \"ingredients\":[6,9,8,7]\r\n        \r\n    } ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/item/v1/addPizzaByIngredientsToMenu",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"item",
+						"v1",
+						"addPizzaByIngredientsToMenu"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addPizzaToMenu",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pizzeriaId\":1,\r\n    \"additions\":[{\r\n        \"cost\":0.0,\r\n        \"commonName\":\"Base Comune\",\r\n        \"addition\":1\r\n    },{\r\n        \"cost\":0.5,\r\n        \"commonName\":\"Base Speciale\",\r\n        \"addition\":3   \r\n    }]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/item/v1/addPizzaToMenu",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"item",
+						"v1",
+						"addPizzaToMenu"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAdditionToMenu",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pizzeriaId\":1,\r\n    \"additions\":[{\r\n        \"cost\":0.0,\r\n        \"commonName\":\"Base Comune\",\r\n        \"addition\":1\r\n    },{\r\n        \"cost\":0.5,\r\n        \"commonName\":\"Base Speciale\",\r\n        \"addition\":3   \r\n    }]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/item/v1/addAdditionToMenu",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"item",
+						"v1",
+						"addAdditionToMenu"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchPizzeriaForOrder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"order\":[{\r\n            \"pastryId\":1,\r\n            \"pizzaId\":3\r\n        },{\r\n           \"pastryId\":3,\r\n            \"pizzaId\":4,\r\n            \"additions\":[6,7]\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/search/v1/searchPizzeriaForOrder",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"search",
+						"v1",
+						"searchPizzeriaForOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMenuForOrder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pizzeriaId\":1,\r\n    \"order\":[{\r\n            \"pastryId\":1,\r\n            \"pizzaId\":3\r\n        },{\r\n           \"pastryId\":3,\r\n            \"pizzaId\":4,\r\n            \"additions\":[6,7]\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/search/v1/getMenuForOrder",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"search",
+						"v1",
+						"getMenuForOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createMenu",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/item/v1/createMenu?pizzeriaId=3",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"item",
+						"v1",
+						"createMenu"
+					],
+					"query": [
+						{
+							"key": "pizzeriaId",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMenu",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/item/v1/getMenu?pizzeriaId=1",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"item",
+						"v1",
+						"getMenu"
+					],
+					"query": [
+						{
+							"key": "pizzeriaId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllPizza",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/search/v1/getAllPizza",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"search",
+						"v1",
+						"getAllPizza"
+					],
+					"query": [
+						{
+							"key": "pizzeriaId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllIngredient",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/search/v1/getAllIngredient",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"search",
+						"v1",
+						"getAllIngredient"
+					],
+					"query": [
+						{
+							"key": "pizzeriaId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllSeasoning",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/search/v1/getAllSeasoning",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"search",
+						"v1",
+						"getAllSeasoning"
+					],
+					"query": [
+						{
+							"key": "pizzeriaId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllPastry",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/search/v1/getAllPastry",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"search",
+						"v1",
+						"getAllPastry"
+					],
+					"query": [
+						{
+							"key": "pizzeriaId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchMenuForPizza",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/search/v1/searchMenuForPizza?pizzaId=3",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"search",
+						"v1",
+						"searchMenuForPizza"
+					],
+					"query": [
+						{
+							"key": "pizzaId",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchMenuForAddition",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjM3MSwiZXhwIjoxNzE4OTc5OTcxLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIxIDE1OjI2OjExIn0.cma2xCoAK2N_5tFgOg1GbZ4m9oI7Z8pSTLBMDSmUQbt3vfzERazW-lLFoOVYJ9ZJV8WDFkiBhI2_6wFK5uUhAZMZHUMaIJvIupWzFLSET0P25wEiVyno5EKFspBce943bJBmt6e16NNacW5aAA7q_8QzqA6UNDSE2sVFU31w6hicDxQBDxIsd7-yZFwjm8Vm5KqesW6U1lzKBeOfhkhlw0N1t_wlpudy6U0QZ8V7nyEgb3jaG8yooROFRAfg1ZuELtAH2ewFhF1SbVCzvl9I80k-BJqxANKXgPlAhSmeMM1hfbfZcvTNq-7SUuilxkZXNEHB2IzKq4qRtEfFeXQ0PA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/search/v1/searchMenuForAddition?additionId=6",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"search",
+						"v1",
+						"searchMenuForAddition"
+					],
+					"query": [
+						{
+							"key": "additionId",
+							"value": "6"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
