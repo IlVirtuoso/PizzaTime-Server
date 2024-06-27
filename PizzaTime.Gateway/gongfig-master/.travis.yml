@@ -1,0 +1,30 @@
+language: go
+
+go: "1.10.x"
+
+sudo: required
+
+services:
+  - docker
+
+os:
+  - linux
+  - osx
+
+before_script:
+  - go get github.com/urfave/cli
+  - go get -u golang.org/x/lint/golint
+
+script:
+  - golint ./...
+  - go test -v ./... -coverprofile=coverage.txt -covermode=atomic
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+deploy:
+  provider: script
+  script: bash docker_push.sh
+  on:
+    branch: master
+    os: linux

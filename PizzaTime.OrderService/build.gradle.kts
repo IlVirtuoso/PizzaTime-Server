@@ -10,10 +10,6 @@ plugins {
 }
 
 group = "com.PizzaTime"
-
-
-
-
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
 }

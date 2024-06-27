@@ -85,6 +85,9 @@ public class GenericResponse {
     String regToken;
 
     @Expose
+    Long requestId;
+
+    @Expose
     Pizza pizza;
 
     @Expose
@@ -98,6 +101,9 @@ public class GenericResponse {
 
     @Expose
     Collection<Ingredient> ingredients;
+
+    @Expose
+    PizzeriaCostForOrder pizzeriasForOrder;
 
     @Expose
     Menu menu;
@@ -174,5 +180,14 @@ public class GenericResponse {
 
     public void setIngredients(Collection<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
+    }
+
+    public void setPizzeriasForOrder(PizzeriaCostForOrder pizzeriasForOrder) {
+        this.pizzeriasForOrder = pizzeriasForOrder;
     }
 }

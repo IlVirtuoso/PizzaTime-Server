@@ -161,7 +161,8 @@ public class AccountServiceImpl {
             target = repo.save(target);
             resp.setStatusCode(GenericResponse.OK_CODE);
             resp.setStatusReason(GenericResponse.OK_MESSAGE);
-            resp.setAccount(target);
+            Account newOne = target.makeSafeCopy();
+            resp.setAccount(newOne);
             return resp.jsonfy();
         }else{
             resp.setStatusCode(GenericResponse.GENERIC_ERROR_CODE);
@@ -190,7 +191,8 @@ public class AccountServiceImpl {
                 target = repo.save(target);
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
-                resp.setAccount(target);
+                Account newOne = target.makeSafeCopy();
+                resp.setAccount(newOne);
                 return resp.jsonfy();
             }else{
                 resp.setStatusCode(GenericResponse.NOT_ENOUGH_MONEY_CODE);

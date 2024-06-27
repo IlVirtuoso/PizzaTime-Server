@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: engine-pv
+spec:
+  claimRef:
+    name: engine-pvc
+    namespace: default  # Modifica il namespace se necessario
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: standard
+  hostPath:
+    path: /mnt/data/enginepv  # Assicurati che il percorso sia corretto
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: engine-pvc
+  namespace: default  # Assicurati che questo corrisponda al namespace nel claimRef del PV
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: standard
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: idp-pv
+  
+spec:
+  claimRef:
+    name: idp-pvc
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: standard
+  hostPath:
+    path: /mnt/data/idppv
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: idp-pvc
+  namespace: default  # Assicurati che questo corrisponda al namespace nel claimRef del PV
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: standard
+
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ord-pv
+  
+spec:
+  claimRef:
+    name: ord-pvc
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: standard
+  hostPath:
+    path: /mnt/data/idppv
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ord-pvc
+  namespace: default  # Assicurati che questo corrisponda al namespace nel claimRef del PV
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: standard
