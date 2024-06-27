@@ -15,7 +15,7 @@ open class ResultResponse<T>(var load: T):
         GenericOrderResponse(
             Type.RESPONSE,
             "",
-            load.asJson()
+            load.asJson(true)
         );
 
 
