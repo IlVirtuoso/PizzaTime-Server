@@ -19,7 +19,7 @@ spec:
           value: guest
     resources:
       limits:
-        memory: "128Mi"
+        memory: "1024Mi"
         cpu: "500m"
     ports:
       - name: httpservice
@@ -40,6 +40,8 @@ spec:
     env:
       - name: MYSQL_ROOT_PASSWORD
         value: root
+      - name : MYSQL_DATABASE
+        value: pizzaidpdatabase
     volumeMounts:
     - name:  database-volume
       mountPath: /var/lib/mysql
