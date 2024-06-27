@@ -10,7 +10,6 @@ plugins {
 
 group = "com.PizzaTime"
 version = "0.0.1-SNAPSHOT"
-
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
 }
@@ -28,7 +27,6 @@ dependencies {
 	implementation("com.google.code.gson:gson:2.11.0")
 	implementation("com.rabbitmq:amqp-client:5.21.0")
 	runtimeOnly("com.h2database:h2")
-	implementation(project(":PizzaTime.Communication"))
 	runtimeOnly("org.postgresql:postgresql")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
