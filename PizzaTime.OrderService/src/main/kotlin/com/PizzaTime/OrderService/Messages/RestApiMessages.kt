@@ -1,6 +1,7 @@
 package com.PizzaTime.OrderService.Messages
 
-import com.PizzaTime.OrderService.Model.IJsonSerializable
+import com.PizzaTime.OrderService.Model.asJson
+
 
 enum class Type(type: String) {
     RESPONSE("response"),
@@ -14,7 +15,7 @@ open class ResultResponse<T>(var load: T):
         GenericOrderResponse(
             Type.RESPONSE,
             "",
-            (load as IJsonSerializable).asJson()
+            load.asJson(true)
         );
 
 

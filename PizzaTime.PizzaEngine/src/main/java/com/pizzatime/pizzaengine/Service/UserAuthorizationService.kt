@@ -12,10 +12,14 @@ import org.springframework.core.env.get
 import org.springframework.stereotype.Service
 import java.util.*
 
+class Pizzeria{
+    var id : Long = -1;
+}
+
 data class IdpMessage(var isError: Boolean, var payload: String)
 data class IdpRequest(var token: String)
 data class UserAccount(var id: Long, var address: String)
-data class ManagerAccount(var id : Long, var address: String, var vat: String)
+data class ManagerAccount(var id : Long, var address: String, var pizzeria: Pizzeria)
 
 private fun <T> T.asJson(useAttrs : Boolean = false): String {
     if (useAttrs) {

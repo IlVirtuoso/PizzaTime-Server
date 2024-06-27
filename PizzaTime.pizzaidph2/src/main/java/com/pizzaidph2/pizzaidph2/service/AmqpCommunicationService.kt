@@ -1,21 +1,21 @@
 package main.java.com.pizzaidph2.pizzaidph2.service
 
 import com.google.gson.Gson
-import com.pizzaidph2.pizzaidph2.model.Account
+import com.pizzaidph2.pizzaidph2.model.Pizzeria
 import com.pizzaidph2.pizzaidph2.service.AmqpUserService
 import com.rabbitmq.client.*
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
-import java.util.*
 
 private inline fun <reified T> T.asJson() : String = Gson().toJson(this)
 private inline fun <reified T> T.fromJson(content: String): T = Gson().fromJson(content, T::class.java)
 
 data class AmqpIdpResponse(var isError: Boolean, val payload: String)
 data class AmqpIdpRequest(val token: String)
-data class AccountRecord(val id : Long, val address: String, val vatNumber : String);
+data class AccountRecord(val id : Long, val address: String);
+data class ManagerRecord(val id : Long, val address: String, val pizzeria: Pizzeria);
 
 @Service
 @ConditionalOnProperty(
@@ -65,17 +65,19 @@ class AmqpCommunicationService(environment: Environment, var userService: AmqpUs
             "VerifyUserTokenRequest" -> {
                 val opt = userService.VerifyUserToken(request.token);
                 if(opt.isPresent){
-                    val info = AccountRecord(opt.get().id,opt.get().address,"");
+                    val info = AccountRecord(opt.get().id,opt.get().address);
                     return AmqpIdpResponse(false,info.asJson()).asJson().encodeToByteArray();
                 }
 
             }
             "VerifyManagerTokenRequest"->{
                 val opt = userService.VerifyManagerToken(request.token);
-                if(opt.isPresent){
-                    val vat = userService.GetVatForManager(opt.get().id).get();
-                    val info = AccountRecord(opt.get().id,opt.get().address,vat);
-                    return AmqpIdpResponse(false,info.asJson()).asJson().encodeToByteArray();
+                if(opt.isPresent) {
+                    val pizzeria = userService.GetPizzeriaForManagers(opt.get().id);
+                    if (pizzeria.isPresent) {
+                        val info = ManagerRecord(opt.get().id, opt.get().address, pizzeria.get());
+                        return AmqpIdpResponse(false, info.asJson()).asJson().encodeToByteArray();
+                    }
                 }
             }
         }

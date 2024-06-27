@@ -1,6 +1,6 @@
 package com.PizzaTime.OrderService.Services
 
-import BaseCommunicationService
+
 import com.PizzaTime.OrderService.Model.fromJson
 import com.google.gson.Gson
 import com.rabbitmq.client.*
@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 
+data class Pizzeria(var id : Long, var address: String)
+
 data class IdpMessage(var isError: Boolean, var payload: String)
 data class IdpRequest(var token: String)
 
 data class UserAccount(var id: Long, var address: String)
 
-data class ManagerAccount(var id : Long, var address: String, var vat: String)
+data class ManagerAccount(var id : Long, var address: String, var pizzeria: Pizzeria)
 
 
 

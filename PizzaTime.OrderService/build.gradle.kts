@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.springframework.boot.gradle.tasks.bundling.BootWar
 
 plugins {
 	war
@@ -9,7 +10,6 @@ plugins {
 }
 
 group = "com.PizzaTime"
-version = "0.0.1-SNAPSHOT"
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
 }
@@ -42,4 +42,5 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+// set name with ./gradlew -PwarName=<custom_name>.war bootWar
 

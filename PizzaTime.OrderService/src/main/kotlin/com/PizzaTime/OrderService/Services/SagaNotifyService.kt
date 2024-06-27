@@ -1,7 +1,6 @@
 package com.PizzaTime.OrderService.Services
 
-import BaseCommunicationService
-import ExchangeType
+
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.asJson
 import com.rabbitmq.client.*
@@ -11,22 +10,20 @@ import org.springframework.core.env.get
 import org.springframework.stereotype.Service
 
 
-class SagaListenerService(val channel: Channel, orderService: OrderService): Consumer{
+class SagaListenerService(val channel: Channel, orderService: OrderService) : Consumer {
 
-    companion object{
+    companion object {
         const val saga_exchange = "PizzaTime.Order"
         const val order_key = "OrderRequests/Json"
     }
 
 
-
-
-
     var queue: String = ""
+
     init {
         queue = channel.queueDeclare().queue
         channel.queueBind(queue, saga_exchange, order_key)
-        channel.basicConsume(queue,this)
+        channel.basicConsume(queue, this)
     }
 
     override fun handleConsumeOk(consumerTag: String?) {
@@ -50,14 +47,13 @@ class SagaListenerService(val channel: Channel, orderService: OrderService): Con
     }
 
 
-
     override fun handleDelivery(
         consumerTag: String?,
         envelope: Envelope?,
         properties: AMQP.BasicProperties?,
-        body: ByteArray?
+        body: ByteArray?,
     ) {
-        if(body == null){
+        if (body == null) {
             throw IllegalArgumentException("Saga messages cannot be null");
         }
 
@@ -73,31 +69,40 @@ class SagaListenerService(val channel: Channel, orderService: OrderService): Con
     matchIfMissing = true
 )
 @Service
-class SagaNotifyService(environment: Environment) : BaseCommunicationService(
-    environment.get("amqp.user")!!,
-    environment.get("amqp.password")!!,
-    environment.get("amqp.host")!!
-), ICommunicationService {
+class SagaNotifyService(environment: Environment) : ICommunicationService {
     companion object {
         const val saga_notification_exchange = "PizzaTime.Order"
         const val created_order_key = "OrderEvents/Json/OrderCreated"
         const val order_changed = "OrderEvents/Json/OrderStatusChanged"
         const val order_canceled = "OrderEvents/Json/OrderCanceled"
+
+        private fun get_channel(environment: Environment): Channel {
+            return ConnectionFactory().let { t ->
+                t.host = environment.get("amqp.host");
+                t.username = environment.get("amqp.username");
+                t.password = environment.get("amqp.password");
+                return@let t
+            }.newConnection().createChannel();
+
+
+        }
+
     }
 
+    var channel : Channel = get_channel(environment);
 
     init {
-        channel.exchangeDeclare(saga_notification_exchange,ExchangeType.DIRECT.type)
+        channel.exchangeDeclare(saga_notification_exchange, BuiltinExchangeType.DIRECT)
     }
 
-    override fun notifyOrderCreate( order: Order) {
+    override fun notifyOrderCreate(order: Order) {
         channel.basicPublish(
             saga_notification_exchange,
             created_order_key,
             AMQP.BasicProperties.Builder()
                 .type("OrderCreationNotification")
                 .contentType("application/json")
-            .build(),
+                .build(),
             order.asJson().encodeToByteArray()
         )
     }
@@ -121,8 +126,7 @@ class SagaNotifyService(environment: Environment) : BaseCommunicationService(
             AMQP.BasicProperties().builder()
                 .type("OrderCancellationNotification")
                 .contentType("application/json")
-                .build()
-            ,order.asJson().encodeToByteArray()
+                .build(), order.asJson().encodeToByteArray()
         )
     }
 

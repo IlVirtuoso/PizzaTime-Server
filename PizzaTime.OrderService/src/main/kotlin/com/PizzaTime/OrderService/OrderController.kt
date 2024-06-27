@@ -51,12 +51,12 @@ class OrderController(
 
     }
 
-    fun userAuthStep(sessionToken: String): UserToken<UserAccount> {
+    fun userAuthStep(sessionToken: String): UserAccount {
         val token = userAuthorizationService.validateUserIdToken(sessionToken);
-        if (token.statusCode == HttpServletResponse.SC_UNAUTHORIZED) {
+        if (token.isEmpty()) {
             throw InvalidToken();
         }
-        return token;
+        return token.get();
     }
 
     fun orderRetrieveStep(orderId: String): Order {
@@ -67,12 +67,12 @@ class OrderController(
         return order.get();
     }
 
-    fun adminAuthStep(sessionToken: String): UserToken<ManagerAccount> {
+    fun adminAuthStep(sessionToken: String): ManagerAccount {
         val token = userAuthorizationService.validateManagerIdToken(sessionToken);
-        if (token.statusCode == HttpServletResponse.SC_UNAUTHORIZED) {
+        if (token.isEmpty()) {
             throw InvalidToken();
         }
-        return token;
+        return token.get();
     }
 
     /***
@@ -97,8 +97,8 @@ class OrderController(
     ): GenericOrderResponse = checkSequence(response) {
         val token = userAuthStep(sessionToken);
         var order = Order();
-        order.userId = token.account!!.id;
-        order.address = token.account!!.address;
+        order.userId = token.id;
+        order.address = token.address;
         order = orderService.save(order);
         communicationService.notifyOrderCreate(order);
         return@checkSequence order;

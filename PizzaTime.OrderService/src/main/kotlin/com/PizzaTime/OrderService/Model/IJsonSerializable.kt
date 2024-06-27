@@ -3,7 +3,7 @@ package com.PizzaTime.OrderService.Model
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
-public fun <T> T.asJson(useAttrs : Boolean = false): String {
+public fun <T> T.asJson(useAttrs : Boolean = true): String {
     if (useAttrs) {
         return GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(this);
     }
