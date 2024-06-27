@@ -3,9 +3,8 @@ kind: Pod
 metadata:
   name: rabbitmqbroker
   labels:
-    name: rabbitmqbroker
+    app: rabbitmqbroker
 spec:
-  hostname: 'broker'
   containers:
   - name: rabbitmqbroker
     image: docker.io/rabbitmq:latest
@@ -27,11 +26,22 @@ spec:
         value: guest
       - name: RABBITMQ_DEFAULT_PASS
         value: guest
-#    volumeMounts:
-#      - mountPath: /etc/rabbitmq/
-#        name: rabbitmqfolder 
-#  volumes:
-#    - name:  rabbitmqfolder
-#      hostPath:
-#       path: /home/drfaust/Services/rabbitmq/rabbitmq
-#       type: Directory
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: brokerservice
+spec:
+  type: ClusterIP
+  selector:
+    app: rabbitmqbroker  # Corrisponde alla label del pod
+  ports:
+  - port: 5672
+    targetPort: 5672
+    name: amqpport
+  - port: 15672
+    targetPort: 15672
+    name: http-managementport

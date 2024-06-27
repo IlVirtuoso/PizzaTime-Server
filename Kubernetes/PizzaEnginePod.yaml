@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: pizzatime.engine
   labels:
-    role: pizzatime.engine
+    app: pizzatime.engine
 spec:
   hostname: engine
   containers:
@@ -12,7 +12,11 @@ spec:
       imagePullPolicy: IfNotPresent
       env:
         - name: amqp.host
-          value: broker
+          value: brokerservice.default.svc.cluster.local
+        - name: amqp.user
+          value: guest 
+        - name: amqp.password
+          value: guest
       ports:
         - name: https 
           containerPort: 8080
@@ -49,3 +53,17 @@ spec:
     persistentVolumeClaim:
       claimName: engine-pvc
   restartPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: enigne-service
+spec:
+  type: ClusterIP
+  selector:
+    app: pizzatime.engine
+  ports:
+  - port: 8080
+    targetPort: 8080

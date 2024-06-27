@@ -60,3 +60,38 @@ spec:
     requests:
       storage: 2Gi
   storageClassName: standard
+
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ord-pv
+  
+spec:
+  claimRef:
+    name: ord-pvc
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: standard
+  hostPath:
+    path: /mnt/data/idppv
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ord-pvc
+  namespace: default  # Assicurati che questo corrisponda al namespace nel claimRef del PV
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: standard
