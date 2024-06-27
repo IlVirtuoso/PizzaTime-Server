@@ -5,11 +5,14 @@ metadata:
   labels:
     role: pizzatime.engine
 spec:
-  hostname: pizzatimengine
+  hostname: engine
   containers:
     - name: pizzatimeengine
       image: pizzatime.engine:latest
       imagePullPolicy: IfNotPresent
+      env:
+        - name: amqp.host
+          value: broker
       ports:
         - name: https 
           containerPort: 8080
@@ -37,13 +40,12 @@ spec:
           value: root
         - name: MYSQL_DATABASE
           value: pizzadatabase
-#      volumeMounts:
-#      - name:  database-volume
-#        mountPath: /var/lib/mysql
-      
-#  volumes:
-#  - name:  database-volume
-#    hostPath:
-#      path: ./data/mysql
-#      type: DirectoryOrCreate
+      volumeMounts:
+      - name:  database-volume
+        mountPath: /var/lib/mysql
+     
+  volumes:
+  - name:  database-volume
+    persistentVolumeClaim:
+      claimName: engine-pvc
   restartPolicy: Always

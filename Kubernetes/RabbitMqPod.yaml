@@ -5,6 +5,7 @@ metadata:
   labels:
     name: rabbitmqbroker
 spec:
+  hostname: 'broker'
   containers:
   - name: rabbitmqbroker
     image: docker.io/rabbitmq:latest

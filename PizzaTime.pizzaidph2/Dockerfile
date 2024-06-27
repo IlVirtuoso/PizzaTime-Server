@@ -2,7 +2,7 @@ FROM docker.io/maven:latest as builder
 LABEL authors="drfaust"
 WORKDIR /build
 COPY . .
-RUN ./mvnw package -Dmaven.test.skip
+RUN mvn package -Dmaven.test.skip
 
 FROM docker.io/bellsoft/liberica-openjre-debian:latest as RUNNER
 WORKDIR app

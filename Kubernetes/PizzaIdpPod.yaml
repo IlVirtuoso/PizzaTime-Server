@@ -5,7 +5,7 @@ metadata:
   labels:
     name: pizzaidp
 spec:
-  hostname: pizzaidp
+  hostname: idp
   containers:
   - name: pizzaidp
     image: pizzatime.idp:latest
@@ -33,15 +33,14 @@ spec:
     env:
       - name: MYSQL_ROOT_PASSWORD
         value: root
-#    volumeMounts:
-#    - name:  database-volume
-#      mountPath: /var/lib/mysql
+    volumeMounts:
+    - name:  database-volume
+      mountPath: /var/lib/mysql
     
-#  volumes:
-#  - name:  database-volume
-#    hostPath:
-#      path: ./data/mysql
-#      type: DirectoryOrCreate
+  volumes:
+  - name:  database-volume
+    persistentVolumeClaim:
+      claimName: idp-pvc
   restartPolicy: Always
 
 
