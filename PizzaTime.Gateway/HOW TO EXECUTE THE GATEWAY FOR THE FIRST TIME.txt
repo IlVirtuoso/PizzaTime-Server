@@ -1,0 +1,35 @@
+START THE GATEWAY
+
+1. go to "docker-kong-master/compose" and open a terminal
+2. type "docker-compose up -d"
+3. type "KONG_DATABASE=postgres docker compose --profile database up -d"
+
+Now the gateway is up, you can check on the dashboard by going to localhost:8002.
+
+
+
+FILL SERVICES AND ROUTES
+N.B.: Be sure to have GO installed
+
+1. go to "gongfig-master" and open a terminal
+2. use the following command to load all the services and the routes:
+
+go run gongfig.go import --url=http://localhost:8001 --file ../config_gateway.json
+
+DONE!
+
+If you want to save gateway settings use:
+
+go run gongfig.go export --url=http://localhost:8001 --file ../your_settings.json
+
+
+If you want to flush the gateway to get start from an empty situation use:
+//if "yes" is not accepted go to "pkg/acctions" and modify flush.go
+
+go run gongfig.go import --url=http://localhost:8001
+
+
+
+
+
+
