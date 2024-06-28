@@ -31,6 +31,7 @@ public class SearchEngineController {
     @Autowired
     IUserAuthorizationService authService;
 
+    public static final boolean debug = false;
 
     public class OrderRows{
         public Long pastryId;
@@ -118,12 +119,43 @@ public class SearchEngineController {
      * @return un array contenente i dettagli dell'ordine richiesto
      */
     @PostMapping("getMenuForOrder")
-    public List<Menu> getMenuForOrder(@RequestBody() String json){
+    public String getMenuForOrder(@RequestHeader(value = "Authorization", required = false) String idToken,
+            @RequestBody() String json) {
+
+        GenericResponse resp = new GenericResponse();
+
         Gson gson = new Gson();
         Order order = gson.fromJson(json, Order.class);
-        return menuService.getMenuForOrder(order);
-    }
 
+        Optional<ManagerAccount> mng = authService.validateManagerIdToken(idToken);
+        if (mng.isPresent()) {
+            ManagerAccount manager = mng.get();
+
+            if(!debug && (order.pizzeriaId == null || order.pizzeriaId != (Long) manager.getPizzeria().getId())) {
+                order.pizzeriaId = (Long) manager.getPizzeria().getId();
+            }
+
+            Menu m = genService.getMenuFromPizzeriaInfoInternal(order.pizzeriaId);
+
+            System.out.println("Received a request for pizzeria" + (Long) manager.getPizzeria().getId() + " with menu:\n" + m.toString());
+            List<Menu> menu= menuService.getMenuForOrder(order);
+            if(menu!=null && !menu.isEmpty()){
+                resp.setStatusCode(GenericResponse.OK_CODE);
+                resp.setStatusReason(GenericResponse.OK_MESSAGE);
+                resp.setOrderData(menu);
+                return resp.jsonfy();
+            }else {
+                resp.setStatusCode(GenericResponse.INVALID_PARAMETER_CODE);
+                resp.setStatusReason(GenericResponse.INVALID_PARAMETER_MESSAGE);
+                resp.setOrderData(menu);
+                return resp.jsonfy();
+            }
+        }
+
+        resp.setStatusCode(GenericResponse.FAILED_AUTHENTICATION_CODE);
+        resp.setStatusReason(GenericResponse.FAILED_AUTHENTICATION_MESSAGE);
+        return resp.jsonfy();
+    }
 
     /** INTERNAL USE */
 

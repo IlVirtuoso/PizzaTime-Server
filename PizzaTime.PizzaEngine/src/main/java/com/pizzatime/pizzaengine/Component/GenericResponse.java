@@ -109,6 +109,10 @@ public class GenericResponse {
     Menu menu;
 
     @Expose
+    Collection<Menu> orderData;
+
+
+    @Expose
     String customObj;
     @Expose
     JsonObject decodedToken;
@@ -189,5 +193,9 @@ public class GenericResponse {
 
     public void setPizzeriasForOrder(PizzeriaCostForOrder pizzeriasForOrder) {
         this.pizzeriasForOrder = pizzeriasForOrder;
+    }
+
+    public void setOrderData(Collection<Menu> orderData) {
+        this.orderData = orderData;
     }
 }
