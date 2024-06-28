@@ -91,5 +91,9 @@ public class PizzeriaService {
         return resp.jsonfy();
     }
 
+    public Optional<Pizzeria> getPizzeriaFromManagerId(Long managerId){
+        return  repo.findByManagerId(managerId);
+    }
+
 
 }
