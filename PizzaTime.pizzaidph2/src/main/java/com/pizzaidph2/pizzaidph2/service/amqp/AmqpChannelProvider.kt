@@ -7,13 +7,14 @@ import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
 
+
+@Service
 @ConditionalOnProperty(
     prefix = "PizzaIdp.Channel",
     value = ["enabled"],
     havingValue = "true",
     matchIfMissing = true
 )
-@Service
 class AmqpChannelProvider(environment: Environment){
     val channel : Channel;
     init {

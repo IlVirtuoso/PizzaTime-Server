@@ -65,14 +65,6 @@ class OrderService(private val orderRepository: IOrderRepository, private val ro
         rowRepo.deleteById(orderRow.id!!);
     }
 
-    @Transactional
-    override fun finalizeOrderSubmission(orderId: String, price: Double) {
-        TODO()
-    }
-
-    override fun finalizeOrderServing(orderId: String) {
-        TODO("Not yet implemented")
-    }
 
 
 }

@@ -4,18 +4,22 @@ package com.PizzaTime.OrderService.Services.Amqp
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.asJson
 import com.PizzaTime.OrderService.Model.fromJson
+import com.PizzaTime.OrderService.Services.IOrderSagaService
 import com.PizzaTime.OrderService.Services.IOrderService
 import com.PizzaTime.OrderService.Services.OrderService
 import com.rabbitmq.client.*
+import jakarta.validation.groups.Default
 import kotlinx.coroutines.flow.channelFlow
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
 
+data class SubMissionRow(val pizzeriaId: Long, val cost: Double);
+data class SubmissionReport(val orderId : String, val rows: Set<SubMissionRow>);
 
 @Service
-class SagaListenerService( val orderService: IOrderService, val sagaNotifyService: SagaNotifyService, amqpChannelProvider: AmqpChannelProvider) : Consumer {
+class SagaListenerService( val orderService: IOrderSagaService, val sagaNotifyService: SagaNotifyService, amqpChannelProvider: AmqpChannelProvider) : DefaultConsumer(amqpChannelProvider.channel) {
 
     companion object {
         const val saga_exchange = "PizzaTime.Order"
@@ -23,37 +27,16 @@ class SagaListenerService( val orderService: IOrderService, val sagaNotifyServic
 
     }
 
-    data class GeneralResponse(var isError: Boolean, var payload: String);
+    data class GeneralResponse(var isError: Boolean, var orderId : String , var payload: String);
 
-    final val channel: Channel;
     final var queue: String = ""
 
     init {
-        channel = amqpChannelProvider.channel;
         queue = channel.queueDeclare().queue
         channel.queueBind(queue, saga_exchange, order_key)
         channel.basicConsume(queue, false,this)
     }
-
-    override fun handleConsumeOk(consumerTag: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun handleCancelOk(consumerTag: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun handleCancel(consumerTag: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun handleShutdownSignal(consumerTag: String?, sig: ShutdownSignalException?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun handleRecoverOk(consumerTag: String?) {
-        TODO("Not yet implemented")
-    }
+    
 
 
     override fun handleDelivery(
@@ -70,18 +53,22 @@ class SagaListenerService( val orderService: IOrderService, val sagaNotifyServic
 
 
 
+
         when(properties!!.type){
 
             "OrderSubmissionResponse"-> {
-                data class SubmissionReport(val orderId : String, val totalPrice : Double);
-                val result = fromJson<SubmissionReport>(response.payload);
-                orderService.finalizeOrderSubmission(result.orderId,result.totalPrice);
+                if(response.isError){
+                    //turn back
+
+                }
+                else {
+                    val result = fromJson<SubmissionReport>(response.payload);
+                    orderService.startPizzeriaNegotiation(result);
+                }
             }
 
             "BalanceReceivedNotification"->{
-                data class BalanceReport(val orderId : String);
-                val result = fromJson<BalanceReport>(response.payload);
-                orderService.finalizeOrderServing(result.orderId);
+                orderService.handleBalanceNotification(response.orderId,response.isError);
             }
         }
 

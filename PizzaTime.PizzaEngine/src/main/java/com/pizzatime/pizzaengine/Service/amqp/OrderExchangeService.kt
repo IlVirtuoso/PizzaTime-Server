@@ -21,7 +21,7 @@ data class OrderRecord(
     val orderRows: Set<OrderRows>,
 )
 
-data class EngineResponse(val isError: Boolean,val payload: String)
+data class EngineResponse(val isError: Boolean, val orderId : String, val payload: String)
 
 
 @Service
@@ -46,10 +46,12 @@ class OrderExchangeCommunicator(val amqpChannelProvider: AmqpChannelProvider, va
 
     init {
         queue = channel.queueDeclare().queue
+        channel.exchangeDeclarePassive(order_saga_exchange);
         channel.queueBind(queue, order_saga_exchange, created_order_key)
         channel.queueBind(queue, order_saga_exchange, order_canceled)
         channel.queueBind(queue, order_saga_exchange, order_changed)
         channel.basicConsume(queue, false, this);
+
     }
 
     override fun handleDelivery(
@@ -87,15 +89,12 @@ class OrderExchangeCommunicator(val amqpChannelProvider: AmqpChannelProvider, va
 
 
     fun manageSubmissionOperation(record: OrderRecord): EngineResponse{
-
-
-
         try{
             val setted = service.OnOrderSubmitted(record);
-            return EngineResponse(false, setted.asJson(false));
+            return EngineResponse(false, setted.orderId, setted.asJson(false));
         }
         catch (ex: Exception){
-            return EngineResponse(true, "Error while processing order submission, ${ex.message}")
+            return EngineResponse(true, record.id, "Error while processing order submission, ${ex.message}")
         }
     }
 
