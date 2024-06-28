@@ -85,9 +85,10 @@ public class MenuService {
                 MenuRowPizza newMenuRow = repoMenuPizza.save(mrp);
                 Menu m = mTarget.get();
                 m.getPizzaRows().add(newMenuRow);
-                repoMenu.save(m);
+                m = repoMenu.save(m);
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
+                resp.setMenu(m);
                 return resp;
             }else{
                 System.out.println("IT IS SUFFICIENT TO MODIFY THE ROW");
@@ -98,11 +99,12 @@ public class MenuService {
                 rowToEdit.setCost(mrp.getCost());
                 repoMenuPizza.save(rowToEdit);
                 Menu m = mTarget.get();
-                repoMenu.save(m);
+                m = repoMenu.save(m);
 
                 System.out.println("Edit an already Existing pizza row");
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
+                resp.setMenu(m);
                 return resp;
             }
         }else{
@@ -143,9 +145,10 @@ public class MenuService {
                 MenuRowIngredient newMenuRow = repoMenuIngr.save(mri);
                 Menu m = mTarget.get();
                 m.getIngrRows().add(newMenuRow);
-                repoMenu.save(m);
+                m=repoMenu.save(m);
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
+                resp.setMenu(m);
                 return resp;
             }else{
                 System.out.println("IT IS SUFFICIENT TO MODIFY THE ROW");
@@ -155,11 +158,12 @@ public class MenuService {
                 rowToEdit.setCost(mri.getCost());
                 repoMenuIngr.save(mri);
                 Menu m = mTarget.get();
-                repoMenu.save(m);
+                m=repoMenu.save(m);
 
                 System.out.println("Edit an already existing ingredient row");
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
+                resp.setMenu(m);
                 return resp;
             }
         }
