@@ -52,7 +52,7 @@ spec:
   - name:  database-volume
     persistentVolumeClaim:
       claimName: engine-pvc
-  restartPolicy: Always
+  restartPolicy: OnFailure
 
 ---
 
