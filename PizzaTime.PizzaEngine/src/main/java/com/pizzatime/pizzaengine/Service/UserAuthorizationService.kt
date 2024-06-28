@@ -47,7 +47,7 @@ class UserAuthorizationService(var environment: Environment) : RpcClient(get_cli
     companion object{
 
         const val exchange = "PizzaTime.IDP"
-        const val routingKey = "IPDServiceRequest"
+        const val routingKey = "IDPServiceRequest"
         private fun get_client_config(environment: Environment) : RpcClientParams{
 
             val channel = ConnectionFactory().let { t->

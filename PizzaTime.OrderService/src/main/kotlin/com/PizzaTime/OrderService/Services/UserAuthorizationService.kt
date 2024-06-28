@@ -40,7 +40,7 @@ class UserAuthorizationService(environment: Environment) :  RpcClient(get_client
     companion object{
 
         const val exchange = "PizzaTime.IDP"
-        const val routingKey = "IPDServiceRequest"
+        const val routingKey = "IDPServiceRequest"
         private fun get_client_config(environment: Environment) : RpcClientParams{
             val channel = ConnectionFactory().let { t->
                 t.host = environment.get("amqp.host");
@@ -48,12 +48,7 @@ class UserAuthorizationService(environment: Environment) :  RpcClient(get_client
                 t.password = environment.get("amqp.password");
                 return@let t
             }.newConnection().createChannel();
-            channel.exchangeDeclare(exchange,BuiltinExchangeType.DIRECT);
-            RpcClientParams().let {
-                t->
-                t.channel(channel).exchange(exchange).routingKey(routingKey);
-                return t
-            }
+            return RpcClientParams().channel(channel).exchange(exchange).routingKey(routingKey)
         }
     }
 
@@ -62,9 +57,9 @@ class UserAuthorizationService(environment: Environment) :  RpcClient(get_client
     }
 
     override fun validateUserIdToken(token: String): Optional<UserAccount> {
-
+        var request = object{var token = token}.asJson(false);
         val result = primitiveCall(AMQP.BasicProperties().builder().type("VerifyUserTokenRequest").build(),
-            IdpRequest(token).asJson().encodeToByteArray()
+            request.encodeToByteArray()
             );
         val message = Gson().fromJson(result.decodeToString(), IdpMessage::class.java);
         if(message.isError){

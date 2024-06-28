@@ -61,7 +61,7 @@ class TestJsonRpc {
             t.host = "localhost"; t.username = "guest"; t.password = "guest"; return@let t
         }.newConnection().createChannel();
 
-        val globalLatch = CountDownLatch(2);
+        val globalLatch = CountDownLatch(1);
 
         Thread { setupClient(channel, globalLatch) }.start()
         globalLatch.await();
