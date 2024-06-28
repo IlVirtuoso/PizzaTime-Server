@@ -1,4 +1,4 @@
-package com.PizzaTime.OrderService.Services
+package com.PizzaTime.OrderService.Services.Amqp
 
 import com.PizzaTime.OrderService.Model.Order
 

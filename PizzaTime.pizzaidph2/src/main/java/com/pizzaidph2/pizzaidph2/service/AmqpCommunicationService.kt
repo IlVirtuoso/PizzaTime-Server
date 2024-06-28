@@ -2,6 +2,8 @@ package com.pizzaidph2.pizzaidph2.service
 
 import com.google.gson.Gson
 import com.pizzaidph2.pizzaidph2.model.Pizzeria
+import com.pizzaidph2.pizzaidph2.service.amqp.AmqpChannelProvider
+
 import com.rabbitmq.client.*
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -26,22 +28,12 @@ data class ManagerRecord(val id : Long, val address: String, val pizzeria: Pizze
     havingValue = "true",
     matchIfMissing = true
 )
-class AmqpCommunicationService(environment: Environment, var userService: AmqpUserService) :
-    RpcServer(build(environment)) {
+class AmqpCommunicationService(environment: Environment, var userService: AmqpUserService, amqpChannelProvider: AmqpChannelProvider) :
+    RpcServer(amqpChannelProvider.channel) {
 
     companion object {
         const val user_exchange = "PizzaTime.IDP";
         const val request_routing_key = "IDPServiceRequest"
-
-        fun build(environment: Environment): Channel {
-            val userName = environment.get("amqp.username");
-            val password = environment.get("amqp.password");
-            val host = environment.get("amqp.host");
-            val channel = ConnectionFactory().let { t ->
-                t.host = host; t.password = password; t.username = userName; return@let t;
-            }.newConnection().createChannel();
-            return channel;
-        }
     }
 
 

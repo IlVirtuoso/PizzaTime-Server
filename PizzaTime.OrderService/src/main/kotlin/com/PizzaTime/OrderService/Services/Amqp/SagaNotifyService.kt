@@ -1,29 +1,38 @@
-package com.PizzaTime.OrderService.Services
+package com.PizzaTime.OrderService.Services.Amqp
 
 
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.asJson
+import com.PizzaTime.OrderService.Model.fromJson
+import com.PizzaTime.OrderService.Services.IOrderService
+import com.PizzaTime.OrderService.Services.OrderService
 import com.rabbitmq.client.*
+import kotlinx.coroutines.flow.channelFlow
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
 
 
-class SagaListenerService(val channel: Channel, orderService: OrderService) : Consumer {
+@Service
+class SagaListenerService( val orderService: IOrderService, val sagaNotifyService: SagaNotifyService, amqpChannelProvider: AmqpChannelProvider) : Consumer {
 
     companion object {
         const val saga_exchange = "PizzaTime.Order"
         const val order_key = "OrderRequests/Json"
+
     }
 
+    data class GeneralResponse(var isError: Boolean, var payload: String);
 
-    var queue: String = ""
+    final val channel: Channel;
+    final var queue: String = ""
 
     init {
+        channel = amqpChannelProvider.channel;
         queue = channel.queueDeclare().queue
         channel.queueBind(queue, saga_exchange, order_key)
-        channel.basicConsume(queue, this)
+        channel.basicConsume(queue, false,this)
     }
 
     override fun handleConsumeOk(consumerTag: String?) {
@@ -53,10 +62,30 @@ class SagaListenerService(val channel: Channel, orderService: OrderService) : Co
         properties: AMQP.BasicProperties?,
         body: ByteArray?,
     ) {
+
         if (body == null) {
             throw IllegalArgumentException("Saga messages cannot be null");
         }
+        val response = fromJson<GeneralResponse>(body.decodeToString());
 
+
+
+        when(properties!!.type){
+
+            "OrderSubmissionResponse"-> {
+                data class SubmissionReport(val orderId : String, val totalPrice : Double);
+                val result = fromJson<SubmissionReport>(response.payload);
+                orderService.finalizeOrderSubmission(result.orderId,result.totalPrice);
+            }
+
+            "BalanceReceivedNotification"->{
+                data class BalanceReport(val orderId : String);
+                val result = fromJson<BalanceReport>(response.payload);
+                orderService.finalizeOrderServing(result.orderId);
+            }
+        }
+
+        channel.basicAck(envelope!!.deliveryTag,false);
     }
 
 }

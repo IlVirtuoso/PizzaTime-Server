@@ -16,4 +16,7 @@ interface IOrderService
     fun saveRow(order: Order,orderRow: OrderRow) : OrderRow;
     fun findRowById(orderId : String, id : Long) : Optional<OrderRow>;
     fun deleteOrderRow(order: Order, orderRow: OrderRow);
+
+    fun finalizeOrderSubmission(orderId : String, amount: Double);
+    fun finalizeOrderServing(orderId: String);
 }

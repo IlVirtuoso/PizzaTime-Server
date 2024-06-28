@@ -5,14 +5,15 @@ import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.OrderRow
 import com.PizzaTime.OrderService.Model.OrderStatus
 import com.PizzaTime.OrderService.Services.*
+import com.PizzaTime.OrderService.Services.Amqp.ICommunicationService
+import com.PizzaTime.OrderService.Services.Amqp.IUserAuthorizationService
+import com.PizzaTime.OrderService.Services.Amqp.ManagerAccount
+import com.PizzaTime.OrderService.Services.Amqp.UserAccount
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
-import java.util.*
 import kotlin.collections.HashSet
 
 
@@ -226,7 +227,7 @@ class OrderController(
     @PostMapping("/api/v1/order/{pizzeriaId}/{orderId}/accept")
     fun accept_order(
         @RequestHeader(HttpHeaders.AUTHORIZATION) adminToken: String,
-        @PathVariable pizzeriaId: String,
+        @PathVariable pizzeriaId: Long,
         @PathVariable orderId: String,
         @Autowired httpServletResponse: HttpServletResponse,
     ): GenericOrderResponse = checkSequence(httpServletResponse) {

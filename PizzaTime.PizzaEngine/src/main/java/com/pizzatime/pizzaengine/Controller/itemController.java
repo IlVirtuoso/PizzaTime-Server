@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.pizzatime.pizzaengine.Component.GenericResponse;
 import com.pizzatime.pizzaengine.Model.*;
 import com.pizzatime.pizzaengine.Service.*;
+import com.pizzatime.pizzaengine.Service.amqp.IUserAuthorizationService;
+import com.pizzatime.pizzaengine.Service.amqp.ManagerAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

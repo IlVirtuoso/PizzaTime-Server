@@ -1,4 +1,4 @@
-package com.PizzaTime.OrderService.Services
+package com.PizzaTime.OrderService.Services.Amqp
 
 
 import com.PizzaTime.OrderService.Model.asJson
@@ -35,20 +35,15 @@ interface IUserAuthorizationService {
     matchIfMissing = true
 )
 @Service
-class UserAuthorizationService(environment: Environment) :  RpcClient(get_client_config(environment)) ,IUserAuthorizationService {
+class UserAuthorizationService(amqpChannelProvider: AmqpChannelProvider) :  RpcClient(get_client_config(amqpChannelProvider)) ,
+    IUserAuthorizationService {
 
     companion object{
 
         const val exchange = "PizzaTime.IDP"
         const val routingKey = "IDPServiceRequest"
-        private fun get_client_config(environment: Environment) : RpcClientParams{
-            val channel = ConnectionFactory().let { t->
-                t.host = environment.get("amqp.host");
-                t.username = environment.get("amqp.username");
-                t.password = environment.get("amqp.password");
-                return@let t
-            }.newConnection().createChannel();
-            return RpcClientParams().channel(channel).exchange(exchange).routingKey(routingKey)
+        private fun get_client_config(amqpChannelProvider: AmqpChannelProvider) : RpcClientParams{
+            return RpcClientParams().channel(amqpChannelProvider.channel).exchange(exchange).routingKey(routingKey)
         }
     }
 
