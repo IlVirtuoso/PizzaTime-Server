@@ -131,10 +131,10 @@ public class JWTServiceImpl implements AmqpUserService{
     public Optional<Account> VerifyUserToken(String userIdToken) {
         DecodedJWT jwt = verifyJWT(userIdToken);
         if(jwt!=null && !jwt.equals("")) {
-            return Optional.empty();
-        }else{
             Optional<Account> account = repo.findById(Long.parseLong(jwt.getSubject()));
             return account;
+        }else{
+            return Optional.empty();
         }
     }
 
@@ -142,10 +142,10 @@ public class JWTServiceImpl implements AmqpUserService{
     public Optional<Account> VerifyManagerToken(String managerToken) {
         DecodedJWT jwt = jwtUtility.verifyManagerJWT(managerToken);
         if(jwt!=null && !jwt.equals("")) {
-            return Optional.empty();
-        }else{
             Optional<Account> account = repo.findById(Long.parseLong(jwt.getSubject()));
             return account;
+        }else{
+            return Optional.empty();
         }
     }
 

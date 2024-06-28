@@ -21,6 +21,7 @@ class OrderController(
     var orderService: IOrderService,
     var communicationService: ICommunicationService,
     var userAuthorizationService: IUserAuthorizationService,
+    var response: HttpServletResponse
 ) {
 
     private class InvalidToken : Throwable();
@@ -92,8 +93,7 @@ class OrderController(
 
     @PostMapping("/api/v1/order/create")
     fun create_order(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) sessionToken: String,
-        @Autowired response: HttpServletResponse,
+        @RequestHeader(HttpHeaders.AUTHORIZATION) sessionToken: String
     ): GenericOrderResponse = checkSequence(response) {
         val token = userAuthStep(sessionToken);
         var order = Order();

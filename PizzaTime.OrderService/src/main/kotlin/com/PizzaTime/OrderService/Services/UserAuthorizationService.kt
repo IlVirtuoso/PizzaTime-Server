@@ -1,6 +1,7 @@
 package com.PizzaTime.OrderService.Services
 
 
+import com.PizzaTime.OrderService.Model.asJson
 import com.PizzaTime.OrderService.Model.fromJson
 import com.google.gson.Gson
 import com.rabbitmq.client.*
@@ -47,19 +48,23 @@ class UserAuthorizationService(environment: Environment) :  RpcClient(get_client
                 t.password = environment.get("amqp.password");
                 return@let t
             }.newConnection().createChannel();
-
+            channel.exchangeDeclare(exchange,BuiltinExchangeType.DIRECT);
             RpcClientParams().let {
                 t->
-                t.channel(channel).exchange("PizzaTime.IDP").routingKey("IDPServiceRequest")
+                t.channel(channel).exchange(exchange).routingKey(routingKey);
                 return t
             }
         }
     }
 
+    init {
+
+    }
 
     override fun validateUserIdToken(token: String): Optional<UserAccount> {
+
         val result = primitiveCall(AMQP.BasicProperties().builder().type("VerifyUserTokenRequest").build(),
-            Gson().toJson(IdpRequest(token)).encodeToByteArray()
+            IdpRequest(token).asJson().encodeToByteArray()
             );
         val message = Gson().fromJson(result.decodeToString(), IdpMessage::class.java);
         if(message.isError){

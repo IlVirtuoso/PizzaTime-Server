@@ -45,9 +45,9 @@ class TestJsonRpc {
     }
 
     fun setupClient(channel: Channel, countDownLatch: CountDownLatch) {
-        val client = RpcClient(RpcClientParams().channel(channel).exchange(exchange).routingKey("world"))
-        val response= client.primitiveCall(AMQP.BasicProperties().builder().type("Ack").build(),
-            Gson().toJson(Sample(1,10,"water",false)).toByteArray()
+        val client = RpcClient(RpcClientParams().channel(channel).exchange("PizzaTime.IDP").routingKey("IDPServiceRequest"))
+        val response= client.primitiveCall(AMQP.BasicProperties().builder().type("VerifyUserTokenRequest").build(),
+            Gson().toJson(object{var token = "dasdhaisdh"}).encodeToByteArray()
             );
         println(response.decodeToString());
         client.primitiveCall(AMQP.BasicProperties().builder().type("ExitRequest").build(),ByteArray(0));
@@ -63,7 +63,6 @@ class TestJsonRpc {
 
         val globalLatch = CountDownLatch(2);
 
-        Thread { setupServer(channel, globalLatch) }.start()
         Thread { setupClient(channel, globalLatch) }.start()
         globalLatch.await();
 

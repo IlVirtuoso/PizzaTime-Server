@@ -1,10 +1,11 @@
-package main.java.com.pizzaidph2.pizzaidph2.service
+package com.pizzaidph2.pizzaidph2.service
 
 import com.google.gson.Gson
 import com.pizzaidph2.pizzaidph2.model.Pizzeria
-import com.pizzaidph2.pizzaidph2.service.AmqpUserService
 import com.rabbitmq.client.*
+import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.context.annotation.Scope
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
@@ -18,6 +19,7 @@ data class AccountRecord(val id : Long, val address: String);
 data class ManagerRecord(val id : Long, val address: String, val pizzeria: Pizzeria);
 
 @Service
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @ConditionalOnProperty(
     prefix = "idp.RpcChannel",
     value = ["enabled"],
@@ -32,7 +34,7 @@ class AmqpCommunicationService(environment: Environment, var userService: AmqpUs
         const val request_routing_key = "IDPServiceRequest"
 
         fun build(environment: Environment): Channel {
-            val userName = environment.get("amqp.user");
+            val userName = environment.get("amqp.username");
             val password = environment.get("amqp.password");
             val host = environment.get("amqp.host");
             val channel = ConnectionFactory().let { t ->
@@ -46,7 +48,7 @@ class AmqpCommunicationService(environment: Environment, var userService: AmqpUs
     init {
         channel.exchangeDeclare(user_exchange, BuiltinExchangeType.DIRECT)
         channel.queueBind(queueName, user_exchange, request_routing_key);
-        mainloop();
+        Thread{mainloop()}.start()
     }
 
    
