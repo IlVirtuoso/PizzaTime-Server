@@ -22,6 +22,9 @@ public class JWTServiceImpl implements AmqpUserService{
     @Autowired
     private HybernateAccountRepositoryImpl2 repo;
 
+    @Autowired
+    private PizzeriaService pizzaService;
+
     /**
      * Crea un regToken (JWT) con scadenza di default per l'utente @account
      * @param account
@@ -129,6 +132,7 @@ public class JWTServiceImpl implements AmqpUserService{
 
     @Override
     public Optional<Account> VerifyUserToken(String userIdToken) {
+        System.out.println("Someone requests a validation of a user's JWT");
         DecodedJWT jwt = verifyJWT(userIdToken);
         if(jwt!=null && !jwt.equals("")) {
             Optional<Account> account = repo.findById(Long.parseLong(jwt.getSubject()));
@@ -140,6 +144,7 @@ public class JWTServiceImpl implements AmqpUserService{
 
     @Override
     public Optional<Account> VerifyManagerToken(String managerToken) {
+        System.out.println("Someone requests a validation of a manager's JWT");
         DecodedJWT jwt = jwtUtility.verifyManagerJWT(managerToken);
         if(jwt!=null && !jwt.equals("")) {
             Optional<Account> account = repo.findById(Long.parseLong(jwt.getSubject()));
@@ -151,7 +156,7 @@ public class JWTServiceImpl implements AmqpUserService{
 
     @Override
     public Optional<Pizzeria> GetPizzeriaForManagers(Long managerId) {
-        PizzeriaService p = new PizzeriaService();
-        return p.getPizzeriaFromManagerId(managerId);
+        System.out.println("Someone requests a pizzeria by a manager ID: "+managerId);
+        return pizzaService.getPizzeriaFromManagerId(managerId);
     }
 }

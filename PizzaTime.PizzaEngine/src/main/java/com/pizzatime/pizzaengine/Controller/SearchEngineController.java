@@ -5,16 +5,12 @@ import com.google.gson.Gson;
 import com.pizzatime.pizzaengine.Component.GenericResponse;
 import com.pizzatime.pizzaengine.Component.PizzeriaCostForOrder;
 import com.pizzatime.pizzaengine.Model.Menu;
-import com.pizzatime.pizzaengine.Service.MenuService;
-import com.pizzatime.pizzaengine.Service.PizzaEngineService;
-import com.pizzatime.pizzaengine.Service.PizzaService;
+import com.pizzatime.pizzaengine.Service.*;
+import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/search/v1")
@@ -28,6 +24,12 @@ public class SearchEngineController {
 
     @Autowired
     MenuService menuService;
+
+    @Autowired
+    GenericService genService;
+
+    @Autowired
+    IUserAuthorizationService authService;
 
 
     public class OrderRows{
@@ -194,8 +196,15 @@ public class SearchEngineController {
     }
 
     @GetMapping("/debugSearchMenuForPizza")
-    public String debugSearchMenuForPizza(@RequestParam(name="pizzaId") long pizzaId){
-        menuService.debugSearchMenuForPizza(pizzaId);
+    public String debugSearchMenuForPizza(@RequestHeader(value = "Authorization", required = false) String idToken,
+                                              @RequestParam(name="pizzaId") long pizzaId){
+        Optional<ManagerAccount> mng= authService.validateManagerIdToken(idToken);
+        if(mng.isPresent()){
+            ManagerAccount manager = mng.get();
+            Menu m = genService.getMenuFromPizzeriaInfoInternal((Long)manager.getPizzeria().getId());
+            System.out.println(m.toString());
+            menuService.debugSearchMenuForPizza(pizzaId);
+        }
         return null;
     }
 
