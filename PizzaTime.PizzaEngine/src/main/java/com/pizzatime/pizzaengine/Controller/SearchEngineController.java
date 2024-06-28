@@ -3,9 +3,12 @@ package com.pizzatime.pizzaengine.Controller;
 
 import com.google.gson.Gson;
 import com.pizzatime.pizzaengine.Component.GenericResponse;
+import com.pizzatime.pizzaengine.Component.Order;
 import com.pizzatime.pizzaengine.Component.PizzeriaCostForOrder;
 import com.pizzatime.pizzaengine.Model.Menu;
 import com.pizzatime.pizzaengine.Service.*;
+import com.pizzatime.pizzaengine.Service.amqp.IUserAuthorizationService;
+import com.pizzatime.pizzaengine.Service.amqp.ManagerAccount;
 import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,17 +36,8 @@ public class SearchEngineController {
 
     public static final boolean debug = false;
 
-    public class OrderRows{
-        public Long pastryId;
-        public Long pizzaId;
-        public ArrayList<Long> additions;
-        public int quantity;
-    }
 
-    public class Order{
-        public Long pizzeriaId;
-        public ArrayList<OrderRows> order;
-    }
+
 
 
     /**

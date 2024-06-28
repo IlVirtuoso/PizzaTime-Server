@@ -1,10 +1,16 @@
 package com.pizzatime.pizzaengine.Service;
 
 import com.pizzatime.pizzaengine.Component.GenericResponse;
+import com.pizzatime.pizzaengine.Component.Order;
+import com.pizzatime.pizzaengine.Component.OrderRows;
 import com.pizzatime.pizzaengine.Component.PizzeriaCostForOrder;
 import com.pizzatime.pizzaengine.Controller.SearchEngineController;
 import com.pizzatime.pizzaengine.Model.*;
 import com.pizzatime.pizzaengine.Repository.*;
+import com.pizzatime.pizzaengine.Service.amqp.IOrderExchangeService;
+import com.pizzatime.pizzaengine.Service.amqp.OrderRecord;
+import com.pizzatime.pizzaengine.Service.amqp.SubmissionReport;
+import com.pizzatime.pizzaengine.Service.amqp.SubmissionRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -234,7 +240,7 @@ public class MenuService {
         return null;
     }
 
-    public List<Long> searchPizzeriaForOrder(SearchEngineController.Order order) {
+    public List<Long> searchPizzeriaForOrder(Order order) {
 
         ArrayList<Long> targetPizzeriaIds = new ArrayList<Long>();
         if(order!= null && !order.order.isEmpty()){
@@ -244,7 +250,7 @@ public class MenuService {
 
 
             int i = 1;
-            for(SearchEngineController.OrderRows o : order.order){
+            for(OrderRows o : order.order){
               if(o.pastryId!=null && o.pizzaId!=null) {
                   long pastryId = o.pastryId;
                   long pizzaId = o.pizzaId;
@@ -293,7 +299,7 @@ public class MenuService {
         return null;
     }
 
-    public ArrayList<PizzeriaCostForOrder> searchPizzeriaForOrderWithCost(SearchEngineController.Order order){
+    public ArrayList<PizzeriaCostForOrder> searchPizzeriaForOrderWithCost(Order order){
 
         List<Long> targetPizzeriaIds = searchPizzeriaForOrder(order);
         if(targetPizzeriaIds!=null && !targetPizzeriaIds.isEmpty()){
@@ -303,12 +309,18 @@ public class MenuService {
         }
     }
 
-    public ArrayList<PizzeriaCostForOrder> computeCost(SearchEngineController.Order order, List<Long> pizzeriaIds){
+    public Order convertOrderAMQPtoInternal(OrderRecord order){
+        int fakeId = -1;
+        Order o = new Order((long)fakeId, new ArrayList<OrderRows>(order.getOrderRows()));
+        return o;
+    }
+
+    public ArrayList<PizzeriaCostForOrder> computeCost(Order order, List<Long> pizzeriaIds){
         ArrayList<PizzeriaCostForOrder> targetPizzeriaAndCostIds = new ArrayList<PizzeriaCostForOrder>();
 
         for(Long pizzeriaId : pizzeriaIds){
             float cost = 0;
-            for(SearchEngineController.OrderRows o : order.order) {
+            for(OrderRows o : order.order) {
                 int i = 1;
                 if (o.pastryId != null && o.pizzaId != null) {
                     long pastryId = o.pastryId;
@@ -369,7 +381,7 @@ public class MenuService {
         return targetPizzeriaAndCostIds;
     }
 
-    public List<Menu> getMenuForOrder(SearchEngineController.Order order){
+    public List<Menu> getMenuForOrder(Order order){
         List<Menu> targetMenus = new ArrayList<>();
 
         if(order.pizzeriaId!=null && order.pizzeriaId>=0 && order.order!=null && !order.order.isEmpty()){
@@ -377,7 +389,7 @@ public class MenuService {
             Optional<Menu> optMenu = repoMenu.findByPizzeriaId(pizzeriaId);
             if(optMenu.isPresent()){
                 long i = 0;
-                for(SearchEngineController.OrderRows o : order.order){
+                for(OrderRows o : order.order){
                     if(o.pastryId!=null && o.pizzaId!=null) {
                         long pastryId = o.pastryId;
                         long pizzaId = o.pizzaId;
@@ -402,6 +414,17 @@ public class MenuService {
         }
         return targetMenus;
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     /** INTERNAL USE */

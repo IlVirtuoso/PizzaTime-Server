@@ -1,5 +1,6 @@
 package com.pizzatime.pizzaengine.Service.amqp
 
+import com.pizzatime.pizzaengine.Component.OrderRows
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client.DefaultConsumer
@@ -10,14 +11,14 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 
-data class OrderRow(val pizzaId: Long, val baseId: Long, val ingredients: Set<Long>)
+//data class OrderRow(val pizzaId: Long, val baseId: Long, val additions: Set<Long>)
 data class OrderRecord(
     val id: String,
     val totalPrice: Double,
     val userId: Long,
     val pizzeriaId: Long,
     val orderStatus: String,
-    val orderRows: Set<OrderRow>,
+    val orderRows: Set<OrderRows>,
 )
 
 data class EngineResponse(val isError: Boolean,val payload: String)
