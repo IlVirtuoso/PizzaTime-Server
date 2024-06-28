@@ -49,17 +49,21 @@ class UserAuthorizationService(var environment: Environment) : RpcClient(get_cli
         const val exchange = "PizzaTime.IDP"
         const val routingKey = "IPDServiceRequest"
         private fun get_client_config(environment: Environment) : RpcClientParams{
-            val channel = ConnectionFactory().let { t->
-                t.host = environment.get("amqp.host");
-                t.username = environment.get("amqp.username");
-                t.password = environment.get("amqp.password");
-                return@let t
-            }.newConnection().createChannel();
 
-            RpcClientParams().let {
+            val channel = ConnectionFactory().let { t->
+                t.host = environment["amqp.host"];
+                t.username = environment["amqp.username"];
+                t.password = environment["amqp.password"];
+                return@let t
+            }.newConnection()
+                .createChannel();
+
+
+
+            return RpcClientParams().let {
                     t->
-                t.channel(channel).exchange("PizzaTime.IDP").routingKey("IDPServiceRequest")
-                return t
+                t.channel(channel).exchange(exchange).routingKey(routingKey)
+                return@let t
             }
         }
     }
