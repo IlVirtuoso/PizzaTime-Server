@@ -12,7 +12,7 @@ services:
     protocol: http
     path: /account/v1
     host: idp-service.default.svc.cluster.local
-    port: 2042
+    port: 8080
     routes:
       - name: setAccountInfo
         protocols:
@@ -240,7 +240,7 @@ services:
     protocol: http
     path: /pizzeria/v1
     host: idp-service.default.svc.cluster.local
-    port: 2042
+    port: 8080
     routes:
       - name: getPizzeriaInfo
         protocols:
@@ -281,7 +281,7 @@ services:
     protocol: http
     path: /search/v1
     host: engine-service.default.svc.cluster.local
-    port: 3042
+    port: 8080
     routes:
       - name: getAllIngredient
         protocols:
@@ -424,7 +424,7 @@ services:
     protocol: http
     path: /item/v1
     host: engine-service.default.svc.cluster.local
-    port: 3042
+    port: 8080
     routes:
       - name: createMenu
         protocols:
