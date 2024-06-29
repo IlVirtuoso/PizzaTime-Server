@@ -127,7 +127,7 @@ public class itemController {
                 pizzeriaId = (Long) manager.getPizzeria().getId();
             }
 
-            System.out.println("Received a request for creating a menu for pizzeria" + pizzeriaId);
+            System.out.println("Received a request for creating a menu for pizzeria " + pizzeriaId);
 
             return menuService.createMenu(pizzeriaId);
         }
@@ -137,6 +137,71 @@ public class itemController {
         return resp.jsonfy();
     }
 
+    public String openPizzeria(@RequestHeader(value = "Authorization", required = false) String idToken,
+                               @RequestParam(value="pizzeriaId", required = false) Long pizzeriaId){
+        //CALL THE VALIDATION OF THE JWT TO EXTRACT THE PIZZERIA ID
+
+        GenericResponse resp = new GenericResponse();
+
+        Optional<ManagerAccount> mng = authService.validateManagerIdToken(idToken);
+        if (mng.isPresent()) {
+            ManagerAccount manager = mng.get();
+
+            if(!debug && (pizzeriaId == null || pizzeriaId != (Long) manager.getPizzeria().getId())) {
+                pizzeriaId = (Long) manager.getPizzeria().getId();
+            }
+
+            System.out.println("Received a request for opening a pizzeria " + pizzeriaId);
+
+            boolean result = menuService.openPizzeria(pizzeriaId);
+            if(result){
+                resp.setStatusCode(GenericResponse.OK_CODE);
+                resp.setStatusReason(GenericResponse.OK_MESSAGE);
+                return resp.jsonfy();
+            }else{
+                resp.setStatusCode(GenericResponse.GENERIC_ERROR_CODE);
+                resp.setStatusReason(GenericResponse.GENERIC_ERROR_MESSAGE);
+                return resp.jsonfy();
+            }
+        }
+
+        resp.setStatusCode(GenericResponse.FAILED_AUTHENTICATION_CODE);
+        resp.setStatusReason(GenericResponse.FAILED_AUTHENTICATION_MESSAGE);
+        return resp.jsonfy();
+    }
+
+    public String closePizzeria(@RequestHeader(value = "Authorization", required = false) String idToken,
+                                @RequestParam(value="pizzeriaId", required = false) Long pizzeriaId){
+        //CALL THE VALIDATION OF THE JWT TO EXTRACT THE PIZZERIA ID
+
+        GenericResponse resp = new GenericResponse();
+
+        Optional<ManagerAccount> mng = authService.validateManagerIdToken(idToken);
+        if (mng.isPresent()) {
+            ManagerAccount manager = mng.get();
+
+            if(!debug && (pizzeriaId == null || pizzeriaId != (Long) manager.getPizzeria().getId())) {
+                pizzeriaId = (Long) manager.getPizzeria().getId();
+            }
+
+            System.out.println("Received a request for closing a pizzeria " + pizzeriaId);
+
+            boolean result = menuService.openPizzeria(pizzeriaId);
+            if(result){
+                resp.setStatusCode(GenericResponse.OK_CODE);
+                resp.setStatusReason(GenericResponse.OK_MESSAGE);
+                return resp.jsonfy();
+            }else{
+                resp.setStatusCode(GenericResponse.GENERIC_ERROR_CODE);
+                resp.setStatusReason(GenericResponse.GENERIC_ERROR_MESSAGE);
+                return resp.jsonfy();
+            }
+        }
+
+        resp.setStatusCode(GenericResponse.FAILED_AUTHENTICATION_CODE);
+        resp.setStatusReason(GenericResponse.FAILED_AUTHENTICATION_MESSAGE);
+        return resp.jsonfy();
+    }
     /**
      * API di aggiunta di una pizza sconosciuta, indicata cioè per ingredienti, ad un menù
      * @param idToken nell'header di un utente vendor da cui si estrae il pizzeriaId
