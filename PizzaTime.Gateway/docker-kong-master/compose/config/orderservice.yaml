@@ -1,0 +1,28 @@
+# a very minimal declarative config file
+_format_version: "2.1"
+_transform: true
+#I'm expecting 1 route 
+services:
+  - name: orderService
+    protocol: http
+    path: /api/v1
+    host: order-service.default.svc.cluster.local
+    port: 8080
+    routes:
+      - name: generic
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /order/*

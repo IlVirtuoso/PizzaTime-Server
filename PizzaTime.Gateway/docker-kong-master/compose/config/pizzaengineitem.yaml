@@ -1,0 +1,164 @@
+# a very minimal declarative config file
+_format_version: "2.1"
+_transform: true
+#I'm expecting 9 API
+services:
+  - name: pizzaenginedefinitive_item
+    protocol: http
+    path: /item/v1
+    host: host.docker.internal
+    port: 3042
+    routes:
+      - name: createMenu
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /createMenu
+      - name: addPizzaToMenu
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /addPizzaToMenu
+      - name: deletePizza
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /deletePizza
+      - name: addAdditionToMenu
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /addAdditionToMenu
+      - name: closePizzeria
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /closePizzeria
+      - name: getMenu
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getMenu
+      - name: createPizza
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /createPizza
+      - name: addPizzaByIngredientsToMenu
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /addPizzaByIngredientsToMenu
+      - name: openPizzeria
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /openPizzeria
