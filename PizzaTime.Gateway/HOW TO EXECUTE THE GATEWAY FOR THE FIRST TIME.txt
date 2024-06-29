@@ -1,3 +1,11 @@
+IF YOU WANT TO START GATEWAY IN DB-LESS MODE (KUBERNETES LIKE)
+SIMPLY USE 
+1. go to "docker-kong-master/compose" and open a terminal
+2. type "docker-compose up"
+
+
+
+
 START THE GATEWAY
 
 1. go to "docker-kong-master/compose" and open a terminal
