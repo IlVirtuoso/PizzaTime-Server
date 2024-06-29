@@ -137,6 +137,13 @@ public class itemController {
         return resp.jsonfy();
     }
 
+    /**
+     * API per aprire una pizzeria, una pizzeria aperta può essere trovata nella ricerca per 8 ore
+     * @param idToken
+     * @param pizzeriaId SOLO DEBUG
+     * @return
+     */
+    @GetMapping("/openPizzeria")
     public String openPizzeria(@RequestHeader(value = "Authorization", required = false) String idToken,
                                @RequestParam(value="pizzeriaId", required = false) Long pizzeriaId){
         //CALL THE VALIDATION OF THE JWT TO EXTRACT THE PIZZERIA ID
@@ -170,6 +177,13 @@ public class itemController {
         return resp.jsonfy();
     }
 
+    /**
+     * API per chiudere una pizzeria
+     * @param idToken
+     * @param pizzeriaId SOLO DEBUG
+     * @return
+     */
+    @GetMapping("/closePizzeria")
     public String closePizzeria(@RequestHeader(value = "Authorization", required = false) String idToken,
                                 @RequestParam(value="pizzeriaId", required = false) Long pizzeriaId){
         //CALL THE VALIDATION OF THE JWT TO EXTRACT THE PIZZERIA ID
@@ -186,7 +200,7 @@ public class itemController {
 
             System.out.println("Received a request for closing a pizzeria " + pizzeriaId);
 
-            boolean result = menuService.openPizzeria(pizzeriaId);
+            boolean result = menuService.closePizzeria(pizzeriaId);
             if(result){
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
