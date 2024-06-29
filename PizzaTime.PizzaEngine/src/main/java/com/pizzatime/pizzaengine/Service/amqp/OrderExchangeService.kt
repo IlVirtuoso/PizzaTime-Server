@@ -3,6 +3,7 @@ package com.pizzatime.pizzaengine.Service.amqp
 import com.pizzatime.pizzaengine.Component.OrderRows
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.AMQP.BasicProperties
+import com.rabbitmq.client.BuiltinExchangeType
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
 import org.apache.catalina.Engine
@@ -46,7 +47,7 @@ class OrderExchangeCommunicator(val amqpChannelProvider: AmqpChannelProvider, va
 
     init {
         queue = channel.queueDeclare().queue
-        channel.exchangeDeclarePassive(order_saga_exchange);
+        channel.exchangeDeclare(order_saga_exchange, BuiltinExchangeType.DIRECT);
         channel.queueBind(queue, order_saga_exchange, created_order_key)
         channel.queueBind(queue, order_saga_exchange, order_canceled)
         channel.queueBind(queue, order_saga_exchange, order_changed)
