@@ -58,6 +58,29 @@ public class MenuService {
         }
     }
 
+    public Boolean openPizzeria(long pizzeriaId){
+
+        Optional<Menu> mTarget = repoMenu.findByPizzeriaId(pizzeriaId);
+        if(mTarget.isPresent()){
+            mTarget.get().setAvaillable(true);
+            mTarget.get().setAvaillableTimestamp((System.currentTimeMillis()/1000));
+            return true;
+        }
+        return false;
+    }
+
+
+    public Boolean closePizzeria(long pizzeriaId){
+
+        Optional<Menu> mTarget = repoMenu.findByPizzeriaId(pizzeriaId);
+        if(mTarget.isPresent()){
+            mTarget.get().setAvaillable(false);
+            mTarget.get().setAvaillableTimestamp((long)-1);
+            return true;
+        }
+        return false;
+    }
+
     public GenericResponse addPizzaRow(long pizzeriaId, String commonName, long pizzaId, float cost ){
         GenericResponse resp = new GenericResponse();
 
@@ -320,64 +343,60 @@ public class MenuService {
 
         for(Long pizzeriaId : pizzeriaIds){
             float cost = 0;
-            for(OrderRows o : order.order) {
-                int i = 1;
-                if (o.pastryId != null && o.pizzaId != null) {
-                    long pastryId = o.pastryId;
-                    long pizzaId = o.pizzaId;
 
-                    System.out.println("Searching Pastry'cost for order's row " + i +" and pizzeria "+pizzeriaId );
-                    HashSet<MenuRowIngredient> pastryRow = repoMenu.findRowByIngredient(pastryId,pizzeriaId);
-
-                    if (pastryRow == null || pastryRow.isEmpty() || pastryRow.size()>1) {
-                        System.out.println("Failed to find a pastry for cost computation");
-                        return null;
-                    }else {
-                        for (MenuRowIngredient mri : pastryRow) {
-                            cost = cost + mri.getCost();
-                        }
-                    }
-
-
-
-                    System.out.println("Searching Pizza's cost for order's row " + i +" and pizzeria "+pizzeriaId );
-                    HashSet<MenuRowPizza> pizzaRow = repoMenu.findRowByPizza(pizzaId,pizzeriaId);
-
-                    if (pizzaRow == null || pizzaRow.isEmpty() || pizzaRow.size()>1) {
-                        System.out.println("Failed to find a pizza for cost computation");
-                        return null;
-                    }else {
-                        for (MenuRowPizza mrp : pizzaRow) {
-                            cost = cost + mrp.getCost();
-                        }
-                    }
-
-
-                    if (o.additions != null && !o.additions.isEmpty()) {
-                        List<Long> additions = o.additions;
-                        System.out.println("Searching additions' cost for order's row " + i+" and pizzeria "+pizzeriaId );
-
-                        for (Long ingrId : additions) {
-                            HashSet<MenuRowIngredient> additionRow = repoMenu.findRowByIngredient(ingrId,pizzeriaId);
-
-                            if (additionRow  == null || additionRow .isEmpty() || additionRow .size()>1) {
-                                System.out.println("Failed to find an ingredient for cost computation");
-                                return null;
-                            }else {
-                                for (MenuRowIngredient mri : additionRow) {
-                                    cost = cost + mri.getCost();
-                                }
+            Optional<Menu> opt = repoMenu.findByPizzeriaId(pizzeriaId);
+            // CHECK ON AVAILLABILITY
+            if(opt.isPresent() && opt.get().getAvaillable() && (opt.get().getAvaillableTimestamp() > ((System.currentTimeMillis() / 1000) + 28800))) {
+                for (OrderRows o : order.order) {
+                    int i = 1;
+                    if (o.pastryId != null && o.pizzaId != null) {
+                        long pastryId = o.pastryId;
+                        long pizzaId = o.pizzaId;
+                        System.out.println("Searching Pastry'cost for order's row " + i + " and pizzeria " + pizzeriaId);
+                        HashSet<MenuRowIngredient> pastryRow = repoMenu.findRowByIngredient(pastryId, pizzeriaId);
+                        if (pastryRow == null || pastryRow.isEmpty() || pastryRow.size() > 1) {
+                            System.out.println("Failed to find a pastry for cost computation");
+                            return null;
+                        } else {
+                            for (MenuRowIngredient mri : pastryRow) {
+                                cost = cost + mri.getCost();
                             }
+                        }
+                        System.out.println("Searching Pizza's cost for order's row " + i + " and pizzeria " + pizzeriaId);
+                        HashSet<MenuRowPizza> pizzaRow = repoMenu.findRowByPizza(pizzaId, pizzeriaId);
+                        if (pizzaRow == null || pizzaRow.isEmpty() || pizzaRow.size() > 1) {
+                            System.out.println("Failed to find a pizza for cost computation");
+                            return null;
+                        } else {
+                            for (MenuRowPizza mrp : pizzaRow) {
+                                cost = cost + mrp.getCost();
+                            }
+                        }
+                        if (o.additions != null && !o.additions.isEmpty()) {
+                            List<Long> additions = o.additions;
+                            System.out.println("Searching additions' cost for order's row " + i + " and pizzeria " + pizzeriaId);
 
+                            for (Long ingrId : additions) {
+                                HashSet<MenuRowIngredient> additionRow = repoMenu.findRowByIngredient(ingrId, pizzeriaId);
+
+                                if (additionRow == null || additionRow.isEmpty() || additionRow.size() > 1) {
+                                    System.out.println("Failed to find an ingredient for cost computation");
+                                    return null;
+                                } else {
+                                    for (MenuRowIngredient mri : additionRow) {
+                                        cost = cost + mri.getCost();
+                                    }
+                                }
+
+                            }
                         }
                     }
+                    i++;
                 }
-                i++;
+                PizzeriaCostForOrder data = new PizzeriaCostForOrder(pizzeriaId, cost);
+                targetPizzeriaAndCostIds.add(data);
             }
-            PizzeriaCostForOrder data = new PizzeriaCostForOrder(pizzeriaId,cost);
-            targetPizzeriaAndCostIds.add(data);
         }
-
         return targetPizzeriaAndCostIds;
     }
 
