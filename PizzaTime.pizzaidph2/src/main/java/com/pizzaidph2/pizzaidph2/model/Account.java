@@ -51,10 +51,10 @@ public class Account {
     private Boolean glutenPreference = false;
 
     @Expose
-    private Boolean isRegistered;
+    private Boolean isRegistered = false;
 
     @Expose
-    private Boolean isVendor;
+    private Boolean isVendor = false;
 
     @Expose
     //@Column(name="username, unique = true")

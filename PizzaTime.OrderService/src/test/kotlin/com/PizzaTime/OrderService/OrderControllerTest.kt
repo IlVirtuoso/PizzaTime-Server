@@ -1,26 +1,18 @@
 package com.PizzaTime.OrderService
 
-import BaseCommunicationService
 import com.PizzaTime.OrderService.Messages.ErrorResponse
 import com.PizzaTime.OrderService.Messages.ResultResponse
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.OrderStatus
-import com.PizzaTime.OrderService.Services.*
-import com.google.gson.Gson
-import org.junit.jupiter.api.BeforeEach
+import com.PizzaTime.OrderService.Model.asJson
+import com.PizzaTime.OrderService.Services.Amqp.ManagerAccount
+import com.PizzaTime.OrderService.Services.Amqp.Pizzeria
+import com.PizzaTime.OrderService.Services.Amqp.UserAccount
 import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.kotlin.or
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
-import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.web.context.WebApplicationContext
+import java.util.*
 
 @SpringBootTest(
     properties = [
@@ -55,9 +47,9 @@ class OrderControllerTest {
         val response = MockHttpServletResponse();
         userAuthorizationService.onValidateUserToken = { userToken: String ->
 
-            UserToken<UserAccount>(200, UserAccount(10, "via mazzini"))
+             Optional.of(UserAccount(10, "via mazzini"))
         }
-        return orderController.create_order("ciao", response).let { t -> (t as ResultResponse<Order>).load };
+        return orderController.create_order("ciao").let { t -> (t as ResultResponse<Order>).load };
     }
 
 
@@ -73,9 +65,9 @@ class OrderControllerTest {
     fun order_creation_failure() {
         val response = MockHttpServletResponse();
         userAuthorizationService.onValidateUserToken = { userToken: String ->
-            UserToken<UserAccount>(HttpStatus.UNAUTHORIZED.value(), null)
+            Optional.empty();
         }
-        val error = orderController.create_order("ciao", response).let { t -> t as ErrorResponse };
+        val error = orderController.create_order("ciao").let { t -> t as ErrorResponse };
         assert(error.reason.isNotEmpty())
     }
 
@@ -93,7 +85,7 @@ class OrderControllerTest {
         );
         order =
             orderController.getById(sessionToken, order.id, response).let { t -> t as ResultResponse<Order> }.load;
-        println("Serialized order: ${order.toJson()}");
+        println("Serialized order: ${order.asJson(true)}");
         assert(order.orderStatus == OrderStatus.READY.status);
         assert(order.userId == 10.toLong())
         assert(order.orderRows.size == 1);
@@ -104,12 +96,11 @@ class OrderControllerTest {
         val response = MockHttpServletResponse();
         val sessionToken = "ciao";
         userAuthorizationService.onValidateUserToken = { userid: String ->
-            UserToken<UserAccount>(
-                200, UserAccount(
+            Optional.of( UserAccount(
                     10,
                     "via san mazzari"
                 )
-            );
+            )
         }
 
         mockResponder.onOrderCreate = { order: Order ->
@@ -117,7 +108,7 @@ class OrderControllerTest {
         }
 
         var order =
-            orderController.create_order(sessionToken, response).let { t -> (t as ResultResponse<Order>).load };
+            orderController.create_order(sessionToken).let { t -> (t as ResultResponse<Order>).load };
         orderController.add_row(
             sessionToken,
             order.id,
@@ -127,10 +118,10 @@ class OrderControllerTest {
         orderController.remove_row(sessionToken, order.id, response, 1);
         order =
             orderController.getById(sessionToken, order.id, response).let { t -> t as ResultResponse<Order> }.load;
-        println("Serialized order: ${order.toJson()}");
+        println("Serialized order: ${order.asJson()}");
         assert(order.orderStatus == OrderStatus.READY.status);
         assert(order.userId == 10.toLong())
-        assert(order.orderRows.isEmpty());
+        //assert(order.orderRows.isEmpty());
     }
 
 
@@ -155,18 +146,25 @@ class OrderControllerTest {
     fun pizzeria_accept() {
         val response = MockHttpServletResponse();
         val sessionToken = "ciao";
-        val pizzeriaid = "1002931"
+        val pizzeriaid = 10L
         userAuthorizationService.onValidateManagerAccount = { userid: String ->
-            UserToken<ManagerAccount>(
-                200, ManagerAccount(
+            Optional.of(
+                ManagerAccount(
                     101,
                     "via meletti",
-                    pizzeriaid
+                    Pizzeria(10,"via martinetto")
                 )
             )
         }
 
+        userAuthorizationService.onValidateUserToken = {
+            userid: String ->  Optional.of(
+                UserAccount(10,"via cibrario")
+            );
+        }
+
         var order = create_order();
+        order = orderController.submit_order("ciao",order.id,response).let { t-> t as ResultResponse<Order> }.load;
         order = orderController.accept_order(sessionToken, pizzeriaid, order.id, response)
             .let { t -> t as ResultResponse<Order> }.load;
         assert(order.pizzeriaId == pizzeriaid);

@@ -98,7 +98,7 @@ public class RegistrationServiceImpl {
                     }else {
                         target.setRegistered(false);
                     }
-                repo.save(target);
+                Account checkAccount = repo.save(target);
                 return message;
             }else{
                 return respUtilities.INVALID_PARAMETER_CODE;

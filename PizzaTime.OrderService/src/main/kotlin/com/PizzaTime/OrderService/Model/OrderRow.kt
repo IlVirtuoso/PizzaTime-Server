@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose
 import jakarta.persistence.*
 
 @Entity
-class OrderRow : IJsonSerializable{
+class OrderRow{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null

@@ -1,0 +1,699 @@
+{
+    "certificates": null,
+    "consumers": null,
+    "plugins": [
+        {
+            "config": {
+                "add": {
+                    "body": [],
+                    "headers": [],
+                    "querystring": []
+                },
+                "append": {
+                    "body": [],
+                    "headers": [],
+                    "querystring": []
+                },
+                "http_method": null,
+                "remove": {
+                    "body": [],
+                    "headers": [],
+                    "querystring": []
+                },
+                "rename": {
+                    "body": [],
+                    "headers": [],
+                    "querystring": []
+                },
+                "replace": {
+                    "body": [],
+                    "headers": [],
+                    "querystring": [],
+                    "uri": "\\$request_path"
+                }
+            },
+            "enabled": false,
+            "id": "efa5aa70-4a0b-4af0-8615-7ed95140f8c1",
+            "name": "request-transformer"
+        }
+    ],
+    "services": [
+        {
+            "id": "f2fe6a58-b0d0-44e7-a94f-a7f250c8c263",
+            "name": "idpdefinitive_account",
+            "host": "idp-service.default.svc.cluster.local",
+            "path": "/account/v1",
+            "port": 2042,
+            "protocol": "http",
+            "connect_timeout": 60000,
+            "read_timeout": 60000,
+            "write_timeout": 60000,
+            "routes": [
+                {
+                    "id": "32f7fbf6-6d14-4765-a2f8-e731c203a7be",
+                    "paths": [
+                        "/setAccountInfo"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "5e228700-d22a-4a9c-a6ad-c7e49ad4f336",
+                    "paths": [
+                        "/socialLogin"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "6ea547b6-f6c7-48be-9b27-9ebe74d7da0e",
+                    "paths": [
+                        "/verifyJWT"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "7949424a-7c79-47c8-bc4e-4cf5675a5fe2",
+                    "paths": [
+                        "/changePassword"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "85bd0141-c134-4b6b-bc79-7e3e1ad1e7d0",
+                    "paths": [
+                        "/getHelloWorld"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "8921bacc-af9c-4048-9917-46df5a533086",
+                    "paths": [
+                        "/chargeOnBalance"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "946b1bf5-74f4-4f75-a028-bc29d214be2d",
+                    "paths": [
+                        "/getAccountInfo"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "991f3055-c27d-40a9-94d4-14967dc20372",
+                    "paths": [
+                        "/rechargeBalance"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "dadabc0c-b1ec-483e-833a-06ef89876a2d",
+                    "paths": [
+                        "/register"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "df867ad2-5e32-48d2-bdd6-32754242f9e0",
+                    "paths": [
+                        "/deleteAccount"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "e1a47b0d-358b-4adc-a049-3f0145e3f5ac",
+                    "paths": [
+                        "/getJWT"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "e8a68544-85f9-4c05-8d2d-5e8e40de3208",
+                    "paths": [
+                        "/login"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "f85b6704-e937-46f2-9d2c-1b66fae1e065",
+                    "paths": [
+                        "/finalizeRegistration"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "48f949bd-aedc-4412-bf21-96adad99676a",
+            "name": "idpdefinitive_pizzeria",
+            "host": "idp-service.default.svc.cluster.local",
+            "path": "/pizzeria/v1",
+            "port": 2042,
+            "protocol": "http",
+            "connect_timeout": 60000,
+            "read_timeout": 60000,
+            "write_timeout": 60000,
+            "routes": [
+                {
+                    "id": "7caeb8a8-44b1-4013-9973-16f105460ff4",
+                    "paths": [
+                        "/getPizzeriaInfo"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "96bb847b-e4c4-44f2-aaee-c7ee007da49c",
+                    "paths": [
+                        "/createPizzeria"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "c9eb2393-1ca8-4de3-b95c-2d53447d67eb",
+            "name": "idpdemo",
+            "host": "host.docker.internal",
+            "port": 2042,
+            "protocol": "http",
+            "connect_timeout": 60000,
+            "read_timeout": 60000,
+            "write_timeout": 60000,
+            "routes": [
+                {
+                    "id": "993fc207-a845-4069-a5e8-c6619313c1cf",
+                    "paths": [
+                        "/helloIDP"
+                    ],
+                    "strip_path": true,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "5494999f-326c-4476-9016-c451e6addfa6",
+            "name": "orderService",
+            "host": "order-service.default.svc.cluster.local",
+            "path": "/api/v1/order",
+            "port": 8080,
+            "protocol": "http",
+            "connect_timeout": 60000,
+            "read_timeout": 60000,
+            "write_timeout": 60000,
+            "routes": [
+                {
+                    "id": "5ee95f6e-d98b-4afb-8270-ba4ea394a155",
+                    "paths": [
+                        "/*"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "DELETE"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "f6dc5cb9-fa47-4b6d-8389-597eba754d73",
+            "name": "pizzaenginedefinitive_item",
+            "host": "engine-service.default.svc.cluster.local",
+            "path": "/item/v1",
+            "port": 3042,
+            "protocol": "http",
+            "connect_timeout": 60000,
+            "read_timeout": 60000,
+            "write_timeout": 60000,
+            "routes": [
+                {
+                    "id": "0433b5b1-2371-4329-b003-3e32caea6fda",
+                    "paths": [
+                        "/createMenu"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "139654e7-6e2c-42b1-9d65-5b1a15f21d93",
+                    "paths": [
+                        "/addPizzaToMenu"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "2bfc415c-5081-4241-9d2c-bf7258f1f0cd",
+                    "paths": [
+                        "/deletePizza"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "51487dc2-bc13-48de-a2f5-f0958a95c5cc",
+                    "paths": [
+                        "/addAdditionToMenu"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "5d31c39f-5e7a-4271-9348-851820fc2dda",
+                    "paths": [
+                        "/closePizzeria"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "61132904-465c-43d6-9778-ac62caaa3129",
+                    "paths": [
+                        "/getMenu"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "a55d8b02-597f-4382-948b-95bb60570c1c",
+                    "paths": [
+                        "/createPizza"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "b4e92609-f6a0-4082-a4df-1730904dd142",
+                    "paths": [
+                        "/addPizzaByIngredientsToMenu"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "fc0cb174-02da-4264-a566-ef8c6f89daae",
+                    "paths": [
+                        "/openPizzeria"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "1ebe8a20-c1d5-41ad-94ad-49acf79e9817",
+            "name": "pizzaenginedefinitive_search",
+            "host": "engine-service.default.svc.cluster.local",
+            "path": "/search/v1",
+            "port": 3042,
+            "protocol": "http",
+            "connect_timeout": 60000,
+            "read_timeout": 60000,
+            "write_timeout": 60000,
+            "routes": [
+                {
+                    "id": "0715d707-7606-4e11-a040-66b93f9b25fc",
+                    "paths": [
+                        "/getAllIngredient"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "180ae292-ab98-4102-bd30-7c1c54439b7c",
+                    "paths": [
+                        "/searchMenuForAddition"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "2b1a7269-0aff-4d21-96b4-3037a25545fb",
+                    "paths": [
+                        "/getAllSeasoning"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "a73770d9-4ec4-4f29-989f-1d12257a98b5",
+                    "paths": [
+                        "/searchMenuForPizza"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "b1c84556-8826-4b6b-9aa4-3b34470d4744",
+                    "paths": [
+                        "/searchPizzeriaForOrder"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "b5037cc6-a9d9-4d01-8ec1-ac91a70a23f7",
+                    "paths": [
+                        "/getAllPastry"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                },
+                {
+                    "id": "b85e4979-1da5-435f-b570-83e8d3fd70a1",
+                    "paths": [
+                        "/getMenuForOrder"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "POST"
+                    ]
+                },
+                {
+                    "id": "fadff6e9-9603-4f90-9d10-9652f6ad88fb",
+                    "paths": [
+                        "/getAllPizza"
+                    ],
+                    "strip_path": false,
+                    "preserve_host": false,
+                    "regex_priority": 0,
+                    "hosts": null,
+                    "protocols": [
+                        "http",
+                        "https"
+                    ],
+                    "methods": [
+                        "GET"
+                    ]
+                }
+            ]
+        }
+    ],
+    "upstreams": null
+}

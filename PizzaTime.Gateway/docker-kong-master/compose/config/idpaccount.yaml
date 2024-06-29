@@ -1,0 +1,232 @@
+# a very minimal declarative config file
+_format_version: "2.1"
+_transform: true
+#I'm expecting 13 API (exclued Helloworld) 
+services:
+  - name: idpdefinitive_account
+    protocol: http
+    path: /account/v1
+    host: host.docker.internal
+    port: 2042
+    routes:
+      - name: setAccountInfo
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /setAccountInfo
+      - name: socialLogin
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /socialLogin
+      - name: verifyJWT
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /verifyJWT
+      - name: changePassword
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /changePassword
+      - name: chargeOnBalance
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /chargeOnBalance
+      - name: getAccountInfo
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getAccountInfo
+      - name: rechargeBalance
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /rechargeBalance
+      - name: register
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /register
+      - name: deleteAccount
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /deleteAccount
+      - name: getJWT
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getJWT
+      - name: login
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /login
+      - name: finalizeRegistration
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /finalizeRegistration
+      - name: registerComplete
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /registerComplete

@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pizzatime.engine
+  labels:
+    app: pizzatime.engine
+spec:
+  hostname: engine
+  containers:
+    - name: pizzatimeengine
+      image: pizzatime.engine:latest
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: amqp.host
+          value: brokerservice.default.svc.cluster.local
+        - name: amqp.username
+          value: guest 
+        - name: amqp.password
+          value: guest
+        - name: server.port
+          value: "8080"
+      ports:
+        - name: https 
+          containerPort: 8080
+      resources:
+        limits:
+          cpu: "1"
+          memory: 2Gi
+        requests:
+          cpu: "500m"
+          memory: 1Gi
+    - name: database
+      image: docker.io/mysql
+      ports: 
+      - name: mysql 
+        containerPort: 3306
+      resources:
+        limits:
+          cpu: "50m"
+          memory: 2Gi
+        requests:
+          cpu: "50m"
+          memory: 1Gi
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: pizzadatabase
+      volumeMounts:
+      - name:  database-volume
+        mountPath: /var/lib/mysql
+     
+  volumes:
+  - name:  database-volume
+    persistentVolumeClaim:
+      claimName: engine-pvc
+  restartPolicy: OnFailure
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: engine-service
+spec:
+  type: ClusterIP
+  selector:
+    app: pizzatime.engine
+  ports:
+  - port: 8080
+    targetPort: 8080
