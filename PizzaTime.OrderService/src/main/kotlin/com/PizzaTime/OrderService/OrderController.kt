@@ -1,28 +1,28 @@
 package com.PizzaTime.OrderService
 
-import com.PizzaTime.OrderService.Messages.ErrorResponse
-import com.PizzaTime.OrderService.Messages.GenericOrderResponse
-import com.PizzaTime.OrderService.Messages.ResponseMessage
+import com.PizzaTime.OrderService.Messages.*
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.OrderRow
 import com.PizzaTime.OrderService.Model.OrderStatus
 import com.PizzaTime.OrderService.Services.*
+import com.PizzaTime.OrderService.Services.Amqp.ICommunicationService
+import com.PizzaTime.OrderService.Services.Amqp.IUserAuthorizationService
+import com.PizzaTime.OrderService.Services.Amqp.ManagerAccount
+import com.PizzaTime.OrderService.Services.Amqp.UserAccount
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
-import java.util.*
 import kotlin.collections.HashSet
 
 
-@Controller
+@RestController
 class OrderController(
     var orderService: IOrderService,
     var communicationService: ICommunicationService,
     var userAuthorizationService: IUserAuthorizationService,
+    var response: HttpServletResponse
 ) {
 
     private class InvalidToken : Throwable();
@@ -30,35 +30,35 @@ class OrderController(
     private class OrderRowNotExist : Throwable();
 
 
-    private fun <T> checkSequence(httpServletResponse: HttpServletResponse, fn: () -> T): GenericOrderResponse {
+    private fun <T> checkSequence(fn: () -> T): GenericOrderResponse {
         try {
             val result = fn();
-            return ResponseMessage(result)
+            return ResultResponse(result);
         } catch (_: OrderNotExist) {
-            httpServletResponse.status = HttpStatus.NOT_FOUND.value()
+            response.status = HttpStatus.NOT_FOUND.value()
             return ErrorResponse("Order doesn't exist")
         } catch (_: OrderRowNotExist) {
-            httpServletResponse.status = HttpStatus.NOT_FOUND.value()
+            response.status = HttpStatus.NOT_FOUND.value()
             return ErrorResponse("Order row doesn't exist")
         } catch (_: InvalidToken) {
-            httpServletResponse.status = HttpStatus.UNAUTHORIZED.value()
+            response.status = HttpStatus.UNAUTHORIZED.value()
             return ErrorResponse("InvalidToken")
         } catch (ex: IllegalArgumentException) {
-            httpServletResponse.status = HttpStatus.BAD_REQUEST.value()
+            response.status = HttpStatus.BAD_REQUEST.value()
             return ErrorResponse(ex.localizedMessage)
         } catch (ex: Exception) {
-            httpServletResponse.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+            response.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
             return ErrorResponse(ex.message!!)
         }
 
     }
 
-    fun userAuthStep(sessionToken: String): UserToken<UserAccount> {
+    fun userAuthStep(sessionToken: String): UserAccount {
         val token = userAuthorizationService.validateUserIdToken(sessionToken);
-        if (token.statusCode == HttpServletResponse.SC_UNAUTHORIZED) {
+        if (token.isEmpty()) {
             throw InvalidToken();
         }
-        return token;
+        return token.get();
     }
 
     fun orderRetrieveStep(orderId: String): Order {
@@ -69,20 +69,22 @@ class OrderController(
         return order.get();
     }
 
-    fun adminAuthStep(sessionToken: String): UserToken<ManagerAccount> {
+    fun adminAuthStep(sessionToken: String): ManagerAccount {
         val token = userAuthorizationService.validateManagerIdToken(sessionToken);
-        if (token.statusCode == HttpServletResponse.SC_UNAUTHORIZED) {
+        if (token.isEmpty()) {
             throw InvalidToken();
         }
-        return token;
+        return token.get();
     }
 
+    /***
+     * @return an order by id
+     */
     @GetMapping("/api/v1/order/{id}")
     fun getById(
         @RequestHeader(HttpHeaders.AUTHORIZATION) sessionToken: String,
         @PathVariable id: String,
-        httpServletResponse: HttpServletResponse,
-    ): GenericOrderResponse = checkSequence(httpServletResponse) {
+    ): GenericOrderResponse = checkSequence{
         val token = userAuthStep(sessionToken);
         val order = orderRetrieveStep(id);
         return@checkSequence order;
@@ -91,13 +93,12 @@ class OrderController(
 
     @PostMapping("/api/v1/order/create")
     fun create_order(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) sessionToken: String,
-        @Autowired response: HttpServletResponse,
-    ): GenericOrderResponse = checkSequence(response) {
+        @RequestHeader(HttpHeaders.AUTHORIZATION) sessionToken: String
+    ): GenericOrderResponse = checkSequence {
         val token = userAuthStep(sessionToken);
         var order = Order();
-        order.userId = token.account!!.id;
-        order.address = token.account!!.address;
+        order.userId = token.id;
+        order.address = token.address;
         order = orderService.save(order);
         communicationService.notifyOrderCreate(order);
         return@checkSequence order;
@@ -108,10 +109,9 @@ class OrderController(
     fun get_pizzeria_orders(
         @RequestHeader(HttpHeaders.AUTHORIZATION) adminToken: String,
         @PathVariable pizzeriaId: String,
-        httpServletResponse: HttpServletResponse,
+
     ):
-            GenericOrderResponse = checkSequence(httpServletResponse)
-    {
+            GenericOrderResponse = checkSequence{
         val token = adminAuthStep(pizzeriaId);
         val orders = orderService.getOrdersForPizzeria(pizzeriaId);
         return@checkSequence orders;
@@ -121,8 +121,7 @@ class OrderController(
     fun get_history(
         @RequestHeader(HttpHeaders.AUTHORIZATION) adminToken: String,
         @PathVariable pizzeriaId: String,
-        httpServletResponse: HttpServletResponse,
-    ) : GenericOrderResponse = checkSequence(httpServletResponse) {
+    ) : GenericOrderResponse = checkSequence {
         val token = adminAuthStep(pizzeriaId);
         val orders = orderService.getOrdersForPizzeria(pizzeriaId);
     }
@@ -132,8 +131,8 @@ class OrderController(
     fun submit_order(
         @RequestHeader(HttpHeaders.AUTHORIZATION) userToken: String,
         @PathVariable orderId: String,
-        httpServletResponse: HttpServletResponse,
-    ) = checkSequence(httpServletResponse) {
+
+    ) = checkSequence {
         val token = userAuthStep(orderId);
         val order = orderRetrieveStep(orderId);
         order.orderStatus = OrderStatus.QUEUED.status;
@@ -149,9 +148,8 @@ class OrderController(
     fun add_row(
         @RequestHeader token: String,
         @PathVariable orderId: String,
-        @Autowired response: HttpServletResponse,
         @RequestBody orderRow: OrderRowRequest,
-    ): GenericOrderResponse = checkSequence(response) {
+    ): GenericOrderResponse = checkSequence {
         val token = userAuthStep(token);
         var order = orderRetrieveStep(orderId);
         if(order.orderStatus != OrderStatus.READY.status) {
@@ -168,13 +166,12 @@ class OrderController(
     }
 
 
-    @DeleteMapping("/api/v1/order/{orderId}/removeRow")
+    @DeleteMapping("/api/v1/order/{orderId}/{lineId}/removeRow")
     fun remove_row(
         @RequestHeader token: String,
         @PathVariable orderId: String,
-        httpServletResponse: HttpServletResponse,
-        @RequestBody lineId: Long,
-    ): GenericOrderResponse = checkSequence(httpServletResponse) {
+        @PathVariable lineId: Long,
+    ): GenericOrderResponse = checkSequence{
         userAuthStep(token);
         val order = orderRetrieveStep(orderId);
         if(order.orderStatus != OrderStatus.READY.status) {
@@ -189,12 +186,11 @@ class OrderController(
     }
 
 
-    @PostMapping("api/v1/order/{orderId}/cancel")
+    @PostMapping("/api/v1/order/{orderId}/cancel")
     fun cancel_order(
         @RequestHeader token: String,
         @PathVariable orderId: String,
-        httpServletResponse: HttpServletResponse,
-    ): GenericOrderResponse = checkSequence(httpServletResponse) {
+    ): GenericOrderResponse = checkSequence{
         userAuthStep(token);
         val order = orderRetrieveStep(orderId);
         if(order.orderStatus != OrderStatus.QUEUED.status) {
@@ -210,8 +206,7 @@ class OrderController(
     fun refuse_order(
         @RequestHeader token: String,
         @PathVariable orderId: String,
-        httpServletResponse: HttpServletResponse,
-    ): GenericOrderResponse = checkSequence(httpServletResponse) {
+    ): GenericOrderResponse = checkSequence {
         adminAuthStep(token);
         val order = orderRetrieveStep(orderId);
         if (order.orderStatus != OrderStatus.QUEUED.status) {
@@ -225,10 +220,9 @@ class OrderController(
     @PostMapping("/api/v1/order/{pizzeriaId}/{orderId}/accept")
     fun accept_order(
         @RequestHeader(HttpHeaders.AUTHORIZATION) adminToken: String,
-        @PathVariable pizzeriaId: String,
+        @PathVariable pizzeriaId: Long,
         @PathVariable orderId: String,
-        @Autowired httpServletResponse: HttpServletResponse,
-    ): GenericOrderResponse = checkSequence(httpServletResponse) {
+    ): GenericOrderResponse = checkSequence{
         val token = adminAuthStep(adminToken);
         var order = orderRetrieveStep(orderId);
         if (order.orderStatus != OrderStatus.QUEUED.status) {

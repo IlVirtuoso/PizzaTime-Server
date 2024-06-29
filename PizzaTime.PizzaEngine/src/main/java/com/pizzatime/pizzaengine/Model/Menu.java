@@ -27,6 +27,12 @@ public class Menu {
     @ManyToMany
     private Set<MenuRowIngredient> ingrRows;
 
+    @Expose
+    private Boolean availlable = false;
+
+    @Expose
+    private Long availlableTimestamp = (long)-1;
+
     public Long getId() {
         return id;
     }
@@ -59,4 +65,19 @@ public class Menu {
         this.ingrRows = ingrRows;
     }
 
+    public Boolean getAvaillable() {
+        return availlable;
+    }
+
+    public Long getAvaillableTimestamp() {
+        return availlableTimestamp;
+    }
+
+    public void setAvaillable(Boolean availlable) {
+        this.availlable = availlable;
+    }
+
+    public void setAvaillableTimestamp(Long availlableTimestamp) {
+        this.availlableTimestamp = availlableTimestamp;
+    }
 }

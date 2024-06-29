@@ -3,18 +3,17 @@ package com.pizzatime.pizzaengine.Controller;
 
 import com.google.gson.Gson;
 import com.pizzatime.pizzaengine.Component.GenericResponse;
+import com.pizzatime.pizzaengine.Component.Order;
 import com.pizzatime.pizzaengine.Component.PizzeriaCostForOrder;
 import com.pizzatime.pizzaengine.Model.Menu;
-import com.pizzatime.pizzaengine.Service.MenuService;
-import com.pizzatime.pizzaengine.Service.PizzaEngineService;
-import com.pizzatime.pizzaengine.Service.PizzaService;
+import com.pizzatime.pizzaengine.Service.*;
+import com.pizzatime.pizzaengine.Service.amqp.IUserAuthorizationService;
+import com.pizzatime.pizzaengine.Service.amqp.ManagerAccount;
+import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/search/v1")
@@ -29,18 +28,16 @@ public class SearchEngineController {
     @Autowired
     MenuService menuService;
 
+    @Autowired
+    GenericService genService;
 
-    public class OrderRows{
-        public Long pastryId;
-        public Long pizzaId;
-        public ArrayList<Long> additions;
-        public int quantity;
-    }
+    @Autowired
+    IUserAuthorizationService authService;
 
-    public class Order{
-        public Long pizzeriaId;
-        public ArrayList<OrderRows> order;
-    }
+    public static final boolean debug = false;
+
+
+
 
 
     /**
@@ -116,12 +113,43 @@ public class SearchEngineController {
      * @return un array contenente i dettagli dell'ordine richiesto
      */
     @PostMapping("getMenuForOrder")
-    public List<Menu> getMenuForOrder(@RequestBody() String json){
+    public String getMenuForOrder(@RequestHeader(value = "Authorization", required = false) String idToken,
+            @RequestBody() String json) {
+
+        GenericResponse resp = new GenericResponse();
+
         Gson gson = new Gson();
         Order order = gson.fromJson(json, Order.class);
-        return menuService.getMenuForOrder(order);
-    }
 
+        Optional<ManagerAccount> mng = authService.validateManagerIdToken(idToken);
+        if (mng.isPresent()) {
+            ManagerAccount manager = mng.get();
+
+            if(!debug && (order.pizzeriaId == null || order.pizzeriaId != (Long) manager.getPizzeria().getId())) {
+                order.pizzeriaId = (Long) manager.getPizzeria().getId();
+            }
+
+            Menu m = genService.getMenuFromPizzeriaInfoInternal(order.pizzeriaId);
+
+            System.out.println("Received a request for pizzeria" + (Long) manager.getPizzeria().getId() + " with menu:\n" + m.toString());
+            List<Menu> menu= menuService.getMenuForOrder(order);
+            if(menu!=null && !menu.isEmpty()){
+                resp.setStatusCode(GenericResponse.OK_CODE);
+                resp.setStatusReason(GenericResponse.OK_MESSAGE);
+                resp.setOrderData(menu);
+                return resp.jsonfy();
+            }else {
+                resp.setStatusCode(GenericResponse.INVALID_PARAMETER_CODE);
+                resp.setStatusReason(GenericResponse.INVALID_PARAMETER_MESSAGE);
+                resp.setOrderData(menu);
+                return resp.jsonfy();
+            }
+        }
+
+        resp.setStatusCode(GenericResponse.FAILED_AUTHENTICATION_CODE);
+        resp.setStatusReason(GenericResponse.FAILED_AUTHENTICATION_MESSAGE);
+        return resp.jsonfy();
+    }
 
     /** INTERNAL USE */
 
@@ -194,8 +222,15 @@ public class SearchEngineController {
     }
 
     @GetMapping("/debugSearchMenuForPizza")
-    public String debugSearchMenuForPizza(@RequestParam(name="pizzaId") long pizzaId){
-        menuService.debugSearchMenuForPizza(pizzaId);
+    public String debugSearchMenuForPizza(@RequestHeader(value = "Authorization", required = false) String idToken,
+                                              @RequestParam(name="pizzaId") long pizzaId){
+        Optional<ManagerAccount> mng= authService.validateManagerIdToken(idToken);
+        if(mng.isPresent()){
+            ManagerAccount manager = mng.get();
+            Menu m = genService.getMenuFromPizzeriaInfoInternal((Long)manager.getPizzeria().getId());
+            System.out.println(m.toString());
+            menuService.debugSearchMenuForPizza(pizzaId);
+        }
         return null;
     }
 

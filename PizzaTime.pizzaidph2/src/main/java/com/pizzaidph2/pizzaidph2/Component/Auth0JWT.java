@@ -166,7 +166,7 @@ public class Auth0JWT {
             Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) publicrsa, (RSAPrivateKey) privatersa);
 
             if(isSessionID) {
-                //This create a sessionID for a user, which is a particular JWT for user session
+                //This creates a sessionID for a user, which is a particular JWT for user session
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 ZoneId zoneId = ZoneId.systemDefault();
                 if(account.getVendor()!=null && account.getVendor()) {
@@ -195,7 +195,7 @@ public class Auth0JWT {
                             .sign(algorithm);
                 }
             }else{
-                //This create a common JWT for a certain user. It is useful to pass data to BE
+                //This creates a common JWT for a certain user. It is useful to pass data to BE
                 if(account.getVendor()!=null && account.getVendor()) {
                     // create a session token for a Pizzeria manager
                     long pizzaID = generalUtilities.findPizzeriaByManager(account.getId());
@@ -269,6 +269,40 @@ public class Auth0JWT {
                     .withClaimPresence("iat")
                     .withClaimPresence("exp")
                     .withClaimPresence("sub")
+                    .build();
+            decodedJWT = verifier.verify(token);
+            return decodedJWT;
+        } catch (JWTVerificationException exception) {
+            System.out.println("WARNING: Invalid signature or claims");
+            return null;
+        }
+    }
+
+
+    /**
+     * Metodo di verifica completa di un generico JWT per un manager di pizzerie
+     * Regole di validità:
+     *  - Il JWT è stato staccato in uan data passata "iat" < NOW
+     *  - Il JWT non è ancora scaduto > NOW
+     *  - (non valutato) Il token non è stato ancora usato. "nbf" < NOW
+     * @param token
+     * @return un JWT decodificato o "null" se la validazione è fallita
+     */
+    public DecodedJWT verifyManagerJWT(String token){
+        DecodedJWT decodedJWT;
+        try {
+            // We need only the public key to verify the signature
+            Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) publicrsa, null);
+            JWTVerifier verifier = JWT.require(algorithm)
+                    // specify any specific claim validations
+                    .withIssuer(property.getIssuer())
+                    .acceptLeeway(1)   //1 sec for nbf and iat, if you leave only this parameter it applies also to exp
+                    .acceptExpiresAt(2)   //5 secs for exp
+                    .withClaimPresence("iat")
+                    .withClaimPresence("exp")
+                    .withClaimPresence("sub")
+                    .withClaimPresence("pizzeriaID")
+                    .withClaim("isVendor",true)
                     .build();
             decodedJWT = verifier.verify(token);
             return decodedJWT;
