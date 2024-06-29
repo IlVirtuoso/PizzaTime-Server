@@ -6,7 +6,7 @@ RUN gradle bootWar
 
 FROM docker.io/bellsoft/liberica-openjre-debian:latest as RUNNER
 WORKDIR app
-COPY --from=builder /build/build/OrderService.war .
+COPY --from=builder /build/build/libs/OrderService.war .
 ENV server.port=8080
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app/OrderService.war"]

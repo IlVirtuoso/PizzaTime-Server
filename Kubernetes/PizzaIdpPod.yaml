@@ -50,7 +50,7 @@ spec:
   - name:  database-volume
     persistentVolumeClaim:
       claimName: idp-pvc
-  restartPolicy: Always
+  restartPolicy: OnFailure
 
 
 ---

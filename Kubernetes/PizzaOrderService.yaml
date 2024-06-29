@@ -51,7 +51,7 @@ spec:
   - name:  database-volume
     persistentVolumeClaim:
       claimName: ord-pvc
-  restartPolicy: Always
+  restartPolicy: OnFailure
 
 
 ---
