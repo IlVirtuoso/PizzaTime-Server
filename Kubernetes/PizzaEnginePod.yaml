@@ -17,6 +17,8 @@ spec:
           value: guest 
         - name: amqp.password
           value: guest
+        - name: server.port
+          value: "8080"
       ports:
         - name: https 
           containerPort: 8080
@@ -59,7 +61,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: enigne-service
+  name: engine-service
 spec:
   type: ClusterIP
   selector:
