@@ -41,7 +41,7 @@
         {
             "id": "f2fe6a58-b0d0-44e7-a94f-a7f250c8c263",
             "name": "idpdefinitive_account",
-            "host": "idp-service.default.svc.cluster.local",
+            "host": "host.docker.internal",
             "path": "/account/v1",
             "port": 2042,
             "protocol": "http",
@@ -275,7 +275,7 @@
         {
             "id": "48f949bd-aedc-4412-bf21-96adad99676a",
             "name": "idpdefinitive_pizzeria",
-            "host": "idp-service.default.svc.cluster.local",
+            "host": "host.docker.internal",
             "path": "/pizzeria/v1",
             "port": 2042,
             "protocol": "http",
@@ -348,41 +348,9 @@
             ]
         },
         {
-            "id": "5494999f-326c-4476-9016-c451e6addfa6",
-            "name": "orderService",
-            "host": "order-service.default.svc.cluster.local",
-            "path": "/api/v1/order",
-            "port": 8080,
-            "protocol": "http",
-            "connect_timeout": 60000,
-            "read_timeout": 60000,
-            "write_timeout": 60000,
-            "routes": [
-                {
-                    "id": "5ee95f6e-d98b-4afb-8270-ba4ea394a155",
-                    "paths": [
-                        "/*"
-                    ],
-                    "strip_path": false,
-                    "preserve_host": false,
-                    "regex_priority": 0,
-                    "hosts": null,
-                    "protocols": [
-                        "http",
-                        "https"
-                    ],
-                    "methods": [
-                        "GET",
-                        "POST",
-                        "DELETE"
-                    ]
-                }
-            ]
-        },
-        {
             "id": "f6dc5cb9-fa47-4b6d-8389-597eba754d73",
             "name": "pizzaenginedefinitive_item",
-            "host": "engine-service.default.svc.cluster.local",
+            "host": "host.docker.internal",
             "path": "/item/v1",
             "port": 3042,
             "protocol": "http",
@@ -459,23 +427,6 @@
                     ]
                 },
                 {
-                    "id": "5d31c39f-5e7a-4271-9348-851820fc2dda",
-                    "paths": [
-                        "/closePizzeria"
-                    ],
-                    "strip_path": false,
-                    "preserve_host": false,
-                    "regex_priority": 0,
-                    "hosts": null,
-                    "protocols": [
-                        "http",
-                        "https"
-                    ],
-                    "methods": [
-                        "GET"
-                    ]
-                },
-                {
                     "id": "61132904-465c-43d6-9778-ac62caaa3129",
                     "paths": [
                         "/getMenu"
@@ -525,30 +476,13 @@
                     "methods": [
                         "POST"
                     ]
-                },
-                {
-                    "id": "fc0cb174-02da-4264-a566-ef8c6f89daae",
-                    "paths": [
-                        "/openPizzeria"
-                    ],
-                    "strip_path": false,
-                    "preserve_host": false,
-                    "regex_priority": 0,
-                    "hosts": null,
-                    "protocols": [
-                        "http",
-                        "https"
-                    ],
-                    "methods": [
-                        "GET"
-                    ]
                 }
             ]
         },
         {
             "id": "1ebe8a20-c1d5-41ad-94ad-49acf79e9817",
             "name": "pizzaenginedefinitive_search",
-            "host": "engine-service.default.svc.cluster.local",
+            "host": "host.docker.internal",
             "path": "/search/v1",
             "port": 3042,
             "protocol": "http",

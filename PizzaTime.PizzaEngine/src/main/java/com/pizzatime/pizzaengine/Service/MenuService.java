@@ -20,6 +20,8 @@ import java.util.*;
 @Service
 public class MenuService {
 
+    private static final int searchExpiration = 28800;
+
     @Autowired
     GenericService genService;
 
@@ -64,6 +66,7 @@ public class MenuService {
         if(mTarget.isPresent()){
             mTarget.get().setAvaillable(true);
             mTarget.get().setAvaillableTimestamp((System.currentTimeMillis()/1000));
+            repoMenu.save(mTarget.get());
             return true;
         }
         return false;
@@ -76,6 +79,7 @@ public class MenuService {
         if(mTarget.isPresent()){
             mTarget.get().setAvaillable(false);
             mTarget.get().setAvaillableTimestamp((long)-1);
+            repoMenu.save(mTarget.get());
             return true;
         }
         return false;
@@ -344,9 +348,11 @@ public class MenuService {
         for(Long pizzeriaId : pizzeriaIds){
             float cost = 0;
 
+            System.out.println("start to compute the cost for pizzeria "+pizzeriaId);
             Optional<Menu> opt = repoMenu.findByPizzeriaId(pizzeriaId);
             // CHECK ON AVAILLABILITY
-            if(opt.isPresent() && opt.get().getAvaillable() && (opt.get().getAvaillableTimestamp() > ((System.currentTimeMillis() / 1000) + 28800))) {
+            if(opt.isPresent() && (opt.get().getAvaillable()!=null && opt.get().getAvaillable()) &&
+                    (opt.get().getAvaillableTimestamp()!=null && opt.get().getAvaillableTimestamp()+searchExpiration > ((System.currentTimeMillis() / 1000)))) {
                 for (OrderRows o : order.order) {
                     int i = 1;
                     if (o.pastryId != null && o.pizzaId != null) {
@@ -395,6 +401,10 @@ public class MenuService {
                 }
                 PizzeriaCostForOrder data = new PizzeriaCostForOrder(pizzeriaId, cost);
                 targetPizzeriaAndCostIds.add(data);
+            }else{
+                System.out.println("Unfortunately pizzeria "+pizzeriaId+" is closed");
+                System.out.println("Is pizzeria open? " + opt.get().getAvaillable() );
+                System.out.println("pizzeria opens up at  " + opt.get().getAvaillableTimestamp() +" and now it is "+ (System.currentTimeMillis() / 1000));
             }
         }
         return targetPizzeriaAndCostIds;
