@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AccountServiceImpl {
+public class AccountServiceImpl implements IAccountService {
 
     @Autowired
     HybernateAccountRepositoryImpl2 repo;
@@ -177,6 +177,7 @@ public class AccountServiceImpl {
      * @param value
      * @return
      */
+    @Override
     public String chargeOnBalance(long userId, float value) {
         GenericResponse resp = new GenericResponse();
         Optional<Account> optTarget = repo.findById(userId);

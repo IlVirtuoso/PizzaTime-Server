@@ -1,6 +1,6 @@
 package com.PizzaTime.OrderService
 
-import com.PizzaTime.OrderService.Services.SagaNotifyService
+import com.PizzaTime.OrderService.Services.Amqp.SagaNotifyService
 import com.PizzaTime.OrderService.Services.OrderService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

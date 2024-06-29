@@ -19,7 +19,7 @@ enum class OrderStatus(val status: String) {
 
 @Entity
 @Table(name = "pizza_order")
-class Order : IJsonSerializable {
+class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Expose
@@ -37,7 +37,7 @@ class Order : IJsonSerializable {
     @Expose
     var userId : Long = -1;
     @Expose
-    var pizzeriaId : String = ""
+    var pizzeriaId : Long = -1
 
     @Expose
     @OneToMany(fetch = FetchType.EAGER)

@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.springframework.boot.gradle.tasks.bundling.BootWar
 
 plugins {
 	war
@@ -9,8 +10,6 @@ plugins {
 }
 
 group = "com.PizzaTime"
-version = "0.0.1-SNAPSHOT"
-
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
 }
@@ -21,13 +20,14 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+	implementation("mysql:mysql-connector-java:8.0.28")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("com.google.code.gson:gson:2.11.0")
 	implementation("com.rabbitmq:amqp-client:5.21.0")
 	runtimeOnly("com.h2database:h2")
-	implementation(project(":PizzaTime.Communication"))
 	runtimeOnly("org.postgresql:postgresql")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -43,4 +43,5 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+// set name with ./gradlew -PwarName=<custom_name>.war bootWar
 
