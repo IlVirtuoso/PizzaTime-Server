@@ -1,50 +1,42 @@
-package com.PizzaTime.OrderService.Services
+package com.PizzaTime.OrderService.Services.Amqp
 
 
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.asJson
+import com.PizzaTime.OrderService.Model.fromJson
+import com.PizzaTime.OrderService.Services.IOrderSagaService
+import com.PizzaTime.OrderService.Services.IOrderService
+import com.PizzaTime.OrderService.Services.OrderService
 import com.rabbitmq.client.*
+import jakarta.validation.groups.Default
+import kotlinx.coroutines.flow.channelFlow
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.core.env.Environment
 import org.springframework.core.env.get
 import org.springframework.stereotype.Service
 
+data class SubMissionRow(val pizzeriaId: Long, val cost: Double);
+data class SubmissionReport(val orderId : String, val rows: Set<SubMissionRow>);
 
-class SagaListenerService(val channel: Channel, orderService: OrderService) : Consumer {
+@Service
+class SagaListenerService( val orderService: IOrderSagaService, val sagaNotifyService: SagaNotifyService, amqpChannelProvider: AmqpChannelProvider) : DefaultConsumer(amqpChannelProvider.channel) {
 
     companion object {
         const val saga_exchange = "PizzaTime.Order"
         const val order_key = "OrderRequests/Json"
+
     }
 
+    data class GeneralResponse(var isError: Boolean, var orderId : String , var payload: String);
 
-    var queue: String = ""
+    final var queue: String = ""
 
     init {
         queue = channel.queueDeclare().queue
         channel.queueBind(queue, saga_exchange, order_key)
-        channel.basicConsume(queue, this)
+        channel.basicConsume(queue, false,this)
     }
-
-    override fun handleConsumeOk(consumerTag: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun handleCancelOk(consumerTag: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun handleCancel(consumerTag: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun handleShutdownSignal(consumerTag: String?, sig: ShutdownSignalException?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun handleRecoverOk(consumerTag: String?) {
-        TODO("Not yet implemented")
-    }
+    
 
 
     override fun handleDelivery(
@@ -53,10 +45,34 @@ class SagaListenerService(val channel: Channel, orderService: OrderService) : Co
         properties: AMQP.BasicProperties?,
         body: ByteArray?,
     ) {
+
         if (body == null) {
             throw IllegalArgumentException("Saga messages cannot be null");
         }
+        val response = fromJson<GeneralResponse>(body.decodeToString());
 
+
+
+
+        when(properties!!.type){
+
+            "OrderSubmissionResponse"-> {
+                if(response.isError){
+                    //turn back
+
+                }
+                else {
+                    val result = fromJson<SubmissionReport>(response.payload);
+                    orderService.startPizzeriaNegotiation(result);
+                }
+            }
+
+            "BalanceReceivedNotification"->{
+                orderService.handleBalanceNotification(response.orderId,response.isError);
+            }
+        }
+
+        channel.basicAck(envelope!!.deliveryTag,false);
     }
 
 }

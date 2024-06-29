@@ -71,6 +71,7 @@ public class GeneralService {
     public long findPizzeriaByManager(Long id) {
         Optional<Pizzeria> optPizzeria = repoPizza.findByManagerId(id);
         if (optPizzeria.isPresent()) {
+            System.out.println("I found the following pizzeria: "+optPizzeria.get().jsonfy());
             return optPizzeria.get().getId();
         } else return -1;
     }

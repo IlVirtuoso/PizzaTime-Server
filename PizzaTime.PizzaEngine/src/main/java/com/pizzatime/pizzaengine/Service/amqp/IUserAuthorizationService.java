@@ -1,4 +1,4 @@
-package com.pizzatime.pizzaengine.Service;
+package com.pizzatime.pizzaengine.Service.amqp;
 
 import java.util.Optional;
 

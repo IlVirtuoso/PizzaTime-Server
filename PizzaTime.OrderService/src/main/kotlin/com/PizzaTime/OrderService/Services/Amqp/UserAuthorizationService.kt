@@ -1,6 +1,7 @@
-package com.PizzaTime.OrderService.Services
+package com.PizzaTime.OrderService.Services.Amqp
 
 
+import com.PizzaTime.OrderService.Model.asJson
 import com.PizzaTime.OrderService.Model.fromJson
 import com.google.gson.Gson
 import com.rabbitmq.client.*
@@ -34,32 +35,26 @@ interface IUserAuthorizationService {
     matchIfMissing = true
 )
 @Service
-class UserAuthorizationService(environment: Environment) :  RpcClient(get_client_config(environment)) ,IUserAuthorizationService {
+class UserAuthorizationService(amqpChannelProvider: AmqpChannelProvider) :  RpcClient(get_client_config(amqpChannelProvider)) ,
+    IUserAuthorizationService {
 
     companion object{
 
         const val exchange = "PizzaTime.IDP"
-        const val routingKey = "IPDServiceRequest"
-        private fun get_client_config(environment: Environment) : RpcClientParams{
-            val channel = ConnectionFactory().let { t->
-                t.host = environment.get("amqp.host");
-                t.username = environment.get("amqp.username");
-                t.password = environment.get("amqp.password");
-                return@let t
-            }.newConnection().createChannel();
-
-            RpcClientParams().let {
-                t->
-                t.channel(channel).exchange("PizzaTime.IDP").routingKey("IDPServiceRequest")
-                return t
-            }
+        const val routingKey = "IDPServiceRequest"
+        private fun get_client_config(amqpChannelProvider: AmqpChannelProvider) : RpcClientParams{
+            return RpcClientParams().channel(amqpChannelProvider.channel).exchange(exchange).routingKey(routingKey)
         }
     }
 
+    init {
+
+    }
 
     override fun validateUserIdToken(token: String): Optional<UserAccount> {
+        var request = object{var token = token}.asJson(false);
         val result = primitiveCall(AMQP.BasicProperties().builder().type("VerifyUserTokenRequest").build(),
-            Gson().toJson(IdpRequest(token)).encodeToByteArray()
+            request.encodeToByteArray()
             );
         val message = Gson().fromJson(result.decodeToString(), IdpMessage::class.java);
         if(message.isError){

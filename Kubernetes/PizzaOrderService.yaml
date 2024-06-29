@@ -40,6 +40,9 @@ spec:
     env:
       - name: MYSQL_ROOT_PASSWORD
         value: root
+      - name : MYSQL_DATABASE
+        value: pizzaorders
+
     volumeMounts:
     - name:  database-volume
       mountPath: /var/lib/mysql

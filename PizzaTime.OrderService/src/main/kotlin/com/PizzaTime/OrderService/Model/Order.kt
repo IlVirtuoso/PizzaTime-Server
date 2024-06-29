@@ -37,7 +37,7 @@ class Order {
     @Expose
     var userId : Long = -1;
     @Expose
-    var pizzeriaId : String = ""
+    var pizzeriaId : Long = -1
 
     @Expose
     @OneToMany(fetch = FetchType.EAGER)

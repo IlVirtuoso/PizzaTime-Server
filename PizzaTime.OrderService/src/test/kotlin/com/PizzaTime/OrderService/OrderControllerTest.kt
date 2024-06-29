@@ -5,11 +5,12 @@ import com.PizzaTime.OrderService.Messages.ResultResponse
 import com.PizzaTime.OrderService.Model.Order
 import com.PizzaTime.OrderService.Model.OrderStatus
 import com.PizzaTime.OrderService.Model.asJson
-import com.PizzaTime.OrderService.Services.*
+import com.PizzaTime.OrderService.Services.Amqp.ManagerAccount
+import com.PizzaTime.OrderService.Services.Amqp.Pizzeria
+import com.PizzaTime.OrderService.Services.Amqp.UserAccount
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import java.util.*
 
@@ -48,7 +49,7 @@ class OrderControllerTest {
 
              Optional.of(UserAccount(10, "via mazzini"))
         }
-        return orderController.create_order("ciao", response).let { t -> (t as ResultResponse<Order>).load };
+        return orderController.create_order("ciao").let { t -> (t as ResultResponse<Order>).load };
     }
 
 
@@ -66,7 +67,7 @@ class OrderControllerTest {
         userAuthorizationService.onValidateUserToken = { userToken: String ->
             Optional.empty();
         }
-        val error = orderController.create_order("ciao", response).let { t -> t as ErrorResponse };
+        val error = orderController.create_order("ciao").let { t -> t as ErrorResponse };
         assert(error.reason.isNotEmpty())
     }
 
@@ -98,7 +99,8 @@ class OrderControllerTest {
             Optional.of( UserAccount(
                     10,
                     "via san mazzari"
-                ))
+                )
+            )
         }
 
         mockResponder.onOrderCreate = { order: Order ->
@@ -106,7 +108,7 @@ class OrderControllerTest {
         }
 
         var order =
-            orderController.create_order(sessionToken, response).let { t -> (t as ResultResponse<Order>).load };
+            orderController.create_order(sessionToken).let { t -> (t as ResultResponse<Order>).load };
         orderController.add_row(
             sessionToken,
             order.id,
@@ -144,13 +146,15 @@ class OrderControllerTest {
     fun pizzeria_accept() {
         val response = MockHttpServletResponse();
         val sessionToken = "ciao";
-        val pizzeriaid = "1002931"
+        val pizzeriaid = 10L
         userAuthorizationService.onValidateManagerAccount = { userid: String ->
-            Optional.of(ManagerAccount(
+            Optional.of(
+                ManagerAccount(
                     101,
                     "via meletti",
                     Pizzeria(10,"via martinetto")
-                ))
+                )
+            )
         }
 
         userAuthorizationService.onValidateUserToken = {

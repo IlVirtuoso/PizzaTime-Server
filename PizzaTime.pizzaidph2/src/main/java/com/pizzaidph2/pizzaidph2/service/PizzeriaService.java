@@ -91,5 +91,14 @@ public class PizzeriaService {
         return resp.jsonfy();
     }
 
+    public Optional<Pizzeria> getPizzeriaFromManagerId(Long managerId){
+        Optional<Pizzeria> optTarget = repo.findByManagerId(managerId);
+        if(optTarget.isPresent()){
+            System.out.println("I found the following pizzeria: "+optTarget.get().jsonfy());
+        }
+
+        return optTarget;
+    }
+
 
 }

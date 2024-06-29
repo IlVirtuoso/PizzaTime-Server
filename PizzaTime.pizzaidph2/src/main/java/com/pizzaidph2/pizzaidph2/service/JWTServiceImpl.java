@@ -6,14 +6,24 @@ import com.google.gson.JsonObject;
 import com.pizzaidph2.pizzaidph2.Component.Auth0JWT;
 import com.pizzaidph2.pizzaidph2.Component.GenericResponse;
 import com.pizzaidph2.pizzaidph2.model.Account;
+import com.pizzaidph2.pizzaidph2.model.Pizzeria;
+import com.pizzaidph2.pizzaidph2.repository.HybernateAccountRepositoryImpl2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
-public class JWTServiceImpl {
+public class JWTServiceImpl implements AmqpUserService{
 
     @Autowired
     private Auth0JWT jwtUtility;
+
+    @Autowired
+    private HybernateAccountRepositoryImpl2 repo;
+
+    @Autowired
+    private PizzeriaService pizzaService;
 
     /**
      * Crea un regToken (JWT) con scadenza di default per l'utente @account
@@ -119,4 +129,34 @@ public class JWTServiceImpl {
         return resp.jsonfy();
     }
 
+
+    @Override
+    public Optional<Account> VerifyUserToken(String userIdToken) {
+        System.out.println("Someone requests a validation of a user's JWT");
+        DecodedJWT jwt = verifyJWT(userIdToken);
+        if(jwt!=null && !jwt.equals("")) {
+            Optional<Account> account = repo.findById(Long.parseLong(jwt.getSubject()));
+            return account;
+        }else{
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<Account> VerifyManagerToken(String managerToken) {
+        System.out.println("Someone requests a validation of a manager's JWT");
+        DecodedJWT jwt = jwtUtility.verifyManagerJWT(managerToken);
+        if(jwt!=null && !jwt.equals("")) {
+            Optional<Account> account = repo.findById(Long.parseLong(jwt.getSubject()));
+            return account;
+        }else{
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<Pizzeria> GetPizzeriaForManagers(Long managerId) {
+        System.out.println("Someone requests a pizzeria by a manager ID: "+managerId);
+        return pizzaService.getPizzeriaFromManagerId(managerId);
+    }
 }
