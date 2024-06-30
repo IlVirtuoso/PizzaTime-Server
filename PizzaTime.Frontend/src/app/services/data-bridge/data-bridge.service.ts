@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import axios, { Axios , AxiosRequestConfig} from 'axios';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Ingredient, Menu, Order, Pizza, Pizzeria, User } from '@data';
+import { Ingredient, Menu, Order, Pizza, Pizzeria, ResponseMessage, User } from '@data';
 
 
 
@@ -50,19 +50,19 @@ var getPizzaPath:string = gatewayUrl + "/getPizza";
 @Injectable({
   providedIn: 'root'
 })
-export class DataBridgeService {
+export class DataBridgeService extends IDataBridge{
 
   constructor(private cookieService: CookieService,
     private promiseClient: Axios,
     private fetcher : HttpClient
   ) {
-
+    super();
   }
 
   // METHODS FOR ACCCOUNT
 
   //login definition
-  async login(username: String, password: String): Promise<Boolean> {
+  override async login(username: string, password: string): Promise<boolean> {
     
     var data ={
       "username":username,
@@ -76,15 +76,19 @@ export class DataBridgeService {
         }
       } );
 
+      if(response.data.statusCode==206){
+        this.lastError=response.data.statusReason;
+        this.cookieService.set("Session", response.data.regToken);
+        return false;      
+      }else if(response.data.statusCode!=0){
+        this.lastError=response.data.statusReason; 
+        return false
+      }
 
+      this.cookieService.set("Session", response.data.sessionToken)      
+      //FOR ID TOKEN this.cookieService.set("Session", response.data.idToken)
 
-      //ERROR CODE 0 = success
-        //RECALL to save the sessionToken
-      //ERROR CODE 206 = redirect to finalize registration page
-        //recall to save the regToken
-      //Other ERRORS: invalid "login id or password"
-
-      return response.data;
+      return true;
     } catch (error) {
         console.error('Login error:', error);
         throw error;
@@ -92,7 +96,7 @@ export class DataBridgeService {
   }
 
     //social login definition
-    async socialLogin(): Promise<Boolean> {
+    async socialLogin(): Promise<boolean> {
 
       var oauthToken:string = "PUT HERE THE GOOGLE OAUTH TOKEN"
 
@@ -103,6 +107,8 @@ export class DataBridgeService {
             'Authorization':oauthToken
           }
         });
+
+
 
         //ERROR CODE 0 = success
           //RECALL to save the sessionToken
@@ -120,8 +126,8 @@ export class DataBridgeService {
 
 
     //register definition
-    async signin(firstName:string, lastName:string, username: string, password : string
-    ): Promise<Boolean> {
+    override async signin(firstName:string, lastName:string, username: string, password : string
+    ): Promise<boolean> {
       var data={
         "firstName":firstName,
         "lastName":lastName,
@@ -150,8 +156,8 @@ export class DataBridgeService {
     }
 
      //finalize registration definition
-     async finalizeReg(firstName:string, lastName:string, address: string, phone : string, mobile:string
-     ): Promise<Boolean> {
+     override async finalizeRegistration(firstName:string, lastName:string, address: string, phone : string, mobile:string
+     ): Promise<boolean> {
 
       var regToken:string = "PUT HERE THE REG TOKEN INSIDE THE COOKIE"
 
@@ -184,8 +190,8 @@ export class DataBridgeService {
      }
 
       //set account definition
-      async setUserData(firstName:string, lastName:string, address: string, phone : string, mobile:string
-      ): Promise<Boolean> {
+      override async setUserData(firstName:string, lastName:string, address: string, phone : string, mobile:string
+      ): Promise<boolean> {
 
         var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
 
@@ -219,7 +225,7 @@ export class DataBridgeService {
 
 
     // get account definition
-    async getUser(): Promise<User| null> {
+    override async getUser(): Promise<User| null> {
 
       var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
 
@@ -244,7 +250,7 @@ export class DataBridgeService {
 
 
     // get account definition
-    async getUserBalance(): Promise<Number> {
+    override async getUserBalance(): Promise<number> {
 
       var account = this.getUser();
 
@@ -261,7 +267,7 @@ export class DataBridgeService {
 
 
       // get account definition
-      async deleteUser(): Promise<Boolean> {
+      override async deleteUser(): Promise<boolean> {
 
         var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
 
@@ -285,7 +291,7 @@ export class DataBridgeService {
       }
 
       // get JWT
-      async getJWT(): Promise<Boolean> {
+      override async getJWT(): Promise<boolean> {
 
         var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
 
@@ -310,8 +316,8 @@ export class DataBridgeService {
 
 
       //change password definition
-      async changePassword(oldPassword:string, newPassword:string
-      ): Promise<Boolean> {
+      override async changePassword(oldPassword:string, newPassword:string
+      ): Promise<boolean> {
 
         var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
 
@@ -340,8 +346,8 @@ export class DataBridgeService {
       }
 
       //recharge balance definition
-      async recharge(value:number
-      ): Promise<Boolean> {
+      override async recharge(value:number
+      ): Promise<boolean> {
 
         var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
 
@@ -371,8 +377,8 @@ export class DataBridgeService {
 
 
     //create pizzeria definition
-     async createPizzeria(name:string, vatNumber:string, address: string
-     ): Promise<Boolean> {
+     override async createPizzeria(name:string, vatNumber:string, address: string
+     ): Promise<boolean> {
 
       var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
 
@@ -406,7 +412,7 @@ export class DataBridgeService {
 
 
     // get pizzeria definition
-    async getManagedPizzeria(): Promise<Pizzeria | null> {
+    override async getManagedPizzeria(): Promise<Pizzeria | null> {
 
       var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
 
@@ -431,8 +437,8 @@ export class DataBridgeService {
 
 
     //add addition definition
-    async addAdditionToMenu(additions:AddIngrRequest[]
-    ): Promise<Boolean> {
+    override async addAdditionToMenu(additions:AddIngrRequest[]
+    ): Promise<boolean> {
 
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
      var data={
@@ -459,8 +465,8 @@ export class DataBridgeService {
     }
 
      //add pizza definition
-     async addAPizzaToMenu(pizzas:AddPizzaRequest[]
-     ): Promise<Boolean> {
+     override async addPizzaToMenu(pizzas:AddPizzaRequest[]
+     ): Promise<boolean> {
 
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
       var data={
@@ -489,7 +495,7 @@ export class DataBridgeService {
 
 
     // create menu definition
-    async createMenu(): Promise<Boolean> {
+    override async createMenu(): Promise<boolean> {
 
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
 
@@ -514,7 +520,7 @@ export class DataBridgeService {
 
 
     // get menu definition
-    async getMenu(): Promise<Menu | null> {
+    override async getMenu(): Promise<Menu | null> {
 
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
 
@@ -539,7 +545,7 @@ export class DataBridgeService {
     }
 
     // open pizzeria definition
-    async openPizzeria(): Promise<Boolean> {
+    override async openPizzeria(): Promise<boolean> {
 
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
 
@@ -564,7 +570,7 @@ export class DataBridgeService {
 
 
     // open pizzeria definition
-    async closePizzeria(): Promise<Boolean> {
+    override async closePizzeria(): Promise<boolean> {
 
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
 
@@ -590,8 +596,8 @@ export class DataBridgeService {
 
 
      //get pizzeria's menu rows for an order pizza definition
-     async getMenuRowsForOrder(order:Order[]
-     ): Promise<Boolean> {
+     override async getMenuRowsForOrder(order:Order[]
+     ): Promise<boolean> {
 
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
       var data={
@@ -619,8 +625,8 @@ export class DataBridgeService {
     // METHODS TO HANDLE ITEMS
 
 
-
-  getAvailableSeasonig(): Observable<Ingredient[]> {
+  
+    getAvailableSeasoning(): Observable<Ingredient[]> {
     return this.fetcher.get(getAllSeasoningPath) as Observable<Ingredient[]>;
   }
 
@@ -628,13 +634,28 @@ export class DataBridgeService {
     return this.fetcher.get(getAllPastryPath) as Observable<Ingredient[]> ;
   }
 
-  getAvailableIngredient(): Observable<Ingredient[]> {
+  getAvailableIngredients(): Observable<Ingredient[]> {
     return this.fetcher.get(getAllIngredientPath) as Observable<Ingredient[]>;
   }
 
   getAvailablePizza(): Observable<Pizza[]> {
     return this.fetcher.get(getAllPizzaPath) as Observable<Pizza[]>;
   }
+
+
+  /** TEMP */
+  getPizzeriaOrders(piva: String): Observable<Order[]> {
+    return this.fetcher.get(getAllPizzaPath) as Observable<Order[]>;
+  }
+
+  getOrdersForPizzeria(piva: String): Observable<Order[]> {
+    return this.fetcher.get(getAllPizzaPath) as Observable<Order[]>;
+  }
+
+  getOrdersForUser(username: String): Observable<Order[]> {
+    return this.fetcher.get(getAllPizzaPath) as Observable<Order[]>;
+  }
+
 
 
 
