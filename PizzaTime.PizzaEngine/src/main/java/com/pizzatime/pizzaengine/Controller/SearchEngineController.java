@@ -211,7 +211,7 @@ public class SearchEngineController {
         System.out.println(genService.createSeasoningDemo());
         System.out.println(genService.createPizzaDemo());
         menuService.creteMenuDemo();
-        return null;
+        return "OK";
     }
 
     @GetMapping("/testMargheritaSearch")

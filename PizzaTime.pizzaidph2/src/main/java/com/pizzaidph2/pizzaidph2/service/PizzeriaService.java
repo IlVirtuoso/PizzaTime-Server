@@ -109,5 +109,46 @@ public class PizzeriaService {
         return optTarget;
     }
 
+    public void createPizzeriaDemo(){
+        Pizzeria target = new Pizzeria();
+
+        if(!repo.findByManagerId(1).isPresent()){
+            System.out.println("CREATE A NEW PIZZERIA FOR MANAGER "+1);
+            target = new Pizzeria();
+            target.setName("Pizza Sì");
+            target.setVatNumber("10000000");
+            target.setAddress("Via della pizzeria 1");
+            this.createPizzeriaService(1,target);
+        }
+
+
+        if(!repo.findByManagerId(2).isPresent()){
+            System.out.println("CREATE A NEW PIZZERIA FOR MANAGER "+2);
+            target = new Pizzeria();
+            target.setName("Veggi-zza");
+            target.setVatNumber("20000000");
+            target.setAddress("Via della pizzeria 2");
+            this.createPizzeriaService(2,target);
+        }
+
+        if(!repo.findByManagerId(3).isPresent()){
+            System.out.println("CREATE A NEW PIZZERIA FOR MANAGER "+3);
+            target = new Pizzeria();
+            target.setName("Metal Pizzeria");
+            target.setVatNumber("30000000");
+            target.setAddress("Via della pizzeria 3");
+            this.createPizzeriaService(3,target);
+        }
+
+        if(!repo.findByManagerId(4).isPresent()){
+            System.out.println("CREATE A NEW PIZZERIA FOR MANAGER "+4);
+            target = new Pizzeria();
+            target.setName("Another Common Pizzeria");
+            target.setVatNumber("40000000");
+            target.setAddress("Via della pizzeria 4");
+            this.createPizzeriaService(4,target);
+        }
+
+    }
 
 }
