@@ -1,3 +1,4 @@
+# a very minimal declarative config file
 _format_version: "2.1"
 _transform: true
 # FOR DOCKER COMPOSE USE host: host.docker.internal
@@ -23,7 +24,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -41,7 +41,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -59,7 +58,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -77,7 +75,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -95,7 +92,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -113,7 +109,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -131,7 +126,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -149,7 +143,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -167,7 +160,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -185,7 +177,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -203,7 +194,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -221,7 +211,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -239,7 +228,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -264,7 +252,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -282,7 +269,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -307,7 +293,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -325,7 +310,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -343,7 +327,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -361,7 +344,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -379,7 +361,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -397,7 +378,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -415,7 +395,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -433,7 +412,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -458,7 +436,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -476,7 +453,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -494,7 +470,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -512,7 +487,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -530,7 +504,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -548,7 +521,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -566,7 +538,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -584,7 +555,6 @@ services:
         response_buffering: true
         methods:
           - POST
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -602,7 +572,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - pizzaengine
@@ -627,7 +596,6 @@ services:
         response_buffering: true
         methods:
           - GET
-          - OPTIONS
         https_redirect_status_code: 426
         tags:
           - idp
@@ -635,31 +603,3 @@ services:
         regex_priority: 0
         paths:
           - /order/*
-plugins:
-  name: cors
-  enabled: true
-  protocols:
-    - grpc
-    - grpcs
-    - http
-    - https
-  instance_name: CORS_from_web_FE
-  config-credentials: true
-  config-exposed_headers:
-    - X-Custom-Header
-  config-headers:
-    - Accept,Authorization,Content-Type,DNT,Keep-Alive,User-Agent,X-Requested-With
-  config-methods:
-    - GET
-    - HEAD
-    - PUT
-    - PATCH
-    - POST
-    - DELETE
-    - OPTIONS
-    - TRACE
-    - CONNECT
-  config-origins:
-    - '*'
-  config-preflight_continue: false
-  config-private_network: false
