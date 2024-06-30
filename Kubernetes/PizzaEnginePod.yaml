@@ -1,60 +1,60 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: pizzatime.engine
-  labels:
-    app: pizzatime.engine
 spec:
-  hostname: engine
-  containers:
-    - name: pizzatimeengine
-      image: pizzatime.engine:latest
-      imagePullPolicy: IfNotPresent
-      env:
-        - name: amqp.host
-          value: brokerservice.default.svc.cluster.local
-        - name: amqp.username
-          value: guest 
-        - name: amqp.password
-          value: guest
-        - name: server.port
-          value: "8080"
-      ports:
-        - name: https 
-          containerPort: 8080
-      resources:
-        limits:
-          cpu: "1"
-          memory: 2Gi
-        requests:
-          cpu: "500m"
-          memory: 1Gi
-    - name: database
-      image: docker.io/mysql
-      ports: 
-      - name: mysql 
-        containerPort: 3306
-      resources:
-        limits:
-          cpu: "50m"
-          memory: 2Gi
-        requests:
-          cpu: "50m"
-          memory: 1Gi
-      env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: root
-        - name: MYSQL_DATABASE
-          value: pizzadatabase
-      volumeMounts:
+  selector:
+    matchLabels:
+      app: pizzatime.engine
+  template:
+    metadata:
+      labels:
+        app: pizzatime.engine
+    spec:
+      containers:
+        - name: pizzatimeengine
+          image: pizzatime.pizzaengine:latest
+          imagePullPolicy: Never
+          env:
+            - name: amqp.host
+              value: brokerservice.default.svc.cluster.local
+            - name: amqp.username
+              value: guest 
+            - name: amqp.password
+              value: guest
+            - name: server.port
+              value: "8080"
+          ports:
+            - name: https 
+              containerPort: 8080
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 2Gi
+        - name: database
+          image: docker.io/mysql
+          ports: 
+          - name: mysql 
+            containerPort: 3306
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "2Gi"
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: pizzadatabase
+            - name: MYSQL_TCP_PORT
+              value : "3306"
+          volumeMounts:
+          - name:  database-volume
+            mountPath: /var/lib/mysql
+
+      volumes:
       - name:  database-volume
-        mountPath: /var/lib/mysql
-     
-  volumes:
-  - name:  database-volume
-    persistentVolumeClaim:
-      claimName: engine-pvc
-  restartPolicy: OnFailure
+        persistentVolumeClaim:
+          claimName: engine-pvc
 
 ---
 

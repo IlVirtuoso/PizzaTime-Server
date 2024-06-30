@@ -1,38 +1,33 @@
-apiVersion: v1
-kind: Pod
+
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: pizzatime-gateway
-  labels:
-    app: pizzatime-gateway
 spec:
-  containers:
-  - name: pizzatime-gateway
-    image: pizzatime.gateway:latest
-    imagePullPolicy: IfNotPresent
-    ports:
-     - containerPort: 8000 # Proxy port
-       name: proxy
-     - containerPort: 8443 # Proxy port (SSL)
-       name: sslproxy
-     - containerPort: 8001 # Admin API port
-       name: admin
-     - containerPort: 8002 
-       name : adminhttp
-     - containerPort: 8444 # Admin API port (SSL)
-       name: adminssl
-#    env:
-#    - name: KONG_DATABASE
-#      value: "off" # Using DB-less mode
-#    - name: KONG_DECLARATIVE_CONFIG
-#      value: "/etc/kong/kong.yaml" # Path to the configuration file
-#    volumeMounts:
-#    - name: kong-config
-#      mountPath: /etc/kong/kong.yaml
-#      subPath: kong.yaml
-#  volumes:
-#  - name: kong-config
-#    configMap:
-#      name: kong-config
+  selector:
+    matchLabels:
+      app: pizzatime-gateway
+  template:
+    metadata:
+      labels:
+        app: pizzatime-gateway
+    spec:
+      containers:
+      - name: pizzatime-gateway
+        image: pizzatime.gateway:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+         - containerPort: 8000 # Proxy port
+           name: proxy
+         - containerPort: 8443 # Proxy port (SSL)
+           name: sslproxy
+         - containerPort: 8001 # Admin API port
+           name: admin
+         - containerPort: 8002 
+           name : adminhttp
+         - containerPort: 8444 # Admin API port (SSL)
+           name: adminssl
+
 
 ---
 apiVersion: v1
