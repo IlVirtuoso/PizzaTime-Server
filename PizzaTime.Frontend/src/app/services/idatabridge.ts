@@ -1,14 +1,10 @@
 import { Injectable } from "@angular/core";
 //Role doesn't exist
-import { Ingredient, Order, Pizza, Pizzeria, Role, User } from "@data";
+import { Ingredient, Order, Pizza, Pizzeria, Menu, User } from "@data";
 import { Observable } from "rxjs";
 
 export abstract class IDataBridge {
   lastError: string = "";
-
-    
-  gatewayUrl:string = "localhost:8000";
-  loginPath:string = this.gatewayUrl + "/login";
 
   //IDP methods 
   public abstract login(username : string, password: string): Promise<boolean>;
@@ -38,7 +34,6 @@ export abstract class IDataBridge {
   public abstract getMenuRowsForOrder(order:Order[]) : Promise<Boolean>;
   
 
-  public abstract getPizza(id: string) : Promise<Pizza | null>;
   public abstract getAvailableIngredients() : Observable<Ingredient[]>;
   public abstract getAvailablePastry() : Observable<Ingredient[]>;
   public abstract getAvailableSeasoning() : Observable<Ingredient[]>;
