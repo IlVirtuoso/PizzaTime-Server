@@ -30,7 +30,7 @@ export class PizzaComposerComponent implements OnInit{
   }
 
   async ngOnInit(): Promise<void>{
-    this.sourceIngredients = await this.bridge.getAvailableIngredients() ?? [];
+    this.bridge.getAvailableIngredients().subscribe(t=> this.sourceIngredients = t);
   }
 
 

@@ -5,6 +5,8 @@ import { UserHomeComponent } from './components/pages/user-home/user-home.compon
 import { PizzaComposerComponent } from './components/views/pizza-composer/pizza-composer.component';
 import { PizzaPartyPageComponent as PizzaPartyComponent } from './components/pages/pizza-party-page/pizza-party-page.component';
 import { PizzeriaAdminPageComponent } from './components/pages/pizzeria-admin-page/pizzeria-admin-page.component';
+import { PizzaListViewComponent } from './components/views/pizza-list-view/pizza-list-view.component';
+import { IngredientListViewComponent } from './components/views/ingredient-list-view/ingredient-list-view.component';
 
 export const routes: Routes = [
   {path : 'login', component: LoginFormComponent},
@@ -12,5 +14,5 @@ export const routes: Routes = [
   {path: 'home', component:UserHomeComponent},
   {path:'composer', component:PizzaComposerComponent},
   {path:'party', component:PizzaPartyComponent},
-  {path:'pizzeriamanager', component:PizzeriaAdminPageComponent}
+  {path:'pizzeriamanager', component:PizzeriaAdminPageComponent},
 ];

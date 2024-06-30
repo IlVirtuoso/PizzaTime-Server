@@ -40,6 +40,11 @@ body {
   border-bottom: solid 1px ;
 }
 
+.data-row:hover{
+  background: rgb(60, 59, 59);
+
+}
+
 .selectable:hover{
   background: grey;
   cursor: pointer;

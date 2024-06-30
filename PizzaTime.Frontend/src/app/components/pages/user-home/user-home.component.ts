@@ -73,12 +73,7 @@ export class UserHomeComponent implements OnInit {
 
 
   protected friends : User[]= [
-    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
-    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
-    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
-    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
-    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
-    {address:'via mazzini 10',email:'drfaust@microservice.it',name:'matteo',phone:'3452231415',surname:'ielacqua',isVendor: false},
+
   ];
 
   public onTabChange(event: any) {
@@ -88,8 +83,8 @@ export class UserHomeComponent implements OnInit {
 
 
   public constructor(private router: Router, private bridge: IDataBridge) {}
-  ngOnInit(): void {
-    this._user = this.bridge.getAuthenticatedUser();
+  async ngOnInit(): Promise<void> {
+    this._user = await this.bridge.getUser();
   }
 
 

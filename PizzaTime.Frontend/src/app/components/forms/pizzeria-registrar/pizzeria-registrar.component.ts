@@ -6,7 +6,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
-import { Pizzeria } from '@data/Pizzeria';
 import { IDataBridge } from 'app/services/idatabridge';
 
 @Component({
@@ -24,21 +23,15 @@ import { IDataBridge } from 'app/services/idatabridge';
   styleUrl: './pizzeria-registrar.component.css',
 })
 export class PizzeriaRegistrarComponent {
-  protected formFields = ['', '', '', '', '', ''];
+  protected formFields = ['', '', ''];
   protected get piva() {
     return this.formFields[0];
   }
   protected get name() {
     return this.formFields[1];
   }
-  protected get email() {
-    return this.formFields[2];
-  }
-  protected get phone(){
-    return this.formFields[3];
-  }
   protected get address() {
-    return this.formFields[4];
+    return this.formFields[2];
   }
 
   protected errorMessage = '';
@@ -46,8 +39,7 @@ export class PizzeriaRegistrarComponent {
   public constructor(private router: Router, private bridge: IDataBridge) {}
 
   register(): void {
-    let pizzeria = new Pizzeria(this.email,this.phone,this.piva,this.name,this.address);
-    if(!this.bridge.registerPizzeria(pizzeria)){
+    if(!this.bridge.createPizzeria(this.name,this.piva,this.address)){
       this.errorMessage = this.bridge.lastError;
     }
     else{

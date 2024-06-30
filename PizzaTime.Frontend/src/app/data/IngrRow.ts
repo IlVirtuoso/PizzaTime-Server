@@ -1,7 +1,7 @@
 import { Ingredient } from "./Ingredient";
 
 
-export class Menu{
+export class IngrRow{
 
     public constructor(
         public rowid: number,

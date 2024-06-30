@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Axios } from 'axios';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Ingredient, Menu, Order, Pizza, Pizzeria, User } from '@data';
 
 class LoginRequest{constructor(public username: string, public password: string){}}
 
@@ -49,14 +50,14 @@ var getPizzaPath:string = gatewayUrl + "/getPizza";
 })
 export class DataBridgeService {
 
-  constructor(private cookieService: CookieService, 
+  constructor(private cookieService: CookieService,
     private promiseClient: Axios,
-    private fetcher : HttpClient 
+    private fetcher : HttpClient
   ) {
-    
+
   }
 
-  // METHODS FOR ACCCOUNT 
+  // METHODS FOR ACCCOUNT
 
   //login definition
   async login(username: String, password: String): Promise<Boolean> {
@@ -86,7 +87,7 @@ export class DataBridgeService {
 
     //social login definition
     async socialLogin(): Promise<Boolean> {
-      
+
       var oauthToken:string = "PUT HERE THE GOOGLE OAUTH TOKEN"
 
       try {
@@ -96,14 +97,14 @@ export class DataBridgeService {
             'Authorization':oauthToken
           }
         });
-  
+
         //ERROR CODE 0 = success
           //RECALL to save the sessionToken
         //ERROR CODE 206 = redirect to finalize registration page
           //recall to save the regToken
         //ERROR CODE 401 = google token is expired: repeat social login
         //Other ERRORS: invalid "login id or password"
-  
+
         return response.data;
       } catch (error) {
           console.error('Error in social login:', error);
@@ -116,9 +117,9 @@ export class DataBridgeService {
     async signin(firstName:string, lastName:string, username: string, password : string
     ): Promise<Boolean> {
       var data={
-        "firstName":firstName, 
-        "lastName":lastName, 
-        "username": username, 
+        "firstName":firstName,
+        "lastName":lastName,
+        "username": username,
         "password" : password
       }
 
@@ -128,13 +129,13 @@ export class DataBridgeService {
             'Content-Type': 'application/json',
           }
         });
-  
+
         //ERROR CODE 0 = success
           //RECALL to save the sessionToken
         //ERROR CODE 206 = redirect to finalize registration page
           //recall to save the regToken
         //Other ERRORS: invalid "login id or password"
-  
+
         return response.data;
       } catch (error) {
           console.error('Ereror in registration:', error);
@@ -145,17 +146,17 @@ export class DataBridgeService {
      //finalize registration definition
      async finalizeReg(firstName:string, lastName:string, address: string, phone : string, mobile:string
      ): Promise<Boolean> {
-         
+
       var regToken:string = "PUT HERE THE REG TOKEN INSIDE THE COOKIE"
-      
+
       var data={
-         "firstName":firstName, 
-         "lastName":lastName, 
-         "address": address, 
+         "firstName":firstName,
+         "lastName":lastName,
+         "address": address,
          "phone" : phone,
          "mobile":mobile
        }
- 
+
        try {
          const response = await this.promiseClient.post(finalizeRegPath,data, {
            headers: {
@@ -163,12 +164,12 @@ export class DataBridgeService {
              'Authorization':regToken
            }
          });
-   
+
          //ERROR CODE 0 = success
            //RECALL to save the sessionToken
          //ERROR CODE 203 = User avoid some important data: repeat
          //Other ERRORS: general errors
-   
+
          return response.data;
        } catch (error) {
            console.error('Error in finalizing registration :', error);
@@ -179,17 +180,17 @@ export class DataBridgeService {
       //set account definition
       async setUserData(firstName:string, lastName:string, address: string, phone : string, mobile:string
       ): Promise<Boolean> {
-          
+
         var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
-        
+
         var data={
-          "firstName":firstName, 
-          "lastName":lastName, 
-          "address": address, 
+          "firstName":firstName,
+          "lastName":lastName,
+          "address": address,
           "phone" : phone,
           "mobile":mobile
         }
-  
+
         try {
           const response = await this.promiseClient.post(setAccountPath,data, {
             headers: {
@@ -197,23 +198,23 @@ export class DataBridgeService {
               'Authorization':sessionToken
             }
           });
-    
+
           //ERROR CODE 0 = success, user object is returned
           //ERROR CODE 401 = user is malicious or the session is expired
           //ERROR CODE 400 = "invalid data provided"
-    
+
           return response.data;
         } catch (error) {
             console.error('Error in setting account info:', error);
             throw error;
         }
       }
-  
 
-          
+
+
     // get account definition
     async getUser(): Promise<User| null> {
-      
+
       var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
 
       try {
@@ -223,11 +224,11 @@ export class DataBridgeService {
             'Authorization':sessionToken
           }
         });
-  
+
         //ERROR CODE 0 = success, return the account object
         //ERROR CODE 401 = session token is expired: repeat social login
         //Other ERRORS: general error
-  
+
         return response.data.account;
       } catch (error) {
           console.error('Error in getting account info:', error);
@@ -238,24 +239,26 @@ export class DataBridgeService {
 
     // get account definition
     async getUserBalance(): Promise<Number> {
-      
-      var account = this.getUser(); 
-      
-        //CHECK IF ACCOUNT IS NULL or NOT... 
+
+      var account = this.getUser();
+
+        //CHECK IF ACCOUNT IS NULL or NOT...
         //ERROR CODE 0 = success, return the account object
         //ERROR CODE 401 = session token is expired: repeat social login
         //Other ERRORS: general error
-  
-        return account.balance;
-      
+        var user = await account;
+        if(user == null){
+          throw new Error();
+        }
+        return user?.balance;
     }
-    
+
 
       // get account definition
       async deleteUser(): Promise<Boolean> {
-      
+
         var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
-  
+
         try {
           const response = await this.promiseClient.get(deleteAccountPath, {
             headers: {
@@ -263,11 +266,11 @@ export class DataBridgeService {
               'Authorization':sessionToken
             }
           });
-    
+
           //ERROR CODE 0 = success
           //ERROR CODE 401 = session token is expired: repeat social login
           //Other ERRORS: general error
-    
+
           return response.data;
         } catch (error) {
             console.error('Error in deleting account:', error);
@@ -277,9 +280,9 @@ export class DataBridgeService {
 
       // get JWT
       async getJWT(): Promise<Boolean> {
-      
+
         var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
-  
+
         try {
           const response = await this.promiseClient.get(getJWTPath, {
             headers: {
@@ -287,11 +290,11 @@ export class DataBridgeService {
               'Authorization':sessionToken
             }
           });
-    
+
           //ERROR CODE 0 = success
           //ERROR CODE 401 = session token is expired: repeat social login
           //Other ERRORS: general error
-    
+
           return response.data;
         } catch (error) {
             console.error('Error in getting jwt:', error);
@@ -303,14 +306,14 @@ export class DataBridgeService {
       //change password definition
       async changePassword(oldPassword:string, newPassword:string
       ): Promise<Boolean> {
-          
+
         var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
-        
+
         var data={
-          "oldPassword":oldPassword, 
-          "newPassword":newPassword 
+          "oldPassword":oldPassword,
+          "newPassword":newPassword
         }
-  
+
         try {
           const response = await this.promiseClient.post(changePwdPath,data, {
             headers: {
@@ -318,24 +321,24 @@ export class DataBridgeService {
               'Authorization':sessionToken
             }
           });
-    
+
           //ERROR CODE 0 = success, user object is returned
           //ERROR CODE 401 = user is malicious or the session is expired
           //ERROR CODE 202 = "password too easy"
-    
+
           return response.data;
         } catch (error) {
             console.error('Error in changing password:', error);
             throw error;
         }
       }
-        
+
       //recharge balance definition
       async recharge(value:number
       ): Promise<Boolean> {
-          
+
         var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
-  
+
         try {
           const response = await this.promiseClient.get(rechargePath, {
             params:{"value":value},
@@ -343,12 +346,12 @@ export class DataBridgeService {
               'Content-Type': 'application/json',
               'Authorization':sessionToken
             }
-            
+
           });
-    
+
           //ERROR CODE 0 = success, user object is returned
           //ERROR CODE 401 = user is malicious or the session is expired
-    
+
           return response.data;
         } catch (error) {
             console.error('Error in recharging the balance:', error);
@@ -364,15 +367,15 @@ export class DataBridgeService {
     //create pizzeria definition
      async createPizzeria(name:string, vatNumber:string, address: string
      ): Promise<Boolean> {
-         
+
       var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
-      
+
       var data={
-         "name":name,  
-         "address": address, 
+         "name":name,
+         "address": address,
          "vatNumber" : vatNumber,
        }
- 
+
        try {
          const response = await this.promiseClient.post(createPizzeriaPath,data, {
            headers: {
@@ -380,13 +383,13 @@ export class DataBridgeService {
              'Authorization':sessionToken
            }
          });
-   
+
          //ERROR CODE 0 = success
            //VERY IMPORTANT RECALL to save the sessionToken
          //ERROR CODE 203 = User avoid some important data: repeat
          //ERROR CODE 401 = user is malicious or the session is expired
          //Other ERRORS: general errors
-   
+
          return response.data;
        } catch (error) {
            console.error('Error in creating a pizzeria :', error);
@@ -398,7 +401,7 @@ export class DataBridgeService {
 
     // get pizzeria definition
     async getManagedPizzeria(): Promise<Pizzeria | null> {
-      
+
       var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
 
       try {
@@ -408,11 +411,11 @@ export class DataBridgeService {
             'Authorization':sessionToken
           }
         });
-  
+
         //ERROR CODE 0 = success, return the pizzeria object
         //ERROR CODE 401 = session token is expired or the user is not a manager
         //Other ERRORS: general error
-  
+
         return response.data.account;
       } catch (error) {
           console.error('Error in getting pizzeria info:', error);
@@ -424,8 +427,8 @@ export class DataBridgeService {
     //add addition definition
     async addAdditionToMenu(additions:Ingredient[]
     ): Promise<Boolean> {
-        
-      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"     
+
+      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
      var data={
         "additions":additions
       }
@@ -437,11 +440,11 @@ export class DataBridgeService {
             'Authorization':idToken
           }
         });
-  
+
         //ERROR CODE 0 = success
           //VERY IMPORTANT RECALL to save the sessionToken
         //ERROR CODE 401 = user is malicious or the session is expired
-      
+
         return response.data;
       } catch (error) {
           console.error('Error in adding an ingredient :', error);
@@ -452,12 +455,12 @@ export class DataBridgeService {
      //add pizza definition
      async addAPizzaToMenu(pizzas:Pizza[]
      ): Promise<Boolean> {
-         
-      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"      
+
+      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
       var data={
          "pizzas":pizzas
        }
- 
+
        try {
          const response = await this.promiseClient.post(addpizzaPath,data, {
            headers: {
@@ -465,23 +468,23 @@ export class DataBridgeService {
              'Authorization':idToken
            }
          });
-   
+
          //ERROR CODE 0 = success
            //VERY IMPORTANT RECALL to save the sessionToken
          //ERROR CODE 401 = user is malicious or the session is expired
-       
+
          return response.data;
        } catch (error) {
            console.error('Error in adding a pizza :', error);
            throw error;
        }
-     } 
+     }
 
 
 
     // create menu definition
     async createMenu(): Promise<Boolean> {
-      
+
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
 
       try {
@@ -491,11 +494,11 @@ export class DataBridgeService {
             'Authorization':idToken
           }
         });
-  
+
         //ERROR CODE 0 = success, return the pizzeria object
         //ERROR CODE 401 = session token is expired or the user is not a manager
         //Other ERRORS: general error
-  
+
         return response.data.account;
       } catch (error) {
           console.error('Error in creaeting menu:', error);
@@ -506,7 +509,7 @@ export class DataBridgeService {
 
     // get menu definition
     async getMenu(): Promise<Menu | null> {
-      
+
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
 
       try {
@@ -516,12 +519,12 @@ export class DataBridgeService {
             'Authorization':idToken
           }
         });
-  
+
         //ERROR CODE 0 = success, return the pizzeria object
         //ERROR CODE 208 = menu doesn't exist: create calling the create menu
         //ERROR CODE 401 = session token is expired or the user is not a manager
         //Other ERRORS: general error
-  
+
         return response.data.account;
       } catch (error) {
           console.error('Error in getting menu:', error);
@@ -552,7 +555,7 @@ export class DataBridgeService {
           throw error;
       }
     }
-    
+
 
     // open pizzeria definition
     async closePizzeria(): Promise<Boolean> {
@@ -579,16 +582,16 @@ export class DataBridgeService {
     }
 
 
-    
+
      //get pizzeria's menu rows for an order pizza definition
      async getMenuRowsForOrder(order:Order[]
      ): Promise<Boolean> {
-         
-      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"      
+
+      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
       var data={
          "order":order
        }
- 
+
        try {
          const response = await this.promiseClient.post(getRowsForOrderPath,data, {
            headers: {
@@ -596,42 +599,42 @@ export class DataBridgeService {
              'Authorization':idToken
            }
          });
-   
+
          //ERROR CODE 0 = success, receive in orderData the rows requested
          //ERROR CODE 401 = user is malicious or the session is expired
-       
+
          return response.data;
        } catch (error) {
            console.error('Error in getting rows for the order requested :', error);
            throw error;
        }
-     } 
+     }
 
     // METHODS TO HANDLE ITEMS
-    
+
 
 
   getAvailableSeasonig(): Observable<Ingredient[]> {
-    return this.fetcher.<Ingredient[]>(getAllSeasoningPath);
+    return this.fetcher.get(getAllSeasoningPath) as Observable<Ingredient[]>;
   }
-  
+
   getAvailablePastry(): Observable<Ingredient[]> {
-    return this.fetcher.<Ingredient[]>(getAllPastryPath);
+    return this.fetcher.get(getAllPastryPath) as Observable<Ingredient[]> ;
   }
 
   getAvailableIngredient(): Observable<Ingredient[]> {
-    return this.fetcher.<Ingredient[]>(getAllIngredientPath);
+    return this.fetcher.get(getAllIngredientPath) as Observable<Ingredient[]>;
   }
 
   getAvailablePizza(): Observable<Pizza[]> {
-    return this.fetcher.<Pizza[]>(getAllPizzaPath);
+    return this.fetcher.get(getAllPizzaPath) as Observable<Pizza[]>;
   }
-  
+
 
 
   /* get all seasoning definition
   async getAvailableSeasonig(): Promise<Ingredient[] | null> {
-      
+
 
   try {
     const response = await this.promiseClient.get(getAllSeasoningPath, {

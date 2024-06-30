@@ -16,6 +16,9 @@ import { Router } from '@angular/router';
 })
 export class ToolBarComponent {
 
+
+  private isLoggedIn = false;
+
   protected items: MenuItem[] = [
     { label: 'Login', url:'login', command: (item) => this.navigate(item.item, false) },
     { label: 'SignIn', url: 'signin', command: (item) => this.navigate(item.item, false) },
@@ -26,19 +29,33 @@ export class ToolBarComponent {
   ];
 
   public constructor(protected service: IDataBridge, protected router: Router) {
-    if(this.service.getAuthenticatedUser() != null){
-      if(this.service.getAuthenticatedUser()?.isVendor){
-        this.items.push(
-          { label: 'Pizzeria Manager', url:'pizzeriamanager' ,command: (item) => this.navigate(item.item, true)}
-        )
-      }
-    }
+    this.detectUser();
+   }
+
+
+   private async detectUser(){
+       var user = await this.service.getUser();
+       if (user != null) {
+         if (user.isVendor) {
+           this.items.push({
+             label: 'Pizzeria Manager',
+             url: 'pizzeriamanager',
+             command: (item) => this.navigate(item.item, true),
+           });
+         }
+
+         this.items[0].disabled= true;
+         this.items[1].disabled= true;
+       }
+       else{
+        this.items[2].disabled=true;
+       }
    }
 
   public navigate(item: MenuItem | MegaMenuItem | undefined, requiresAuthorization: boolean) {
     console.log(item?.label);
     if (requiresAuthorization) {
-      if (this.service.getAuthenticatedUser() == null) {
+      if (!this.isLoggedIn) {
         this.router.navigateByUrl('login');
       }
     }

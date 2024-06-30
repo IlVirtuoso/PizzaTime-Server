@@ -67,9 +67,8 @@ export class PizzeriaAdminPageComponent {
   public constructor(private router: Router, private bridge: IDataBridge) {}
 
   async ngOnInit(){
-    this._user =  this.bridge.getAuthenticatedUser();
+    this._user = await this.bridge.getUser();
     this.pizzeria = await this.bridge.getManagedPizzeria();
-
   }
 
 

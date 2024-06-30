@@ -60,7 +60,8 @@ export class UserProfileViewComponent {
   }
   ngOnChanges(changes: any): void {
     this.fields = [
-      { fieldName: 'First Name', value: this.user?.name, editable: false },
+      {fieldName: 'UserName', value: this.user?.username, editable:true},
+      { fieldName: 'First Name', value: this.user?.firstName, editable: false },
       { fieldName: 'Last Name', value: this.user?.surname, editable: false },
       { fieldName: 'Email', value: this.user?.email, editable: false },
       { fieldName: 'Phone', value: this.user?.phone, editable: false },
