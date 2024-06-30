@@ -13,6 +13,24 @@ services:
     host: idp-service.default.svc.cluster.local
     port: 8080
     routes:
+      - name: populateAccountDB
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+          - OPTIONS
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /populateAccountDB
       - name: setAccountInfo
         protocols:
           - http
@@ -441,6 +459,24 @@ services:
         regex_priority: 0
         paths:
           - /getAllPizza
+      - name: populatePizzaDB
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+          - OPTIONS
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /populatePizzaDB
 # PIZZAENGINE /item APIs
   - name: pizzaenginedefinitive_item
     protocol: http
