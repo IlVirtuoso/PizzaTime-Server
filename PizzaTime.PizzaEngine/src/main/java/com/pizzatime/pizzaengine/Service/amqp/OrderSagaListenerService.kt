@@ -6,10 +6,8 @@ import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client.BuiltinExchangeType
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
-import org.apache.catalina.Engine
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
-import java.util.*
 
 
 //data class OrderRow(val pizzaId: Long, val baseId: Long, val additions: Set<Long>)
@@ -32,7 +30,7 @@ data class EngineResponse(val isError: Boolean, val orderId : String, val payloa
     havingValue = "true",
     matchIfMissing = true
 )
-class OrderExchangeCommunicator(val amqpChannelProvider: AmqpChannelProvider, val service: IOrderExchangeService) :
+class OrderSagaListenerService(val amqpChannelProvider: AmqpChannelProvider, val service: IOrderExchangeService) :
     DefaultConsumer(amqpChannelProvider.channel) {
     var queue: String = ""
 
@@ -41,6 +39,8 @@ class OrderExchangeCommunicator(val amqpChannelProvider: AmqpChannelProvider, va
         const val created_order_key = "OrderEvents/Json/OrderCreated"
         const val order_changed = "OrderEvents/Json/OrderStatusChanged"
         const val order_canceled = "OrderEvents/Json/OrderCanceled"
+        const val idp_saga_service = "PizzaTime.IDP"
+        const val idp_routing = "IDPServiceRequest"
 
         const val responses = "OrderRequests/Json"
     }
@@ -73,7 +73,7 @@ class OrderExchangeCommunicator(val amqpChannelProvider: AmqpChannelProvider, va
                 when(data.orderStatus){
                     "queued"->{
 
-                        val result= manageSubmissionOperation(data);
+                        val result= onOrderSubmitted(data);
                         channel.basicPublish(order_saga_exchange, responses,
                             BasicProperties().builder()
                                 .type("OrderSubmissionResponse")
@@ -89,7 +89,7 @@ class OrderExchangeCommunicator(val amqpChannelProvider: AmqpChannelProvider, va
     }
 
 
-    fun manageSubmissionOperation(record: OrderRecord): EngineResponse{
+    private fun onOrderSubmitted(record: OrderRecord): EngineResponse{
         try{
             val setted = service.OnOrderSubmitted(record);
             return EngineResponse(false, setted.orderId, setted.asJson(false));
@@ -99,6 +99,6 @@ class OrderExchangeCommunicator(val amqpChannelProvider: AmqpChannelProvider, va
         }
     }
 
-
-
 }
+
+
