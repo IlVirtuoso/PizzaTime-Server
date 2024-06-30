@@ -3,6 +3,25 @@ import { Injectable } from "@angular/core";
 import { Ingredient, Order, Pizza, Pizzeria, Menu, User } from "@data";
 import { Observable } from "rxjs";
 
+
+
+export class AddPizzaRequest{
+  public constructor(
+      public cost: number,
+      public commonName: string,
+      public pizzaId: number
+  ){ }
+}
+
+export class AddIngrRequest{
+  public constructor(
+      public cost: number,
+      public commonName: string,
+      public addition: number
+  ){ }
+}
+
+
 export abstract class IDataBridge {
   lastError: string = '';
 
@@ -40,8 +59,8 @@ export abstract class IDataBridge {
   public abstract getManagedPizzeria(): Promise<Pizzeria | null>;
   public abstract openPizzeria(): Promise<Boolean>;
   public abstract closePizzeria(): Promise<Boolean>;
-  public abstract addPizzaToMenu(pizzas: Pizza[]): Promise<Boolean>;
-  public abstract addAdditionToMenu(additions: Ingredient[]): Promise<Boolean>;
+  public abstract addPizzaToMenu(pizzas: AddPizzaRequest[]): Promise<Boolean>;
+  public abstract addAdditionToMenu(additions: AddIngrRequest[]): Promise<Boolean>;
   public abstract getMenu(): Promise<Menu | null>;
   public abstract createMenu(): Promise<Boolean>;
   public abstract getMenuRowsForOrder(order: Order[]): Promise<Boolean>;

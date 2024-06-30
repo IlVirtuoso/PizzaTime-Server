@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { IDataBridge } from '../idatabridge';
+import { AddIngrRequest, AddPizzaRequest, IDataBridge } from '../idatabridge';
 import { CookieService } from 'ngx-cookie-service';
 import { Axios } from 'axios';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Ingredient, Menu, Order, Pizza, Pizzeria, User } from '@data';
+
+
 
 class LoginRequest{constructor(public username: string, public password: string){}}
 
@@ -425,7 +427,7 @@ export class DataBridgeService {
 
 
     //add addition definition
-    async addAdditionToMenu(additions:Ingredient[]
+    async addAdditionToMenu(additions:AddIngrRequest[]
     ): Promise<Boolean> {
 
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
@@ -453,7 +455,7 @@ export class DataBridgeService {
     }
 
      //add pizza definition
-     async addAPizzaToMenu(pizzas:Pizza[]
+     async addAPizzaToMenu(pizzas:AddPizzaRequest[]
      ): Promise<Boolean> {
 
       var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"

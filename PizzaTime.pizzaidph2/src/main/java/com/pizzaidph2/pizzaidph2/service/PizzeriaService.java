@@ -5,6 +5,7 @@ import com.pizzaidph2.pizzaidph2.model.Account;
 import com.pizzaidph2.pizzaidph2.model.Pizzeria;
 import com.pizzaidph2.pizzaidph2.repository.HybernateAccountRepositoryImpl2;
 import com.pizzaidph2.pizzaidph2.repository.HybernatePizzeriaRepositoryImpl2;
+import com.pizzaidph2.pizzaidph2.service.amqp.ISagaNotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class PizzeriaService {
 
     @Autowired
     GeneralService genService;
+
+    @Autowired
+    private ISagaNotifyService sagaNotifyService;
 
     public GenericResponse createPizzeriaService(long userID, Pizzeria obj){
 
@@ -42,9 +46,12 @@ public class PizzeriaService {
 
                 manager.setVendor(true);
 
-                repo.save(target);
+                target = repo.save(target);
                 repoAccount.save(manager);
                 System.out.println("Now the user "+manager.getId()+" is the manager of pizzeria "+target.getId());
+
+                System.out.println("I'm calling another BE for menu propagation");
+                sagaNotifyService.notifyPizzeriaRegistration(target.getId());
 
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
