@@ -1,7 +1,7 @@
 import { Pizza } from "./Pizza";
 
 
-export class Menu{
+export class PizzaRow{
 
        
     public constructor(
