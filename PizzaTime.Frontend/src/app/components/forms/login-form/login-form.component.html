@@ -11,7 +11,7 @@
 </p-floatLabel>
 <p-button label="Login" class="formfield centered" (onClick)="login()"/>
 <p class="centered errorText">{{errorMessage}}</p>
+<app-sign-in-with-google (onSocialAuthentication)="socialLogin($event)"/>
   </form>
-  <app-sign-in-with-google/>
 </div>
 </p-card>

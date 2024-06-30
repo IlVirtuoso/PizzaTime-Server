@@ -75,6 +75,8 @@ export class DataBridgeService {
         }
       } );
 
+
+
       //ERROR CODE 0 = success
         //RECALL to save the sessionToken
       //ERROR CODE 206 = redirect to finalize registration page
