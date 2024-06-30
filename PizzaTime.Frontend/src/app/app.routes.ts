@@ -7,6 +7,8 @@ import { PizzaPartyPageComponent as PizzaPartyComponent } from './components/pag
 import { PizzeriaAdminPageComponent } from './components/pages/pizzeria-admin-page/pizzeria-admin-page.component';
 import { PizzaListViewComponent } from './components/views/pizza-list-view/pizza-list-view.component';
 import { IngredientListViewComponent } from './components/views/ingredient-list-view/ingredient-list-view.component';
+import { PizzaMenuAdderComponent } from './components/views/pizza-menu-adder/pizza-menu-adder.component';
+import { IngredientsMenuAdderComponent } from './components/views/ingredients-menu-adder/ingredients-menu-adder.component';
 
 export const routes: Routes = [
   {path : 'login', component: LoginFormComponent},
@@ -15,4 +17,5 @@ export const routes: Routes = [
   {path:'composer', component:PizzaComposerComponent},
   {path:'party', component:PizzaPartyComponent},
   {path:'pizzeriamanager', component:PizzeriaAdminPageComponent},
+  {path:'mpc', component:IngredientsMenuAdderComponent}
 ];

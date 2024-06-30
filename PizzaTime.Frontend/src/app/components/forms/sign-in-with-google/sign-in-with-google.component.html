@@ -2,13 +2,16 @@
 </script>
 
 <div id="gbutton">
+<div *ngIf="loggedIn; else loginTemplate">
+  <h2>Welcome, {{ user?.name }}</h2>
+  <p>Email: {{ user?.email }}</p>
+  <img [src]="user?.photoUrl" alt="User Photo">
+  <button (click)="signOut()">Sign Out</button>
+</div>
 
-
-    
-
-    <div id="g_id_onload" data-client_id="...apps.googleusercontent.com" data-context="signin" data-ux_mode="popup"
-        data-callback="onSocialLogin" data-auto_prompt="false"> </div>
-    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with"
-        data-size="large" data-logo_alignment="left"> </div>
-
+<ng-template #loginTemplate>
+  <asl-google-signin-button type="standard" size="large" theme="filled_black"
+  (click)="signInWithGoogle()"
+  ></asl-google-signin-button>
+</ng-template>
 </div>

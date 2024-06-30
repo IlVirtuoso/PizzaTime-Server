@@ -16,6 +16,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { SignInWithGoogleComponent } from '../sign-in-with-google/sign-in-with-google.component';
+import { SocialUser } from '@abacritt/angularx-social-login';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -34,7 +36,7 @@ export class LoginFormComponent {
   protected password= "";
   protected email = "";
 
-  public constructor( private service : IDataBridge, private router: Router){
+  public constructor( private service : IDataBridge, private router: Router, private cookieService: CookieService){
 
   }
 
@@ -49,6 +51,10 @@ export class LoginFormComponent {
     }
   }
 
+  public socialLogin(user: SocialUser){
+    this.cookieService.set("Authorization", user.authToken);
+    this.service.socialLogin();
+  }
   public logout(){
 
   }
