@@ -10,8 +10,8 @@ services:
   - name: idpdefinitive_account
     protocol: http
     path: /account/v1
-    host: host.docker.internal
-    port: 2042
+    host: idp-service.default.svc.cluster.local
+    port: 8080
     routes:
       - name: setAccountInfo
         protocols:
@@ -251,8 +251,8 @@ services:
   - name: idpdefinitive_pizzeria
     protocol: http
     path: /pizzeria/v1
-    host: host.docker.internal
-    port: 2042
+    host: idp-service.default.svc.cluster.local
+    port: 8080
     routes:
       - name: getPizzeriaInfo
         protocols:
@@ -294,8 +294,8 @@ services:
   - name: pizzaenginedefinitive_search
     protocol: http
     path: /search/v1
-    host: host.docker.internal
-    port: 3042
+    host: engine-service.default.svc.cluster.local
+    port: 8080
     routes:
       - name: getAllIngredient
         protocols:
@@ -445,8 +445,8 @@ services:
   - name: pizzaenginedefinitive_item
     protocol: http
     path: /item/v1
-    host: host.docker.internal
-    port: 3042
+    host: engine-service.default.svc.cluster.local
+    port: 8080
     routes:
       - name: createMenu
         protocols:
@@ -614,7 +614,7 @@ services:
   - name: orderService
     protocol: http
     path: /api/v1
-    host: host.docker.internal
+    host: order-service.default.svc.cluster.local
     port: 8080
     routes:
       - name: genericorderapi
