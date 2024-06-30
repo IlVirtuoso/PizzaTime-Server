@@ -661,14 +661,23 @@ export class DataBridgeService extends IDataBridge{
 
   /** TEMP */
   getPizzeriaOrders(piva: String): Observable<Order[]> {
+    const headers = new HttpHeaders({
+      'Authorization': this.cookieService.get("Authorization")
+    });
     return this.fetcher.get(getAllPizzaPath) as Observable<Order[]>;
   }
 
   getOrdersForPizzeria(piva: String): Observable<Order[]> {
+    const headers = new HttpHeaders({
+      'Authorization': this.cookieService.get("Authorization")
+    });
     return this.fetcher.get(getAllPizzaPath) as Observable<Order[]>;
   }
 
   getOrdersForUser(username: String): Observable<Order[]> {
+    const headers = new HttpHeaders({
+      'Authorization': this.cookieService.get("Authorization")
+    });
     return this.fetcher.get(getAllPizzaPath) as Observable<Order[]>;
   }
 
