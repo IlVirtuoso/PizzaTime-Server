@@ -7,6 +7,7 @@ import com.pizzaidph2.pizzaidph2.Component.GenericResponse;
 import com.pizzaidph2.pizzaidph2.model.Account;
 import com.pizzaidph2.pizzaidph2.model.Pizzeria;
 import com.pizzaidph2.pizzaidph2.service.*;
+import com.pizzaidph2.pizzaidph2.service.amqp.ISagaNotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 @RequestMapping("/pizzeria/v1")
 public class PizzeriaControllerImpl {
 
+    @Autowired
+    private ISagaNotifyService sagaNotifyService;
     @Autowired
     private PizzeriaService pizzaService;
 
@@ -42,6 +45,8 @@ public class PizzeriaControllerImpl {
             if(result.getStatusCode() == GenericResponse.OK_CODE){
                 String newSessionToken = jwtService.getSessionToken(genService.getInternalAccountInfo(Long.parseLong(jwt.getSubject())));
                 resp.setSessionToken(newSessionToken);
+                // notifica ai saga listener la creazione della pizzeria
+                sagaNotifyService.notifyPizzeriaRegistration(pizzeria.getId());
                 return resp.jsonfy();
             }
 
