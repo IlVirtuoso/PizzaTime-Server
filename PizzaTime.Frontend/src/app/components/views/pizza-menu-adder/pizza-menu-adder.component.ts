@@ -1,6 +1,15 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  Input,
+  ModelSignal,
+  OnInit,
+  Output,
+  model,
+  output,
+} from '@angular/core';
 import { Ingredient, Pizza } from '@data';
 import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
+import { IDataBridge } from 'app/services/idatabridge';
 
 @Component({
   selector: 'app-pizza-menu-adder',
@@ -9,9 +18,12 @@ import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
   templateUrl: './pizza-menu-adder.component.html',
   styleUrl: './pizza-menu-adder.component.css',
 })
-export class PizzaMenuAdderComponent {
-  @Input() protected allPizzas: Pizza[] = [];
-  @Input() protected selectedPizzas: Pizza[] = [];
+export class PizzaMenuAdderComponent implements OnInit {
+  public allPizzas: Pizza[] = [];
+
+  public selectedPizzas: ModelSignal<Pizza[]> = model<Pizza[]>([]);
+
+  protected selection: Pizza[] = [];
 
   protected examples: Pizza[] = [
     new Pizza('1', 'Margherita', [
@@ -38,7 +50,25 @@ export class PizzaMenuAdderComponent {
     ]),
   ];
 
-  selectIngredientsName(pizza: Pizza) : string[]{
-    return pizza.seasonings.map(t=> t.commonName);
+  selectIngredientsName(pizza: Pizza): string[] {
+    return pizza.seasonings.map((t) => t.commonName);
   }
+
+  public constructor(private dataService: IDataBridge) {}
+
+  ngOnInit(): void {
+    this.selectedPizzas.subscribe((t) => (this.selection = t));
+    this.dataService.getAvailablePizza().subscribe((t) =>
+      t.forEach((p) => {
+        if (
+          this.selection.findIndex((elem) => p.commonName == elem.commonName) ==
+          -1
+        ) {
+          this.allPizzas.push(p);
+        }
+      })
+    );
+  }
+
+
 }

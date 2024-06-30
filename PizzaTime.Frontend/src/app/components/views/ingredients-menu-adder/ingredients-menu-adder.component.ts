@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { Ingredient } from '@data';
 import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
 
@@ -10,8 +10,8 @@ import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
   styleUrl: './ingredients-menu-adder.component.css',
 })
 export class IngredientsMenuAdderComponent {
-  @Input() protected availableIngredients: Ingredient[] = [];
-  @Input() protected selectedIngredients: Ingredient[] = [];
+  @Input() public availableIngredients: Ingredient[] = [];
+  @Output() public selectedIngredients: Ingredient[] = [];
 
   protected example: Ingredient[] = [
     new Ingredient('6', 'Bell Peppers', 'Fresh bell peppers', true, []),
