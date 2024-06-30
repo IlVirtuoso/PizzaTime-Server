@@ -107,6 +107,7 @@ export class DataBridgeService extends IDataBridge{
 
       var oauthToken:string = this.cookieService.get("Authorization");
 
+      console.log("requested a social login with oauth token:" + oauthToken);
       try {
         const response = await this.promiseClient.post(socialLoginPath,null, {
           headers: {
@@ -115,8 +116,6 @@ export class DataBridgeService extends IDataBridge{
           }
         });
 
-
-
         //ERROR CODE 0 = success
           //RECALL to save the sessionToken
         //ERROR CODE 206 = redirect to finalize registration page
@@ -124,8 +123,22 @@ export class DataBridgeService extends IDataBridge{
         //ERROR CODE 401 = google token is expired: repeat social login
         //Other ERRORS: invalid "login id or password"
 
+        if(response.data.statusCode==206){
+          this.lastError=response.data.statusReason;
+          this.cookieService.set("Session", response.data.regToken);
+          this.regModeOnly = true;
+          return 206;
+        }else if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return response.data.statusCode;
+  
+        }
+  
+        this.cookieService.set("Session", response.data.sessionToken)
+        //FOR ID TOKEN this.cookieService.set("Authorization", response.data.idToken)
+  
         return response.data.statusCode;
-      } catch (error) {
+        } catch (error) {
           console.error('Error in social login:', error);
           throw error;
       }
@@ -134,7 +147,7 @@ export class DataBridgeService extends IDataBridge{
 
     //register definition
     override async signin(firstName:string, lastName:string, username: string, password : string
-    ): Promise<boolean> {
+    ): Promise<number> {
       var data={
         "firstName":firstName,
         "lastName":lastName,
@@ -154,8 +167,21 @@ export class DataBridgeService extends IDataBridge{
         //ERROR CODE 206 = redirect to finalize registration page
           //recall to save the regToken
         //Other ERRORS: invalid "login id or password"
+        
+      if(response.data.statusCode==206){
+        this.lastError=response.data.statusReason;
+        this.cookieService.set("Session", response.data.regToken);
+        this.regModeOnly = true;
+        return 206;
+      }else if(response.data.statusCode!=0){
+        this.lastError=response.data.statusReason;
+        return response.data.statusCode;
+      }
 
-        return response.data;
+      this.cookieService.set("Session", response.data.sessionToken)
+      //FOR ID TOKEN this.cookieService.set("Authorization", response.data.idToken)
+
+      return response.data.statusCode;
       } catch (error) {
           console.error('Ereror in registration:', error);
           throw error;
@@ -164,9 +190,9 @@ export class DataBridgeService extends IDataBridge{
 
      //finalize registration definition
      override async finalizeRegistration(firstName:string, lastName:string, address: string, phone : string, mobile:string
-     ): Promise<boolean> {
+     ): Promise<number> {
 
-      var regToken:string = "PUT HERE THE REG TOKEN INSIDE THE COOKIE"
+      var regToken:string = this.cookieService.get("Session");
 
       var data={
          "firstName":firstName,
@@ -189,7 +215,21 @@ export class DataBridgeService extends IDataBridge{
          //ERROR CODE 203 = User avoid some important data: repeat
          //Other ERRORS: general errors
 
-         return response.data;
+         if(response.data.statusCode==206){
+          this.lastError=response.data.statusReason;
+          this.cookieService.set("Session", response.data.regToken);
+          this.regModeOnly = true;
+          return 206;
+        }else if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return response.data.statusCode;
+  
+        }
+  
+        this.cookieService.set("Session", response.data.sessionToken)
+        //FOR ID TOKEN this.cookieService.set("Authorization", response.data.idToken)
+  
+        return response.data.statusCode;
        } catch (error) {
            console.error('Error in finalizing registration :', error);
            throw error;
@@ -200,7 +240,7 @@ export class DataBridgeService extends IDataBridge{
       override async setUserData(firstName:string, lastName:string, address: string, phone : string, mobile:string
       ): Promise<boolean> {
 
-        var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
+        var sessionToken:string = this.cookieService.get("Session");
 
         var data={
           "firstName":firstName,
@@ -216,13 +256,20 @@ export class DataBridgeService extends IDataBridge{
               'Content-Type': 'application/json',
               'Authorization':sessionToken
             }
+            
           });
 
+        if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return false;
+        }
+  
+        return true;
+       
           //ERROR CODE 0 = success, user object is returned
           //ERROR CODE 401 = user is malicious or the session is expired
           //ERROR CODE 400 = "invalid data provided"
 
-          return response.data;
         } catch (error) {
             console.error('Error in setting account info:', error);
             throw error;
@@ -234,7 +281,7 @@ export class DataBridgeService extends IDataBridge{
     // get account definition
     override async getUser(): Promise<User| null> {
 
-      var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
+      var sessionToken:string = this.cookieService.get("Session");
 
       try {
         const response = await this.promiseClient.get(getAccountPath, {
@@ -243,10 +290,15 @@ export class DataBridgeService extends IDataBridge{
             'Authorization':sessionToken
           }
         });
-
+        
         //ERROR CODE 0 = success, return the account object
         //ERROR CODE 401 = session token is expired: repeat social login
         //Other ERRORS: general error
+
+        if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return null;
+        }
 
         return response.data.account;
       } catch (error) {
@@ -276,7 +328,7 @@ export class DataBridgeService extends IDataBridge{
       // get account definition
       override async deleteUser(): Promise<boolean> {
 
-        var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
+        var sessionToken:string = this.cookieService.get("Session");
 
         try {
           const response = await this.promiseClient.get(deleteAccountPath, {
@@ -290,7 +342,12 @@ export class DataBridgeService extends IDataBridge{
           //ERROR CODE 401 = session token is expired: repeat social login
           //Other ERRORS: general error
 
-          return response.data;
+          if(response.data.statusCode!=0){
+            this.lastError=response.data.statusReason;
+            return false;
+          }
+    
+          return true;
         } catch (error) {
             console.error('Error in deleting account:', error);
             throw error;
@@ -300,7 +357,7 @@ export class DataBridgeService extends IDataBridge{
       // get JWT
       override async getJWT(): Promise<boolean> {
 
-        var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
+        var sessionToken:string = this.cookieService.get("Session");
 
         try {
           const response = await this.promiseClient.get(getJWTPath, {
@@ -314,7 +371,15 @@ export class DataBridgeService extends IDataBridge{
           //ERROR CODE 401 = session token is expired: repeat social login
           //Other ERRORS: general error
 
-          return response.data;
+          if(response.data.statusCode!=0){
+            this.lastError=response.data.statusReason;
+            return false;
+          }
+    
+          //this.cookieService.set("Session", response.data.sessionToken)
+          this.cookieService.set("Authorization", response.data.idToken);
+    
+          return true;
         } catch (error) {
             console.error('Error in getting jwt:', error);
             throw error;
@@ -326,7 +391,7 @@ export class DataBridgeService extends IDataBridge{
       override async changePassword(oldPassword:string, newPassword:string
       ): Promise<boolean> {
 
-        var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
+        var sessionToken:string = this.cookieService.get("Session");
 
         var data={
           "oldPassword":oldPassword,
@@ -345,7 +410,12 @@ export class DataBridgeService extends IDataBridge{
           //ERROR CODE 401 = user is malicious or the session is expired
           //ERROR CODE 202 = "password too easy"
 
-          return response.data;
+          if(response.data.statusCode!=0){
+            this.lastError=response.data.statusReason;
+            return false;
+          }
+  
+          return true;
         } catch (error) {
             console.error('Error in changing password:', error);
             throw error;
@@ -356,7 +426,7 @@ export class DataBridgeService extends IDataBridge{
       override async recharge(value:number
       ): Promise<boolean> {
 
-        var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
+        var sessionToken:string = this.cookieService.get("Session");
 
         try {
           const response = await this.promiseClient.get(rechargePath, {
@@ -371,7 +441,12 @@ export class DataBridgeService extends IDataBridge{
           //ERROR CODE 0 = success, user object is returned
           //ERROR CODE 401 = user is malicious or the session is expired
 
-          return response.data;
+          if(response.data.statusCode!=0){
+            this.lastError=response.data.statusReason;
+            return false;
+          }
+  
+          return true;  
         } catch (error) {
             console.error('Error in recharging the balance:', error);
             throw error;
@@ -387,7 +462,7 @@ export class DataBridgeService extends IDataBridge{
      override async createPizzeria(name:string, vatNumber:string, address: string
      ): Promise<boolean> {
 
-      var sessionToken:string = "PUT HERE THE SESSION TOKEN INSIDE THE COOKIE"
+      var sessionToken:string = this.cookieService.get("Session");
 
       var data={
          "name":name,
@@ -409,8 +484,17 @@ export class DataBridgeService extends IDataBridge{
          //ERROR CODE 401 = user is malicious or the session is expired
          //Other ERRORS: general errors
 
-         return response.data;
-       } catch (error) {
+         if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return false;
+        }
+  
+        this.cookieService.set("Session", response.data.sessionToken)
+        //FOR ID TOKEN this.cookieService.set("Authorization", response.data.idToken)
+  
+        return true;
+
+        } catch (error) {
            console.error('Error in creating a pizzeria :', error);
            throw error;
        }
@@ -421,7 +505,7 @@ export class DataBridgeService extends IDataBridge{
     // get pizzeria definition
     override async getManagedPizzeria(): Promise<Pizzeria | null> {
 
-      var sessionToken:string = "PUT HERE THE SESSION  TOKEN"
+      var sessionToken:string = this.cookieService.get("Session");
 
       try {
         const response = await this.promiseClient.get(getPizzeriaPath, {
@@ -435,7 +519,11 @@ export class DataBridgeService extends IDataBridge{
         //ERROR CODE 401 = session token is expired or the user is not a manager
         //Other ERRORS: general error
 
-        return response.data.account;
+        if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return null;
+        }
+        return response.data.pizzeria;
       } catch (error) {
           console.error('Error in getting pizzeria info:', error);
           throw error;
