@@ -205,13 +205,12 @@ public class SearchEngineController {
         }
     }
 
-    @GetMapping("/testService")
+    @GetMapping("/populatePizzaDB")
     public String testService(){
-        //System.out.println(searchUtilities.createIngredientsDemo());
-        System.out.println(searchUtilities.createIPastryDemo());
-        System.out.println(searchUtilities.createSeasoningDemo());
-        System.out.println(searchUtilities.createPizzaDemo());
-        //System.out.println(searchUtilities.searchPizzaDemo());
+        System.out.println(genService.createIPastryDemo());
+        System.out.println(genService.createSeasoningDemo());
+        System.out.println(genService.createPizzaDemo());
+        menuService.creteMenuDemo();
         return null;
     }
 

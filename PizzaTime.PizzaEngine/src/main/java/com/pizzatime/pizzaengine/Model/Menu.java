@@ -5,6 +5,7 @@ import com.pizzatime.pizzaengine.Service.GenericService;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,11 +22,11 @@ public class Menu {
 
     @Expose
     @ManyToMany
-    private Set<MenuRowPizza> pizzaRows;
+    private Set<MenuRowPizza> pizzaRows = new HashSet<MenuRowPizza>();
 
     @Expose
     @ManyToMany
-    private Set<MenuRowIngredient> ingrRows;
+    private Set<MenuRowIngredient> ingrRows = new HashSet<MenuRowIngredient>();
 
     private Boolean availlable = false;
 
