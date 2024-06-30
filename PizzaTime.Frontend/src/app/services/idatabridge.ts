@@ -44,14 +44,14 @@ export abstract class IDataBridge {
     lastName: string,
     username: string,
     password: string
-  ): Promise<boolean>;
+  ): Promise<number>;
   public abstract finalizeRegistration(
     firstName: string,
     lastName: string,
     address: string,
     phone: string,
     mobile: string
-  ): Promise<boolean>;
+  ): Promise<number>;
 
   public abstract getJWT(): Promise<boolean>;
   public abstract getUser(): Promise<User | null>;
