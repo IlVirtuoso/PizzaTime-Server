@@ -29,7 +29,7 @@ export class OrderRow{
   public constructor(
     public pizzaId : number,
     public baseId : number,
-    public  toppingsIds : Array<number>,
+    public  ingredients : Array<number>,
     public quantity : number,
   ){}
 }

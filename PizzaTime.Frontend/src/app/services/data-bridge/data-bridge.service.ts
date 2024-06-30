@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AddIngrRequest, AddPizzaRequest, IDataBridge } from '../idatabridge';
+import { AddIngrRequest, AddPizzaRequest, IDataBridge, getMenuRowsForOrderRequest } from '../idatabridge';
 import { CookieService } from 'ngx-cookie-service';
 import axios, { Axios , AxiosRequestConfig} from 'axios';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
@@ -93,7 +93,7 @@ export class DataBridgeService extends IDataBridge{
       }
 
       this.cookieService.set("Session", response.data.sessionToken)
-      //FOR ID TOKEN this.cookieService.set("Session", response.data.idToken)
+      //FOR ID TOKEN this.cookieService.set("Authorization", response.data.idToken)
 
       return response.data.statusCode;
     } catch (error) {
@@ -601,7 +601,7 @@ export class DataBridgeService extends IDataBridge{
     }
 
 
-
+      /*
      //get pizzeria's menu rows for an order pizza definition
      override async getMenuRowsForOrder(order:Order[]
      ): Promise<boolean> {
@@ -628,12 +628,21 @@ export class DataBridgeService extends IDataBridge{
            throw error;
        }
      }
+       */
 
-    // METHODS TO HANDLE ITEMS
+     getMenuRowsForOrder(order:{order: getMenuRowsForOrderRequest[]}): Observable<Menu[]> {
+      const headers = new HttpHeaders({
+        'Authorization': this.cookieService.get("Authorization")
+      });
+  
+      return this.fetcher.post(getRowsForOrderPath,order) as Observable<Menu[]>;
+    }
+    
+    
+     // METHODS TO HANDLE ITEMS
 
 
-
-    getAvailableSeasoning(): Observable<Ingredient[]> {
+  getAvailableSeasoning(): Observable<Ingredient[]> {
     return this.fetcher.get(getAllSeasoningPath) as Observable<Ingredient[]>;
   }
 

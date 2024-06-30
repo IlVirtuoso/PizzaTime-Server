@@ -21,6 +21,14 @@ export class AddIngrRequest{
   ){ }
 }
 
+export class getMenuRowsForOrderRequest{
+  public constructor(
+    public pizzaId : number,
+    public baseId : number,
+    public  additions : Array<number>
+  ){}
+}
+
 
 export abstract class IDataBridge {
   lastError: string = '';
@@ -71,7 +79,7 @@ export abstract class IDataBridge {
   public abstract addAdditionToMenu(additions: AddIngrRequest[]): Promise<boolean>;
   public abstract getMenu(): Promise<Menu | null>;
   public abstract createMenu(): Promise<boolean>;
-  public abstract getMenuRowsForOrder(order: Order[]): Promise<boolean>;
+  public abstract getMenuRowsForOrder(order:{order: getMenuRowsForOrderRequest[]}): Observable<Menu[]>;
   public abstract createPizzeria(
     name: string,
     vatNumber: string,
