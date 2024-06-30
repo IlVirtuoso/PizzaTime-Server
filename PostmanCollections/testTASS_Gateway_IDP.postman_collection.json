@@ -1,0 +1,712 @@
+{
+	"info": {
+		"_postman_id": "06ef59ab-669b-4ed3-a24c-1135177e239f",
+		"name": "testTASS_Gateway_IDP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36197717"
+	},
+	"item": [
+		{
+			"name": "premethods",
+			"item": [
+				{
+					"name": "getHelloWorld",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:2042/account/v1/getHelloWorld?print=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2042",
+							"path": [
+								"account",
+								"v1",
+								"getHelloWorld"
+							],
+							"query": [
+								{
+									"key": "print",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register v0",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"gigya\",\r\n    \"lastName\":\"master\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:2042/account/v1/v0/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2042",
+							"path": [
+								"account",
+								"v1",
+								"v0",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAccountInfo v0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:2042/account/v1/v0/getAccountInfo?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2042",
+							"path": [
+								"account",
+								"v1",
+								"v0",
+								"getAccountInfo"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setAccontInfo v0",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"2\",\r\n    \"firstName\":\"modified\",\r\n    \"lastName\":\"ahahah\",\r\n    \"mobile\":\"2134123\",\r\n    \"email\":\"email@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:2042/account/v1/v0/setAccountInfo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2042",
+							"path": [
+								"account",
+								"v1",
+								"v0",
+								"setAccountInfo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "isAvaillableLoginId v0",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/isAvaillableLoginID?loginId=gigyamaster@mail.lol",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"isAvaillableLoginID"
+					],
+					"query": [
+						{
+							"key": "loginId",
+							"value": "gigyamaster@mail.lol"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\":\"testuser\",\r\n    \"lastName\":\"gateway\",\r\n    \"username\":\"gigyamastergaw@mail.lol\",\r\n    \"password\":\"1234567\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/register",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "finalizeRegistration",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQzOTczMiwiZXhwIjoxNzE5NDQwMzMyLCJpc0xvZ2dlZEluIjpmYWxzZSwicmVnVGltZXN0YW1wIjoiMjAyNC0wNi0yNyAwMDowODo1MiJ9.EftF9al2ZFOP9LWdHQzQuIfcZfq6CjVy_jK2ePsPwhFaTRv63TSewVz2XTt1rmsLHWr0NNF_WT0vEDbI2OEOZ3VYw8MHPszueLJ6J0qchL6aYguyh6eZoE5gtCr04c-jdVMr2pIG_1Osqp-fTk6LHKwr78U_mxBbt11hCGr2HTVSyigeTNSy2v3aHctkIeSVZ2Og336k-PQbMtvGd3f5zuOEYFgRQ69yyTQeeJ3k9RNBz2hd_exmNrpFfPksyGnSjEe-KqplabEhbv9jCdvPm-zgNiveyMAfPc0UKCoKsBUwegsdGkivJj-cpDilG_4jPU8-nulePlLGOBOZ1VE0vg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\":\"Via del GW 13\",\r\n    \"phone\":\"204235\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/finalizeRegistration",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"finalizeRegistration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "registerComplete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"gwmastercomplete@mail.lol\",\r\n    \"password\":\"1234567\",\r\n    \"firstName\":\"gigya\",\r\n    \"lastName\":\"master\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/registerComplete",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"registerComplete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"gwmastercomplete@mail.lol\",\r\n    \"password\":\"1234567\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/login",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "socialLogin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNkNTgwZjBhZjdhY2U2OThhMGNlZTdmMjMwYmNhNTk0ZGM2ZGJiNTUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0ODc0MTMyNTEwNzQtbWFra2U5bjFmMG90MWtuN21lM2hvNGhjYnQ0aDkyOWIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0ODc0MTMyNTEwNzQtbWFra2U5bjFmMG90MWtuN21lM2hvNGhjYnQ0aDkyOWIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTgyMTUyMjg3NDkwMDQwMzM3NzQiLCJlbWFpbCI6ImJvcnJlbGxpbWF0dGlhOTlAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTcxODk3NTMxNiwibmFtZSI6Ik1hdHRpYSBCb3JyZWxsaSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLVTdnaU5ReHdVMW5CSEU0Qmd3R3p0ZURkZ01NVlduN1FDaTVrSVVLdURmZkNxZ1ZMaD1zOTYtYyIsImdpdmVuX25hbWUiOiJNYXR0aWEiLCJmYW1pbHlfbmFtZSI6IkJvcnJlbGxpIiwiaWF0IjoxNzE4OTc1NjE2LCJleHAiOjE3MTg5NzkyMTYsImp0aSI6IjBmYTZkOTdiMGZhMTMxZjMxOTQ2MTMxMjAzZmZjZTdjNDQ1ZDI3NTEifQ.O23ixSpIawHGLLP8G9NsHRGGELMlhKxS02Nmo4Yas5SnKUubaMSOO3OursT_vNDhQ0Cwl_9kIUvdnKu26hG2sS9GmSehfm8TwZY-gIPtbyKJkjvIrY-ilkJCiI6oGlCM3RWStZaPgcHYCdnhHwtRYicaF_w3UEUtkvAjwmNG8p3rtT-eY9fPQ5uyj94FfzZHAM2Mql3VDvMZty54gpS-Y-1K3I3QPmOB2zh6Hh4ufv7eEroaApo0MNkv_DHvPE6ShZ4HsdDcYDcYYSV7cQCgnAcj6GHSU_xpzOKCBcEH3fOL-9MPBmgmyKzO77HYaBBOEQFa5H-W7wTY5Nyo2euz-g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/socialLogin",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"socialLogin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "setAccountInfo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQzOTg0NywiZXhwIjoxNzE5NDQzNDQ3LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMjcgMDA6MTA6NDcifQ.uUmpYuAdZvRoGySWcrWcH6Cd9h0FIHmXmH7gwUUtSyHK0fG_Ugnrm1wwI9zQ1tXXC5c5CEDMQelbjDIP70nCidwiVhBYby4-Utej4hPuAxyfVR6Sz61UxkGh7DO00ttVYvhiYxEhHB5PjVYVn_xFhVjQFtCuFHA6RBkb1XZvn6aOGT1shJDCRm9S6_LUBUF3C-43kXKtnY6K1kutB4CgrSWr89GqBVHw2H0rNQgGbBRPzyzDNE4OxmWXIhn825EMZibwVu4ccTAZcfvPUILnSZW_r98O6LLf_4GPKXFt-H3oYFIrBJS5wzH3kEZkDvn6bmgwQ-wPbS9Hm3U0t0E4MQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\":\"myName is\",\r\n    \"lastName\":\"333GW\",\r\n    \"mobile\":\"ok\",\r\n    \"address\":\"new gateway address\",\r\n    \"phone\":\"ok\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/setAccountInfo",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"setAccountInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "changePassword",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQzOTg0NywiZXhwIjoxNzE5NDQzNDQ3LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMjcgMDA6MTA6NDcifQ.uUmpYuAdZvRoGySWcrWcH6Cd9h0FIHmXmH7gwUUtSyHK0fG_Ugnrm1wwI9zQ1tXXC5c5CEDMQelbjDIP70nCidwiVhBYby4-Utej4hPuAxyfVR6Sz61UxkGh7DO00ttVYvhiYxEhHB5PjVYVn_xFhVjQFtCuFHA6RBkb1XZvn6aOGT1shJDCRm9S6_LUBUF3C-43kXKtnY6K1kutB4CgrSWr89GqBVHw2H0rNQgGbBRPzyzDNE4OxmWXIhn825EMZibwVu4ccTAZcfvPUILnSZW_r98O6LLf_4GPKXFt-H3oYFIrBJS5wzH3kEZkDvn6bmgwQ-wPbS9Hm3U0t0E4MQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldPassword\":\"1234567\",\r\n    \"newPassword\":\"1234567ahah\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/changePassword",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"changePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAccountInfo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQzOTg0NywiZXhwIjoxNzE5NDQzNDQ3LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMjcgMDA6MTA6NDcifQ.uUmpYuAdZvRoGySWcrWcH6Cd9h0FIHmXmH7gwUUtSyHK0fG_Ugnrm1wwI9zQ1tXXC5c5CEDMQelbjDIP70nCidwiVhBYby4-Utej4hPuAxyfVR6Sz61UxkGh7DO00ttVYvhiYxEhHB5PjVYVn_xFhVjQFtCuFHA6RBkb1XZvn6aOGT1shJDCRm9S6_LUBUF3C-43kXKtnY6K1kutB4CgrSWr89GqBVHw2H0rNQgGbBRPzyzDNE4OxmWXIhn825EMZibwVu4ccTAZcfvPUILnSZW_r98O6LLf_4GPKXFt-H3oYFIrBJS5wzH3kEZkDvn6bmgwQ-wPbS9Hm3U0t0E4MQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/getAccountInfo",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"getAccountInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getJWT",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQzOTg0NywiZXhwIjoxNzE5NDQzNDQ3LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMjcgMDA6MTA6NDcifQ.uUmpYuAdZvRoGySWcrWcH6Cd9h0FIHmXmH7gwUUtSyHK0fG_Ugnrm1wwI9zQ1tXXC5c5CEDMQelbjDIP70nCidwiVhBYby4-Utej4hPuAxyfVR6Sz61UxkGh7DO00ttVYvhiYxEhHB5PjVYVn_xFhVjQFtCuFHA6RBkb1XZvn6aOGT1shJDCRm9S6_LUBUF3C-43kXKtnY6K1kutB4CgrSWr89GqBVHw2H0rNQgGbBRPzyzDNE4OxmWXIhn825EMZibwVu4ccTAZcfvPUILnSZW_r98O6LLf_4GPKXFt-H3oYFIrBJS5wzH3kEZkDvn6bmgwQ-wPbS9Hm3U0t0E4MQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/getJWT",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"getJWT"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verifyJWT",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/verifyJWT?jwt=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQ0MDUxOSwiZXhwIjoxNzE5NDQ0MTE5fQ.s9hDYN-qlOrGbyKkESCvjdThnOKPBHJAcNfEk-Ed01ncagCtjysKoxpNJkrhLFTa0fcG9epXY90GrxlCcGpCjjU8HHgc-6TcpF57I_C1zlmjgZTRgkbXld9wo94QymwP6D8wwY0G8IXZAEG4PaSWBUN4eUvmQbf4rTtNlyJyy43Q0gmyYd981HvuuOwk1ycIOxG0qnU4T1sN0cUgNmLxxFp6fnFsa8ZttuQJYP54LwR8bzZQv5pe0rM7OxvEc2D20xos-LXZz_4aJZNG-i7ZYVeKZ3VV5rITR3ucJXf-wiiOGOhSf-0NdF0WyzVWh19YOMdmeTTEWpZucPd1VQElmQ",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"verifyJWT"
+					],
+					"query": [
+						{
+							"key": "jwt",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQ0MDUxOSwiZXhwIjoxNzE5NDQ0MTE5fQ.s9hDYN-qlOrGbyKkESCvjdThnOKPBHJAcNfEk-Ed01ncagCtjysKoxpNJkrhLFTa0fcG9epXY90GrxlCcGpCjjU8HHgc-6TcpF57I_C1zlmjgZTRgkbXld9wo94QymwP6D8wwY0G8IXZAEG4PaSWBUN4eUvmQbf4rTtNlyJyy43Q0gmyYd981HvuuOwk1ycIOxG0qnU4T1sN0cUgNmLxxFp6fnFsa8ZttuQJYP54LwR8bzZQv5pe0rM7OxvEc2D20xos-LXZz_4aJZNG-i7ZYVeKZ3VV5rITR3ucJXf-wiiOGOhSf-0NdF0WyzVWh19YOMdmeTTEWpZucPd1VQElmQ"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAccount",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQzOTg0NywiZXhwIjoxNzE5NDQzNDQ3LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMjcgMDA6MTA6NDcifQ.uUmpYuAdZvRoGySWcrWcH6Cd9h0FIHmXmH7gwUUtSyHK0fG_Ugnrm1wwI9zQ1tXXC5c5CEDMQelbjDIP70nCidwiVhBYby4-Utej4hPuAxyfVR6Sz61UxkGh7DO00ttVYvhiYxEhHB5PjVYVn_xFhVjQFtCuFHA6RBkb1XZvn6aOGT1shJDCRm9S6_LUBUF3C-43kXKtnY6K1kutB4CgrSWr89GqBVHw2H0rNQgGbBRPzyzDNE4OxmWXIhn825EMZibwVu4ccTAZcfvPUILnSZW_r98O6LLf_4GPKXFt-H3oYFIrBJS5wzH3kEZkDvn6bmgwQ-wPbS9Hm3U0t0E4MQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/deleteAccount",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"deleteAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "rechargeBalance",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQzOTg0NywiZXhwIjoxNzE5NDQzNDQ3LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMjcgMDA6MTA6NDcifQ.uUmpYuAdZvRoGySWcrWcH6Cd9h0FIHmXmH7gwUUtSyHK0fG_Ugnrm1wwI9zQ1tXXC5c5CEDMQelbjDIP70nCidwiVhBYby4-Utej4hPuAxyfVR6Sz61UxkGh7DO00ttVYvhiYxEhHB5PjVYVn_xFhVjQFtCuFHA6RBkb1XZvn6aOGT1shJDCRm9S6_LUBUF3C-43kXKtnY6K1kutB4CgrSWr89GqBVHw2H0rNQgGbBRPzyzDNE4OxmWXIhn825EMZibwVu4ccTAZcfvPUILnSZW_r98O6LLf_4GPKXFt-H3oYFIrBJS5wzH3kEZkDvn6bmgwQ-wPbS9Hm3U0t0E4MQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/rechargeBalance?value=5.50",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"rechargeBalance"
+					],
+					"query": [
+						{
+							"key": "value",
+							"value": "5.50"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chargeOnBalance",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQzOTg0NywiZXhwIjoxNzE5NDQzNDQ3LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMjcgMDA6MTA6NDcifQ.uUmpYuAdZvRoGySWcrWcH6Cd9h0FIHmXmH7gwUUtSyHK0fG_Ugnrm1wwI9zQ1tXXC5c5CEDMQelbjDIP70nCidwiVhBYby4-Utej4hPuAxyfVR6Sz61UxkGh7DO00ttVYvhiYxEhHB5PjVYVn_xFhVjQFtCuFHA6RBkb1XZvn6aOGT1shJDCRm9S6_LUBUF3C-43kXKtnY6K1kutB4CgrSWr89GqBVHw2H0rNQgGbBRPzyzDNE4OxmWXIhn825EMZibwVu4ccTAZcfvPUILnSZW_r98O6LLf_4GPKXFt-H3oYFIrBJS5wzH3kEZkDvn6bmgwQ-wPbS9Hm3U0t0E4MQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/chargeOnBalance?value=3.50",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"chargeOnBalance"
+					],
+					"query": [
+						{
+							"key": "value",
+							"value": "3.50"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createPizzeria",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQzOTg0NywiZXhwIjoxNzE5NDQzNDQ3LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMjcgMDA6MTA6NDcifQ.uUmpYuAdZvRoGySWcrWcH6Cd9h0FIHmXmH7gwUUtSyHK0fG_Ugnrm1wwI9zQ1tXXC5c5CEDMQelbjDIP70nCidwiVhBYby4-Utej4hPuAxyfVR6Sz61UxkGh7DO00ttVYvhiYxEhHB5PjVYVn_xFhVjQFtCuFHA6RBkb1XZvn6aOGT1shJDCRm9S6_LUBUF3C-43kXKtnY6K1kutB4CgrSWr89GqBVHw2H0rNQgGbBRPzyzDNE4OxmWXIhn825EMZibwVu4ccTAZcfvPUILnSZW_r98O6LLf_4GPKXFt-H3oYFIrBJS5wzH3kEZkDvn6bmgwQ-wPbS9Hm3U0t0E4MQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Pizzeria Pizzosa\",\r\n    \"vatNumber\":\"213123421432\",\r\n    \"address\":\"egegeg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/createPizzeria",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"createPizzeria"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPizzeriaInfo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTQ0MDg4MCwiZXhwIjoxNzE5NDQ0NDgwLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTI3IDAwOjI4OjAwIn0.uAE8aLw1WLKPedXr2RvHQAt2LR5CK7ixvuy0QktHx0P0MIZ_9WgXBT9MPm7G6MzP-wgHU7H9LX2m1RpWumjQB0uO1xbVc_QjQcoowCLl5MyrNh4s_OVWoTdvwTDfxBnLxkaAJoPtRsjSucldO6kc8rI4T2q5ApiLFUElW4ldbATXPoIUwDkm1Z2HQi2zdm5sl_dy7HwhT9jPGMwaQp_oZB6XeV_x--kJfKGeCysz_gVLPFxHAVonJOv7xQuoUMzMyQryxvwGdi2SF2DDTtCvayigtuPLaIJQaZP8vHoYLFQ3GaeKUSPTD2Bkeb-TJDLAcBmu7Mn4T1hqr8GHm-Yj7Q",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/getPizzeriaInfo",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"getPizzeriaInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "populateDBFirstTime",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/populateAccountDB",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"populateAccountDB"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
