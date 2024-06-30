@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AddIngrRequest, AddPizzaRequest, IDataBridge } from '../idatabridge';
 import { CookieService } from 'ngx-cookie-service';
-import { Axios } from 'axios';
+import axios, { Axios , AxiosRequestConfig} from 'axios';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Ingredient, Menu, Order, Pizza, Pizzeria, User } from '@data';
@@ -69,10 +69,11 @@ export class DataBridgeService {
     }
     try {
       const response = await this.promiseClient.post(loginPath, data, {
+        method:"POST",
         headers: {
           'Content-Type': 'application/json'
         }
-      });
+      } );
 
       //ERROR CODE 0 = success
         //RECALL to save the sessionToken
