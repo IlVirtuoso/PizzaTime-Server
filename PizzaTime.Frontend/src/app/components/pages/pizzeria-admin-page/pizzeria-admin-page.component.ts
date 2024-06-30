@@ -17,6 +17,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { interval } from 'rxjs';
+import { MenuPanelComponent } from './menu-panel/menu-panel.component';
+import { OrderPanelComponent } from './order-panel/order-panel.component';
 
 @Component({
   selector: 'app-pizzeria-admin-page',
@@ -39,6 +41,8 @@ import { interval } from 'rxjs';
     ImportsModule,
     PizzaListViewComponent,
     UserListViewComponent,
+    MenuPanelComponent,
+    OrderPanelComponent
   ],
   templateUrl: './pizzeria-admin-page.component.html',
   styleUrl: './pizzeria-admin-page.component.css',
@@ -49,16 +53,17 @@ export class PizzeriaAdminPageComponent {
   protected get user(): User | null {
     return this._user;
   }
+  protected selected_order: Order | null = null;
+  protected pizzeria: Pizzeria | null = null;
 
   protected menu_items: MenuItem[] = [
-    { label: 'Profile', icon: 'pi pi-home' },
     { label: 'Orders', icon: 'pi pi-shopping-cart' },
     { label: 'Menu', icon: 'pi pi-menu' },
+
   ];
 
-  protected active_item = this.menu_items[3];
-  protected pizzeria: Pizzeria | null = null;
-  protected pending_orders: Order[] = [];
+  protected active_item = this.menu_items[0];
+
 
   public onTabChange(event: any) {
     this.active_item = event;
@@ -66,10 +71,8 @@ export class PizzeriaAdminPageComponent {
 
   public constructor(private router: Router, private bridge: IDataBridge) {}
 
-  async ngOnInit(){
+  async ngOnInit() {
     this._user = await this.bridge.getUser();
     this.pizzeria = await this.bridge.getManagedPizzeria();
   }
-
-
 }

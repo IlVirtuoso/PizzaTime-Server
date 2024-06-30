@@ -1,0 +1,19 @@
+<p-dataView [value]="menuList" layout="list">
+  <ng-template let-ingredient pTemplate="listItem">
+    <div class="p-col-12" *ngFor="let menu of menuList">
+      <p-card>
+        <div class="p-grid">
+          <div class="p-col-12 p-md-4">
+            <h2>{{ menu.pizzaRows[0].commonName }}</h2>
+          </div>
+          <div class="p-col-12 p-md-8" *ngFor="let ingredient of menu.ingrRows">
+            <div><strong>Name:</strong> {{ ingredient.ingredient.commonName }}</div>
+            <div><strong>Description:</strong> {{ ingredient.ingredient }}</div>
+            <div><strong>Gluten Free:</strong> {{ ingredient.ingredient }}</div>
+            <div><strong>Allergens:</strong> {{ ingredient.ingredient.allergen.join(', ') || 'None' }}</div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </ng-template>
+</p-dataView>
