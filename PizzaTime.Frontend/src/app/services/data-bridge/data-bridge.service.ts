@@ -11,7 +11,7 @@ import { Ingredient, Menu, Order, Pizza, Pizzeria, User } from '@data';
 class LoginRequest{constructor(public username: string, public password: string){}}
 
 
-var gatewayUrl:string = "localhost:8000";
+var gatewayUrl:string = "http://localhost:8000";
 
 //ACCOUNT URLs
 var loginPath:string = gatewayUrl + "/login";
@@ -63,6 +63,7 @@ export class DataBridgeService {
 
   //login definition
   async login(username: String, password: String): Promise<Boolean> {
+    
     var data ={
       "username":username,
       "password":password
