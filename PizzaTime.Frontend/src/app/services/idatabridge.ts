@@ -25,9 +25,11 @@ export class AddIngrRequest{
 export abstract class IDataBridge {
   lastError: string = '';
 
+  regModeOnly = false;
+
   //IDP methods
-  public abstract login(username: string, password: string): Promise<boolean>;
-  public abstract socialLogin(): Promise<boolean>;
+  public abstract login(username: string, password: string): Promise<number>;
+  public abstract socialLogin(): Promise<number>;
 
   public abstract signin(
     firstName: string,

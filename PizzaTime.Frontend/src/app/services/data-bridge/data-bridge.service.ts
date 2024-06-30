@@ -62,8 +62,13 @@ export class DataBridgeService extends IDataBridge{
   // METHODS FOR ACCCOUNT
 
   //login definition
-  override async login(username: string, password: string): Promise<boolean> {
-    
+
+
+
+
+  override async login(username: string, password: string): Promise<number> {
+
+
     var data ={
       "username":username,
       "password":password
@@ -79,16 +84,18 @@ export class DataBridgeService extends IDataBridge{
       if(response.data.statusCode==206){
         this.lastError=response.data.statusReason;
         this.cookieService.set("Session", response.data.regToken);
-        return false;      
+        this.regModeOnly = true;
+        return 206;
       }else if(response.data.statusCode!=0){
-        this.lastError=response.data.statusReason; 
-        return false
+        this.lastError=response.data.statusReason;
+        return response.data.statusCode;
+
       }
 
-      this.cookieService.set("Session", response.data.sessionToken)      
+      this.cookieService.set("Session", response.data.sessionToken)
       //FOR ID TOKEN this.cookieService.set("Session", response.data.idToken)
 
-      return true;
+      return response.data.statusCode;
     } catch (error) {
         console.error('Login error:', error);
         throw error;
@@ -96,9 +103,9 @@ export class DataBridgeService extends IDataBridge{
   }
 
     //social login definition
-    async socialLogin(): Promise<boolean> {
+    async socialLogin(): Promise<number> {
 
-      var oauthToken:string = "PUT HERE THE GOOGLE OAUTH TOKEN"
+      var oauthToken:string = this.cookieService.get("Authorization");
 
       try {
         const response = await this.promiseClient.post(socialLoginPath,null, {
@@ -117,7 +124,7 @@ export class DataBridgeService extends IDataBridge{
         //ERROR CODE 401 = google token is expired: repeat social login
         //Other ERRORS: invalid "login id or password"
 
-        return response.data;
+        return response.data.statusCode;
       } catch (error) {
           console.error('Error in social login:', error);
           throw error;
@@ -625,7 +632,7 @@ export class DataBridgeService extends IDataBridge{
     // METHODS TO HANDLE ITEMS
 
 
-  
+
     getAvailableSeasoning(): Observable<Ingredient[]> {
     return this.fetcher.get(getAllSeasoningPath) as Observable<Ingredient[]>;
   }

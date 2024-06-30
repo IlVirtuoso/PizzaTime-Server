@@ -55,14 +55,14 @@ export class UserHomeComponent implements OnInit {
 
   protected menu_items: MenuItem[] = [
     { label: 'Profile', icon: 'pi pi-home' },
-    { label: 'Orders', icon: 'pi pi-shopping-cart' },
-    {label: 'Pizzas', icon: 'pi pi-heart-fill'},
-    {label: 'Friends', icon:'pi pi-user'}
+    { label: 'Orders', icon: 'pi pi-shopping-cart' , disabled:!this.bridge.regModeOnly},
+    {label: 'Pizzas', icon: 'pi pi-heart-fill', disabled:!this.bridge.regModeOnly},
+    {label: 'Friends', icon:'pi pi-user', disabled:!this.bridge.regModeOnly}
   ];
 
 
 
-  protected active_item = this.menu_items[3];
+  protected active_item = this.menu_items[0];
 
   protected orderList : Order[] = [];
   protected mode : ListMode = ListMode.AcceptReject;

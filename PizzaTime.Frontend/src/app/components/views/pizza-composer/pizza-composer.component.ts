@@ -23,7 +23,7 @@ export class PizzaComposerComponent implements OnInit{
   protected sourceIngredients : Ingredient[] = [];
   protected selectedIngredients : Ingredient[] = [];
 
-  protected userPizzas : Pizza[]=[];
+  protected availablePizzas : Pizza[]=[];
 
   public constructor(private router: Router, private bridge : IDataBridge) {
 
@@ -31,6 +31,7 @@ export class PizzaComposerComponent implements OnInit{
 
   async ngOnInit(): Promise<void>{
     this.bridge.getAvailableIngredients().subscribe(t=> this.sourceIngredients = t);
+    this.bridge.getAvailablePizza().subscribe(t=> this.availablePizzas = t);
   }
 
 
