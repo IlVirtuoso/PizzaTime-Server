@@ -30,7 +30,7 @@ spec:
           resources:
             limits:
               cpu: "500m"
-              memory: 2Gi
+              memory: 1Gi
         - name: database
           image: docker.io/mysql
           ports: 
@@ -39,7 +39,7 @@ spec:
           resources:
             limits:
               cpu: "500m"
-              memory: "2Gi"
+              memory: "1Gi"
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: root

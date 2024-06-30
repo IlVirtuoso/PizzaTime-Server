@@ -19,7 +19,7 @@ parser.add_argument("--remove-images", action="store_true")
 args = parser.parse_args()
 print(cwd)
 os.chdir(cwd)
-projects = ["PizzaTime.Gateway", "PizzaTime.PizzaEngine", "PizzaTime.OrderService", "PizzaTime.pizzaidph2"]
+projects = ["PizzaTime.Gateway", "PizzaTime.PizzaEngine", "PizzaTime.OrderService", "PizzaTime.pizzaidph2", "PizzaTime.Frontend"]
 cwp = str(cwd)
 
 def build_images():
@@ -44,7 +44,7 @@ pass
 
 
 
-yaml = ["PersistentVolumes.yaml","RabbitMqPod.yaml", "PizzaEnginePod.yaml", "PizzaGateway.yaml","PizzaIdpPod.yaml", "PizzaOrderService.yaml"]
+yaml = ["PersistentVolumes.yaml","RabbitMqPod.yaml", "PizzaEnginePod.yaml", "PizzaGateway.yaml","PizzaIdpPod.yaml", "PizzaOrderService.yaml","PizzaFrontEnd.yaml"]
 
 def deploy():
     if args.build_images:

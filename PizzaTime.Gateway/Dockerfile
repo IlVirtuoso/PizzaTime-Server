@@ -2,7 +2,7 @@ FROM docker.io/kong:latest
 USER root
 
 RUN mkdir /opt/config
-COPY --chown=kong:kong ./docker-kong-master/compose/config/kong.yaml /opt/config/kong.yaml 
+COPY --chown=kong:kong ./docker-kong-master/compose/config/Kube_kong.yaml /opt/config/kong.yaml 
 ENV KONG_DECLARATIVE_CONFIG=/opt/config/kong.yaml
 
 

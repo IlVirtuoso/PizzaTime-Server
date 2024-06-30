@@ -1,6 +1,7 @@
 {
   "name": "pizza-time-frontend",
   "version": "0.0.0",
+  "proxy":"http://gateway-service.default.svc.cluster.local:8000",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

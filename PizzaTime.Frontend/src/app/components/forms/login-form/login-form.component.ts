@@ -50,13 +50,19 @@ export class LoginFormComponent {
       this.router.navigateByUrl("/home");
     }
     else{
-      this.errorMessage = "invalid credentials";
+      this.errorMessage = this.service.lastError;
     }
   }
 
-  public socialLogin(user: SocialUser){
-    this.cookieService.set("Authorization", user.authToken);
-    this.service.socialLogin();
+  public async socialLogin(user: SocialUser){
+    this.cookieService.set("Authorization", user.idToken);
+    var result = await this.service.socialLogin();
+    if(result == 206){
+      this.router.navigateByUrl("/home");
+    }
+    else{
+      this.errorMessage = this.service.lastError;
+    }
   }
   public logout(){
 

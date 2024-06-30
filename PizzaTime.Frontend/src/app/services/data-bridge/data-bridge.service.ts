@@ -11,7 +11,7 @@ import { Ingredient, Menu, Order, Pizza, Pizzeria, ResponseMessage, User } from 
 class LoginRequest{constructor(public username: string, public password: string){}}
 
 
-var gatewayUrl:string = "http://localhost:8000";
+var gatewayUrl: string = 'http://192.168.39.186:8000';
 
 //ACCOUNT URLs
 var loginPath:string = gatewayUrl + "/login";
@@ -44,7 +44,8 @@ var getAllPizzaPath:string = gatewayUrl + "/getAllPizza";
 var getAllIngredientPath:string =  gatewayUrl + "/getAllIngredient";
 var getIngredientPath:string = gatewayUrl + "/getIngredient";
 var getPizzaPath:string = gatewayUrl + "/getPizza";
-
+var prefetchDb: string = gatewayUrl + "/populateAccountDB";
+var prefetchDbPizza: string = gatewayUrl + "/populatePizzaDB";
 
 
 @Injectable({
@@ -57,6 +58,7 @@ export class DataBridgeService extends IDataBridge{
     private fetcher : HttpClient
   ) {
     super();
+    this.execprefetchDb();
   }
 
   // METHODS FOR ACCCOUNT
@@ -64,6 +66,12 @@ export class DataBridgeService extends IDataBridge{
   //login definition
 
 
+
+  async execprefetchDb(){
+  console.log("Prefetch db");
+    await this.promiseClient.get(prefetchDb);
+    await this.promiseClient.get(prefetchDbPizza);
+  }
 
 
   override async login(username: string, password: string): Promise<number> {
@@ -634,11 +642,11 @@ export class DataBridgeService extends IDataBridge{
       const headers = new HttpHeaders({
         'Authorization': this.cookieService.get("Authorization")
       });
-  
+
       return this.fetcher.post(getRowsForOrderPath,order) as Observable<Menu[]>;
     }
-    
-    
+
+
      // METHODS TO HANDLE ITEMS
 
 
