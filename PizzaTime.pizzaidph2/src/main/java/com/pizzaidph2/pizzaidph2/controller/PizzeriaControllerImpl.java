@@ -19,8 +19,6 @@ import java.util.ArrayList;
 public class PizzeriaControllerImpl {
 
     @Autowired
-    private ISagaNotifyService sagaNotifyService;
-    @Autowired
     private PizzeriaService pizzaService;
 
     @Autowired
@@ -45,8 +43,6 @@ public class PizzeriaControllerImpl {
             if(result.getStatusCode() == GenericResponse.OK_CODE){
                 String newSessionToken = jwtService.getSessionToken(genService.getInternalAccountInfo(Long.parseLong(jwt.getSubject())));
                 resp.setSessionToken(newSessionToken);
-                // notifica ai saga listener la creazione della pizzeria
-                sagaNotifyService.notifyPizzeriaRegistration(pizzeria.getId());
                 return resp.jsonfy();
             }
 
