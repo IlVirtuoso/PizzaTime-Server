@@ -1,9 +1,10 @@
+import { Ingredient } from "./Ingredient";
 
 export class Pizza {
   constructor(
     public id: string,
-    public name: string,
-    public price: number
+    public commonName: string,
+    public seasonings: Ingredient[]
   ) { }
 }
 

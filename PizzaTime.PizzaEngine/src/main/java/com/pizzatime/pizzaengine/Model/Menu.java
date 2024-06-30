@@ -27,10 +27,8 @@ public class Menu {
     @ManyToMany
     private Set<MenuRowIngredient> ingrRows;
 
-    @Expose
     private Boolean availlable = false;
 
-    @Expose
     private Long availlableTimestamp = (long)-1;
 
     public Long getId() {

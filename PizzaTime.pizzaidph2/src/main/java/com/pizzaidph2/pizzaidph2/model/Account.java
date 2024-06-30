@@ -59,7 +59,7 @@ public class Account {
     @Expose
     //@Column(name="username, unique = true")
     private String username;
-    @Expose
+
     //@Column(name="password")
     private String password;
     @Expose
