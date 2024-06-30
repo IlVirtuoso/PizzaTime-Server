@@ -636,30 +636,29 @@ services:
         paths:
           - /order/*
 plugins:
-  name: cors
-  enabled: true
-  protocols:
-    - grpc
-    - grpcs
-    - http
-    - https
-  instance_name: CORS_from_web_FE
-  config-credentials: true
-  config-exposed_headers:
-    - X-Custom-Header
-  config-headers:
-    - Accept,Authorization,Content-Type,DNT,Keep-Alive,User-Agent,X-Requested-With
-  config-methods:
-    - GET
-    - HEAD
-    - PUT
-    - PATCH
-    - POST
-    - DELETE
-    - OPTIONS
-    - TRACE
-    - CONNECT
-  config-origins:
-    - '*'
-  config-preflight_continue: false
-  config-private_network: false
+  - name: cors
+    enabled: true
+    config:
+      credentials: true
+      exposed_headers:
+        - X-Custom-Header
+      headers:
+        - Accept
+        - Authorization
+        - Content-Type
+        - DNT,Keep-Alive
+        - User-Agent
+        - X-Requested-With
+      methods:
+        - GET
+        - HEAD
+        - PUT
+        - PATCH
+        - POST
+        - DELETE
+        - OPTIONS
+        - TRACE
+        - CONNECT
+      origins:
+        - '*'
+      preflight_continue: false

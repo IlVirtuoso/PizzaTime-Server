@@ -65,7 +65,7 @@ services:
       KONG_PROXY_ACCESS_LOG: /dev/stdout
       KONG_PROXY_ERROR_LOG: /dev/stderr
       KONG_PREFIX: ${KONG_PREFIX:-/var/run/kong}
-      KONG_DECLARATIVE_CONFIG: "/opt/kong/config_gateway.json"
+      KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yaml"
     secrets:
       - kong_postgres_password
     networks:
