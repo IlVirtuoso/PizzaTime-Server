@@ -8,8 +8,8 @@ spec:
   hostname: engine
   containers:
     - name: pizzatimeengine
-      image: pizzatime.engine:latest
-      imagePullPolicy: IfNotPresent
+      image: pizzatime.pizzaengine:latest
+      imagePullPolicy: Never
       env:
         - name: amqp.host
           value: brokerservice.default.svc.cluster.local
@@ -24,11 +24,8 @@ spec:
           containerPort: 8080
       resources:
         limits:
-          cpu: "1"
-          memory: 2Gi
-        requests:
           cpu: "500m"
-          memory: 1Gi
+          memory: 2Gi
     - name: database
       image: docker.io/mysql
       ports: 
@@ -36,16 +33,15 @@ spec:
         containerPort: 3306
       resources:
         limits:
-          cpu: "50m"
-          memory: 2Gi
-        requests:
-          cpu: "50m"
-          memory: 1Gi
+          cpu: "500m"
+          memory: "2Gi"
       env:
         - name: MYSQL_ROOT_PASSWORD
           value: root
         - name: MYSQL_DATABASE
           value: pizzadatabase
+        - name: MYSQL_TCP_PORT
+          value : "3306"
       volumeMounts:
       - name:  database-volume
         mountPath: /var/lib/mysql
