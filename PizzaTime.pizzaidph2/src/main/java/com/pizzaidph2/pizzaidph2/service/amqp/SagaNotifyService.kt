@@ -25,7 +25,8 @@ class SagaNotifyService(val amqpChannelProvider: AmqpChannelProvider) : ISagaNot
     }
 
    override fun notifyPizzeriaRegistration(pizzeriaId: Long){
-        val response = object{val pizzeriaId = pizzeriaId};
+       println("reached the method to propagate the pizzeria");
+       val response = object{val pizzeriaId = pizzeriaId};
         channel.basicPublish(
             pizzaengineexchange,onPizzeriaCreatedKey,
             BasicProperties().builder().type("IDPNotification").build(),

@@ -1,0 +1,30 @@
+<div>
+  <div *ngIf="mode == 'View'">
+    <strong>Pizza</strong>
+    <div class="Pizzas">
+      <app-pizza-list-view [items]="pizzas" />
+    </div>
+    <strong>Ingredients </strong>
+    <div class="Ingredients">
+      <app-ingredient-list-view [items]="ingredients" />
+    </div>
+  </div>
+
+  <div *ngIf="mode != 'View'">
+
+    <p-button icon="pi pi-icon-arrow" (onClick)="setMode('View')">Back</p-button>
+
+    <!--
+    <div *ngIf="mode == 'EditIngredients'">
+      <app-ingredients-menu-adder [availableIngredients]="ingredients" />
+    </div>
+    <div *ngIf="mode == 'EditPizzas'">
+      <app-pizza-menu-adder [(selectedPizzas)]="pizzas" />
+      </div>
+      <p-button icon="pi pi-confirm" (onClick)="apply()">Apply</p-button>
+    -->
+
+    <p>Work In Progress</p>
+  </div>
+
+</div>

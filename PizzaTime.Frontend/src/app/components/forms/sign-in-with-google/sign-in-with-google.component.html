@@ -1,0 +1,17 @@
+<script src="https://accounts.google.com/gsi/client" async>
+</script>
+
+<div id="gbutton">
+<div *ngIf="loggedIn; else loginTemplate">
+  <h2>Welcome, {{ user?.name }}</h2>
+  <p>Email: {{ user?.email }}</p>
+  <img [src]="user?.photoUrl" alt="User Photo">
+  <button (click)="signOut()">Sign Out</button>
+</div>
+
+<ng-template #loginTemplate>
+  <asl-google-signin-button type="standard" size="large" theme="filled_black"
+  (click)="signInWithGoogle()"
+  ></asl-google-signin-button>
+</ng-template>
+</div>

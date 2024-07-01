@@ -39,12 +39,12 @@ spec:
     app: pizzatime-gateway
   type: NodePort
   ports:
-  - port: 8080
-    nodePort: 8080
+  - port: 8000
+    nodePort: 8000
     name : http
     targetPort: 8000
   - port: 8443
-    nodePort : 8000
+    nodePort : 18443
     name : ssl
     targetPort: 8443
   - port: 8001

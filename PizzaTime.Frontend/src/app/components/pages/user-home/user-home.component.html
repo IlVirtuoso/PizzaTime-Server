@@ -30,4 +30,10 @@
   <div *ngIf="active_item == menu_items[3]">
   <app-user-list-view [users]="friends"/>
   </div>
+  <div *ngIf="active_item == menu_items[4]">
+    <app-pizzeria-registrar *ngIf="!user?.isVendor; else elseBlock"/>
+    <ng-template  #elseBlock>
+      <app-pizzeria-admin-page/>
+      </ng-template>
+    </div>
 </p-card>

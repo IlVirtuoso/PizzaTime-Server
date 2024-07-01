@@ -17,17 +17,21 @@ import { Ingredient, Pizza } from '@data';
   styleUrl: './pizza-composer.component.css'
 })
 export class PizzaComposerComponent implements OnInit{
+
+  //get all pastry, get all seasoning , get all pizzas
+
   protected sourceIngredients : Ingredient[] = [];
   protected selectedIngredients : Ingredient[] = [];
 
-  protected userPizzas : Pizza[]=[];
+  protected availablePizzas : Pizza[]=[];
 
   public constructor(private router: Router, private bridge : IDataBridge) {
 
   }
 
   async ngOnInit(): Promise<void>{
-    this.sourceIngredients = await this.bridge.getAvailableIngredients() ?? [];
+    this.bridge.getAvailableIngredients().subscribe(t=> this.sourceIngredients = t);
+    this.bridge.getAvailablePizza().subscribe(t=> this.availablePizzas = t);
   }
 
 

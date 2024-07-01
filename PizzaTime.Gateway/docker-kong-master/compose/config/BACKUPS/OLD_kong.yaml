@@ -1,0 +1,605 @@
+# a very minimal declarative config file
+_format_version: "2.1"
+_transform: true
+# FOR DOCKER COMPOSE USE host: host.docker.internal
+# FOR KUBERNETES USE:
+# ORDER   host: order-service.default.svc.cluster.local
+# ENGINE  host: engine-service.default.svc.cluster.local
+# IDP     host: idp-service.default.svc.cluster.local
+services:
+# IDP /account APIs
+  - name: idpdefinitive_account
+    protocol: http
+    path: /account/v1
+    host: idp-service.default.svc.cluster.local
+    port: 8080
+    routes:
+      - name: setAccountInfo
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /setAccountInfo
+      - name: socialLogin
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /socialLogin
+      - name: verifyJWT
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /verifyJWT
+      - name: changePassword
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /changePassword
+      - name: chargeOnBalance
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /chargeOnBalance
+      - name: getAccountInfo
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getAccountInfo
+      - name: rechargeBalance
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /rechargeBalance
+      - name: register
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /register
+      - name: deleteAccount
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /deleteAccount
+      - name: getJWT
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getJWT
+      - name: login
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /login
+      - name: finalizeRegistration
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /finalizeRegistration
+      - name: registerComplete
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /registerComplete
+# IDP /pizzeria APIs
+  - name: idpdefinitive_pizzeria
+    protocol: http
+    path: /pizzeria/v1
+    host: idp-service.default.svc.cluster.local
+    port: 8080
+    routes:
+      - name: getPizzeriaInfo
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getPizzeriaInfo
+      - name: createPizzeria
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /createPizzeria
+#PIZZAENGINE /search APIs
+  - name: pizzaenginedefinitive_search
+    protocol: http
+    path: /search/v1
+    host: engine-service.default.svc.cluster.local
+    port: 8080
+    routes:
+      - name: getAllIngredient
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getAllIngredient
+      - name: searchMenuForAddition
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /searchMenuForAddition
+      - name: getAllSeasoning
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getAllSeasoning
+      - name: searchMenuForPizza
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /searchMenuForPizza
+      - name: searchPizzeriaForOrder
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /searchPizzeriaForOrder
+      - name: getAllPastry
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getAllPastry
+      - name: getMenuForOrder
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getMenuForOrder      
+      - name: getAllPizza
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getAllPizza
+# PIZZAENGINE /item APIs
+  - name: pizzaenginedefinitive_item
+    protocol: http
+    path: /item/v1
+    host: engine-service.default.svc.cluster.local
+    port: 8080
+    routes:
+      - name: createMenu
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /createMenu
+      - name: addPizzaToMenu
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /addPizzaToMenu
+      - name: deletePizza
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /deletePizza
+      - name: addAdditionToMenu
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /addAdditionToMenu
+      - name: closePizzeria
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /closePizzeria
+      - name: getMenu
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getMenu
+      - name: createPizza
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /createPizza
+      - name: addPizzaByIngredientsToMenu
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /addPizzaByIngredientsToMenu
+      - name: openPizzeria
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /openPizzeria
+#ORDER SERVICE APIs
+  - name: orderService
+    protocol: http
+    path: /api/v1
+    host: order-service.default.svc.cluster.local
+    port: 8080
+    routes:
+      - name: genericorderapi
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /order/*

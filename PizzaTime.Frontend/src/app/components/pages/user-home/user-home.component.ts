@@ -20,6 +20,9 @@ import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
 import { PizzaListViewComponent } from 'app/components/views/pizza-list-view/pizza-list-view.component';
 import { Pizza } from '@data';
 import { UserListViewComponent } from 'app/components/views/user-list-view/user-list-view.component';
+import { CookieService } from 'ngx-cookie-service';
+import { PizzeriaRegistrarComponent } from 'app/components/forms/pizzeria-registrar/pizzeria-registrar.component';
+import { PizzeriaAdminPageComponent } from '../pizzeria-admin-page/pizzeria-admin-page.component';
 
 @Component({
   selector: 'app-user-home',
@@ -41,7 +44,9 @@ import { UserListViewComponent } from 'app/components/views/user-list-view/user-
     UserProfileViewComponent,
     ImportsModule,
     PizzaListViewComponent,
-    UserListViewComponent
+    UserListViewComponent,
+    PizzeriaRegistrarComponent,
+    PizzeriaAdminPageComponent
   ],
   templateUrl: './user-home.component.html',
   styleUrl: './user-home.component.css',
@@ -57,28 +62,24 @@ export class UserHomeComponent implements OnInit {
     { label: 'Profile', icon: 'pi pi-home' },
     { label: 'Orders', icon: 'pi pi-shopping-cart' },
     {label: 'Pizzas', icon: 'pi pi-heart-fill'},
-    {label: 'Friends', icon:'pi pi-user'}
+    {label: 'Friends', icon:'pi pi-user'},
+    {label:'Your pizzeria', icon:'pi'}
   ];
 
 
 
-  protected active_item = this.menu_items[3];
+  protected active_item = this.menu_items[0];
 
   protected orderList : Order[] = [];
   protected mode : ListMode = ListMode.AcceptReject;
 
   protected userPizzas : Pizza[]= [
-    
+
   ];
 
 
   protected friends : User[]= [
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
-    {username:'drfaust',address:'',email:'',name:'',phone:'',surname:''},
+
   ];
 
   public onTabChange(event: any) {
@@ -87,9 +88,15 @@ export class UserHomeComponent implements OnInit {
 
 
 
-  public constructor(private router: Router, private bridge: IDataBridge) {}
-  ngOnInit(): void {
-    this._user = this.bridge.getAuthenticatedUser();
+  public constructor(private router: Router, private bridge: IDataBridge, private cookieService: CookieService) {}
+  async ngOnInit(): Promise<void> {
+    if(this.bridge.regModeOnly){
+      this._user = this.cookieService.get("Account") as unknown as User;
+      console.log(this._user)
+    }
+    else{
+    this._user = await this.bridge.getUser();
+    }
   }
 
 

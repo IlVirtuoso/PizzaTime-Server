@@ -44,11 +44,19 @@ import { UserField } from './userfield';
   styleUrl: './user-profile-view.component.css',
 })
 export class UserProfileViewComponent {
-  @Input() user: User | undefined = undefined;
+  @Input() public user: User | null = null;
 
-  public constructor() {}
+  public constructor(private dataservice: IDataBridge) {}
 
   protected fields: UserField[] = [];
+
+
+  protected userName : string = this.user?.username ?? "";
+  protected firstName : string = this.user?.firstName ?? "";
+  protected lastName : string = this.user?.lastName?? "";
+  protected address : string = this.user?.address??"";
+  protected mobile : string = this.user?.mobile??"";
+
 
   setEditableField(field: UserField) {
     field.editable = !field.editable;
@@ -60,14 +68,51 @@ export class UserProfileViewComponent {
   }
   ngOnChanges(changes: any): void {
     this.fields = [
-      { fieldName: 'Username', value: this.user?.username, editable: false },
+      {fieldName: 'UserName', value: this.userName, editable:false},
+      { fieldName: 'First Name', value: this.firstName, editable: true },
+      { fieldName: 'Last Name', value: this.lastName, editable: true },
       { fieldName: 'Email', value: this.user?.email, editable: false },
-      { fieldName: 'Phone', value: this.user?.phone, editable: false },
-      { fieldName: 'Address', value: this.user?.address, editable: false },
+      { fieldName: 'Phone', value: this.user?.phone, editable: true },
+      { fieldName: 'Address', value: this.user?.address, editable: true },
     ];
   }
 
   ngOnInit(): void {
     this.ngOnChanges(undefined);
+  }
+
+  async applyChanges(): Promise<void>{
+    if(this.user == null){
+      throw new Error("User cannot be null");
+    }
+
+    let t = await this.dataservice.getUser();
+    if (t != null) {
+      //this.errorMessage = 'User already owns already';
+      var result = await this.dataservice.setUserData(
+        this.firstName,
+        this.lastName,
+        this.address,
+        this.mobile,
+        '0000'
+      );    
+    }else{
+      var resultReg = await this.dataservice.finalizeRegistration(
+        'Matteo',
+        'Ielacqua',
+        'Viale vittoria 37',
+        '0000',
+        '0000'
+      );
+      if(resultReg == 0){
+        this.dataservice.regModeOnly = false;
+      }
+    }
+  
+
+    
+
+    
+
   }
 }

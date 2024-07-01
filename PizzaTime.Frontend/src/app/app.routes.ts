@@ -5,6 +5,10 @@ import { UserHomeComponent } from './components/pages/user-home/user-home.compon
 import { PizzaComposerComponent } from './components/views/pizza-composer/pizza-composer.component';
 import { PizzaPartyPageComponent as PizzaPartyComponent } from './components/pages/pizza-party-page/pizza-party-page.component';
 import { PizzeriaAdminPageComponent } from './components/pages/pizzeria-admin-page/pizzeria-admin-page.component';
+import { PizzaListViewComponent } from './components/views/pizza-list-view/pizza-list-view.component';
+import { IngredientListViewComponent } from './components/views/ingredient-list-view/ingredient-list-view.component';
+import { PizzaMenuAdderComponent } from './components/views/pizza-menu-adder/pizza-menu-adder.component';
+import { IngredientsMenuAdderComponent } from './components/views/ingredients-menu-adder/ingredients-menu-adder.component';
 
 export const routes: Routes = [
   {path : 'login', component: LoginFormComponent},
@@ -12,5 +16,6 @@ export const routes: Routes = [
   {path: 'home', component:UserHomeComponent},
   {path:'composer', component:PizzaComposerComponent},
   {path:'party', component:PizzaPartyComponent},
-  {path:'pizzeriaAdmin', component:PizzeriaAdminPageComponent}
+  {path:'pizzeriamanager', component:PizzeriaAdminPageComponent},
+  {path:'mpc', component:IngredientsMenuAdderComponent}
 ];

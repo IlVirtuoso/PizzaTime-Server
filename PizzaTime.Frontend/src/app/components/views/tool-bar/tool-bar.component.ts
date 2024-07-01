@@ -6,6 +6,7 @@ import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
 import { MegaMenuItem, MenuItem } from 'primeng/api';
 import { IDataBridge } from 'app/services/idatabridge';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'toolbar-component',
@@ -16,6 +17,9 @@ import { Router } from '@angular/router';
 })
 export class ToolBarComponent {
 
+
+  private isLoggedIn = false;
+
   protected items: MenuItem[] = [
     { label: 'Login', url:'login', command: (item) => this.navigate(item.item, false) },
     { label: 'SignIn', url: 'signin', command: (item) => this.navigate(item.item, false) },
@@ -23,14 +27,34 @@ export class ToolBarComponent {
     { label: 'Pizza Party', url:'party', command: (item) => this.navigate(item.item, true) },
     { label: 'Contacts', url:'contacts',command: (item) => this.navigate(item.item, false) },
     { label: 'About us', url:'aboutus' ,command: (item) => this.navigate(item.item, false) },
+     { label: 'Logout', url:'login', command: (item) => {
+          this.cookieService.deleteAll();
+          this.router.navigateByUrl("/login");
+         } }
   ];
 
-  public constructor(protected service: IDataBridge, protected router: Router) { }
+  public constructor(protected service: IDataBridge, protected router: Router, private cookieService: CookieService) {
+    this.detectUser();
+   }
+
+
+   private async detectUser(){
+       var user = await this.service.getUser();
+       if (user != null) {
+         if (user.isVendor) {
+           this.items.push({
+             label: 'Pizzeria Manager',
+             url: 'pizzeriamanager',
+             command: (item) => this.navigate(item.item, true),
+           });
+         }
+       }
+   }
 
   public navigate(item: MenuItem | MegaMenuItem | undefined, requiresAuthorization: boolean) {
     console.log(item?.label);
     if (requiresAuthorization) {
-      if (this.service.getAuthenticatedUser() == null) {
+      if (!this.isLoggedIn) {
         this.router.navigateByUrl('login');
       }
     }

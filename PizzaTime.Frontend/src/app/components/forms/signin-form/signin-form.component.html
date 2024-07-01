@@ -2,8 +2,16 @@
   <div class="centered">
   <form name="sign_in">
     <p-floatLabel class="formfield">
-      <input pInputText id="username" [(ngModel)]="username" name="username" />
-      <label for="username">Username</label>
+      <input pInputText id="username" [(ngModel)]="username" name="email" />
+      <label for="username">username</label>
+    </p-floatLabel>
+        <p-floatLabel class="formfield">
+      <input pInputText id="firstName" [(ngModel)]="firstName" name="firstName" />
+      <label for="username">firstName</label>
+    </p-floatLabel>
+            <p-floatLabel class="formfield">
+      <input pInputText id="lastName" [(ngModel)]="lastName" name="lastName" />
+      <label for="username">lastName</label>
     </p-floatLabel>
     <p-floatLabel class="formfield">
     <p-password [(ngModel)]="password" [feedback]="false" name="password"/>

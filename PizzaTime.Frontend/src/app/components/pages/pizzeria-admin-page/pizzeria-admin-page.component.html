@@ -1,1 +1,16 @@
-<p>pizzeria-admin-page works!</p>
+<p-card styleClass="ComponentCard">
+
+
+<div>
+  {{pizzeria?.name}}
+</div>
+<br/>
+<div>
+  Pizzas: {{printPizzas()}}
+</div>
+<br/>
+
+<div>
+  Ingredients:{{printRows()}}
+</div>
+</p-card>

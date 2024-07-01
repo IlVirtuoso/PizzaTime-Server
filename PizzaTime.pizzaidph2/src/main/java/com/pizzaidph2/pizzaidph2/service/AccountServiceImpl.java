@@ -321,7 +321,8 @@ public class AccountServiceImpl implements IAccountService {
                     // MISSING INFORMATION
                     resp.setStatusCode(GenericResponse.PENDING_REGISTRATION_CODE);
                     resp.setStatusReason(GenericResponse.PENDING_REGISTRATION_MESSAGE);
-                    resp.setSessionToken(jwtUtility.getRegToken(target));
+                    resp.setRegToken(jwtUtility.getRegToken(target));
+                    resp.setAccount(target);
                     return resp.jsonfy();
                 }else if((target.getSocialIdentity()==null || !target.getSocialIdentity()) && !target.getRegistered()){
                     // FIRST SOCIAL LOGIN FOR A STANDARD UNCOMPLETED ACCOUNT

@@ -1,0 +1,31 @@
+<p-card header="Select Ingredients" styleClass="ComponentCard">
+  <div class="ListView">
+    <p-pickList
+      [source]="allPizzas"
+      [target]="selection"
+      sourceHeader="Available"
+      targetHeader="Selected"
+      [dragdrop]="true"
+      [responsive]="true"
+      [sourceStyle]="{ height: '30rem' }"
+      [targetStyle]="{ height: '30rem' }"
+
+      filterBy="name"
+      breakpoint="1400px"
+    >
+      <ng-template let-product pTemplate="item">
+        <div class="flex flex-wrap p-2 align-items-center gap-3">
+          <div class="flex-1 flex flex-column gap-2">
+            <span class="font-bold">{{ product.commonName }}</span>
+            <div class="flex align-items-center gap-2">
+              <span> Ingredients: {{selectIngredientsName(product)}}</span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-pickList>
+  </div>
+  <div class="ToolBar">
+    <p-button label="Add" />
+  </div>
+</p-card>

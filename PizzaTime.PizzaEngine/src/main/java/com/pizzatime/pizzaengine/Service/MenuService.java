@@ -40,6 +40,7 @@ public class MenuService {
     @Autowired
     HybernateMenuRowPizzaRepositoryImpl repoMenuPizza;
 
+
     public String createMenu(long pizzeriaForMenu) {
         GenericResponse resp = new GenericResponse();
 
@@ -210,11 +211,14 @@ public class MenuService {
         Pizza target = genService.getOnePizzaPerfectMatch(p.getSeasonings());
         if(target!=null){
             Set<MenuRowPizza> mp = m.getPizzaRows();
-            for(MenuRowPizza checkId : mp){
-                if(checkId.getPizza().getId() == target.getId())
-                    return checkId;
+            if(mp!=null) {
+                for (MenuRowPizza checkId : mp) {
+                    if (checkId.getPizza().getId() == target.getId())
+                        return checkId;
+                }
             }
-        }return null;
+        }
+        return null;
     }
 
 
@@ -222,9 +226,11 @@ public class MenuService {
         Optional<Ingredient> target = repoIngr.findBycommonName(p.getCommonName());
         if(target.isPresent()){
             Set<MenuRowIngredient> mi = m.getIngrRows();
-            for(MenuRowIngredient checkId : mi){
-                if(checkId.getIngredient().getId() == target.get().getId())
-                    return checkId;
+            if(mi!=null) {
+                for (MenuRowIngredient checkId : mi) {
+                    if (checkId.getIngredient().getId() == target.get().getId())
+                        return checkId;
+                }
             }
         }return null;
     }
@@ -603,6 +609,116 @@ public class MenuService {
             return newMenu;
         }
         return null;
+    }
+
+
+
+    /** Popola il DATABASE */
+
+    public void creteMenuDemo(){
+
+        for(long i =1; i<=4; i++) {
+
+            Optional<Menu> opt = repoMenu.findByPizzeriaId(i);
+            if (!opt.isPresent()) {
+                createMenu(i);
+                opt = repoMenu.findByPizzeriaId(i);
+            }
+            Menu target = opt.get();
+            target.setPizzeriaId(i);
+            target = repoMenu.save(target);
+            switch ((int) i) {
+                case 1:
+                    this.addPizzaRow(i, "Margherita", 1, (float) 5.00);
+                    this.addPizzaRow(i, "Marinara Triste", 3, (float) 3.50);
+                    this.addPizzaRow(i, "Estiva", 5, (float) 7.00);
+                    this.addPizzaRow(i, "Viennese", 2, (float) 5.50);
+                    this.addPizzaRow(i, "Patatine e Wurstler", 4, (float) 6.00);
+
+                    this.addIngredientRow(i, "Impasto Classico", 1, (float) 0.00);
+                    this.addIngredientRow(i, "Senza Glutine", 2, (float) 0.20);
+
+                    this.addIngredientRow(i, "Basilico", 5, (float) 0.00);
+                    this.addIngredientRow(i, "Pomodoro", 6, (float) 0.30);
+                    this.addIngredientRow(i, "Mozzarella", 7, (float) 0.30);
+                    this.addIngredientRow(i, "Wurstler", 8, (float) 0.50);
+                    this.addIngredientRow(i, "Patatine", 9, (float) 0.40);
+                    this.addIngredientRow(i, "Prosciutto", 10, (float) 0.60);
+                    this.addIngredientRow(i, "Parmigiano", 12, (float) 1.00);
+                    this.addIngredientRow(i, "Rucola", 13, (float) 0.20);
+                    this.addIngredientRow(i, "Pomodorini", 14, (float) 0.30);
+                    this.addIngredientRow(i, "Aglio", 16, (float) 0.10);
+
+                    break;
+                case 2:
+                    this.addPizzaRow(i, "Margherita", 1, (float) 5.00);
+                    this.addPizzaRow(i, "Marinara Senza Aglio", 3, (float) 3.50);
+                    this.addPizzaRow(i, "Squisita", 5, (float) 7.00);
+
+                    this.addIngredientRow(i, "Impasto Classico", 1, (float) 0.00);
+                    this.addIngredientRow(i, "Senza Glutine", 2, (float) 0.20);
+                    this.addIngredientRow(i, "Carbone", 3, (float) 1.00);
+                    this.addIngredientRow(i, "Lievito di Birra", 4, (float) 0.50);
+
+                    this.addIngredientRow(i, "Basilico", 5, (float) 0.00);
+                    this.addIngredientRow(i, "Pomodoro", 6, (float) 0.30);
+                    this.addIngredientRow(i, "Mozzarella", 7, (float) 0.30);
+                    this.addIngredientRow(i, "Patatine", 9, (float) 0.40);
+                    this.addIngredientRow(i, "Parmigiano", 12, (float) 1.00);
+                    this.addIngredientRow(i, "Rucola", 13, (float) 0.20);
+                    this.addIngredientRow(i, "Pomodorini", 14, (float) 0.30);
+
+                    break;
+                case 3:
+                    this.addPizzaRow(i, "Marghe", 1, (float) 5.00);
+                    this.addPizzaRow(i, "Kiss", 3, (float) 3.50);
+                    this.addPizzaRow(i, "Beatles", 5, (float) 7.00);
+                    this.addPizzaRow(i, "Cannibal Corpse", 6, (float) 9.00);
+                    this.addPizzaRow(i, "Crazy Pizza-Train", 4, (float) 6.50);
+                    this.addPizzaRow(i, "Wind Rose", 2, (float) 5.50);
+
+                    this.addIngredientRow(i, "Impasto Classico", 1, (float) 0.00);
+                    this.addIngredientRow(i, "Senza Glutine", 2, (float) 0.20);
+                    this.addIngredientRow(i, "Carbone", 3, (float) 1.00);
+                    this.addIngredientRow(i, "Lievito di Birra", 4, (float) 0.50);
+
+                    this.addIngredientRow(i, "Basilico", 5, (float) 0.00);
+                    this.addIngredientRow(i, "Pomodoro", 6, (float) 0.30);
+                    this.addIngredientRow(i, "Mozzarella", 7, (float) 0.30);
+                    this.addIngredientRow(i, "Wurstler", 8, (float) 0.50);
+                    this.addIngredientRow(i, "Patatine", 9, (float) 0.40);
+                    this.addIngredientRow(i, "Prosciutto", 10, (float) 0.60);
+                    this.addIngredientRow(i, "Salame", 11, (float) 0.60);
+                    this.addIngredientRow(i, "Parmigiano", 12, (float) 1.00);
+                    this.addIngredientRow(i, "Rucola", 13, (float) 0.20);
+                    this.addIngredientRow(i, "Pomodorini", 14, (float) 0.30);
+                    this.addIngredientRow(i, "Speck", 15, (float) 0.70);
+
+                    break;
+                case 4:
+                    this.addPizzaRow(i, "Margherita", 1, (float) 4.50);
+                    this.addPizzaRow(i, "Solo Salumi", 6, (float) 7.80);
+                    this.addPizzaRow(i, "Pizza Complessa", 4, (float) 6.20);
+                    this.addPizzaRow(i, "Viennese", 2, (float) 5.80);
+                    this.addPizzaRow(i, "Tutta Rossa", 3, (float) 3.50);
+
+                    this.addIngredientRow(i, "Impasto Classico", 1, (float) 0.00);
+
+                    this.addIngredientRow(i, "Basilico", 5, (float) 0.00);
+                    this.addIngredientRow(i, "Pomodoro", 6, (float) 0.30);
+                    this.addIngredientRow(i, "Mozzarella", 7, (float) 0.30);
+                    this.addIngredientRow(i, "Wurstler", 8, (float) 0.50);
+                    this.addIngredientRow(i, "Patatine", 9, (float) 0.40);
+                    this.addIngredientRow(i, "Prosciutto", 10, (float) 0.60);
+                    this.addIngredientRow(i, "Salame", 11, (float) 0.60);
+                    this.addIngredientRow(i, "Parmigiano", 12, (float) 1.00);
+                    this.addIngredientRow(i, "Rucola", 13, (float) 0.20);
+                    this.addIngredientRow(i, "Pomodorini", 14, (float) 0.30);
+                    this.addIngredientRow(i, "Speck", 15, (float) 0.70);
+
+                    break;
+            }
+        }
     }
 
 

@@ -1,61 +1,20 @@
-<ng-template #formField let-obj>
-  <mat-card-content class="centered">
-    <mat-form-field appearance="fill">
-      <mat-label>{{ obj.name }}</mat-label>
-      <input
-        matInput
-        placeholder="{{ obj.name }}"
-        type="{{ obj.type }}"
-        id="{{ obj.name }}"
-        [(ngModel)]="formFields[obj.index]"
-      />
-    </mat-form-field>
-  </mat-card-content>
-</ng-template>
-
-<mat-card appearance="raised">
-  <mat-card-header> </mat-card-header>
-  <ng-container
-    *ngTemplateOutlet="
-      formField;
-      context: { $implicit: { name: 'Piva', index: 0, type: 'text' } }
-    "
-  ></ng-container>
-  <ng-container
-    *ngTemplateOutlet="
-      formField;
-      context: { $implicit: { name: 'Name', index: 1, type: 'text' } }
-    "
-  ></ng-container>
-  <ng-container
-    *ngTemplateOutlet="
-      formField;
-      context: { $implicit: { name: 'Email', index: 2, type: 'text' } }
-    "
-  ></ng-container>
-    <ng-container
-    *ngTemplateOutlet="
-      formField;
-      context: { $implicit: { name: 'Phone', index: 3, type: 'tel' } }
-    "
-  ></ng-container>
-  <ng-container
-    *ngTemplateOutlet="
-      formField;
-      context: { $implicit: { name: 'Address', index: 4, type: 'text' } }
-    "
-  ></ng-container>
-  <mat-card-content class="centered">
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      (click)="register()"
-    >
-      Register Pizzeria
-    </button>
-  </mat-card-content>
-  <mat-card-content class="centered">
-    <mat-label style="color: red">{{ errorMessage }}</mat-label>
-  </mat-card-content>
-</mat-card>
+<p-card styleClass="ComponentCard" header="Create a Pizzeria">
+  <div class="centered">
+  <form name="create_pizzeria">
+    <p-floatLabel class="formfield">
+      <input pInputText id="name" [(ngModel)]="name" name="name" />
+      <label for="name">Name</label>
+    </p-floatLabel>
+        <p-floatLabel class="formfield">
+      <input pInputText id="vatNumber" [(ngModel)]="vatNumber" name="vatNumber" />
+      <label for="vatNumber">VAT Number</label>
+    </p-floatLabel>
+            <p-floatLabel class="formfield">
+      <input pInputText id="address" [(ngModel)]="address" name="adderess" />
+      <label for="address">address</label>
+    </p-floatLabel>
+<p-button class="centered formfield" label="Create Pizzeria" (onClick)="createPizzeria()"/>
+<strong class="errorText">{{errorMessage}}</strong>
+  </form>
+  </div>
+</p-card>

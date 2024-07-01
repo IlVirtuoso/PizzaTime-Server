@@ -20,7 +20,7 @@ public class Ingredient {
     @Expose
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "allergen_ingredient", joinColumns = @JoinColumn(name = "id"))
-    private Set<Allergen> Allergen;
+    private Set<Allergen> allergen;
 
     @Expose
     private String description;
@@ -38,7 +38,7 @@ public class Ingredient {
     public void setCommonName(String commonName) { this.commonName = commonName; }
 
     public Set<com.pizzatime.pizzaengine.Model.Allergen> getAllergen() {
-        return Allergen;
+        return allergen;
     }
     public String getDescription() {
         return description;
@@ -57,7 +57,7 @@ public class Ingredient {
     }
 
     public void setAllergen(Set<com.pizzatime.pizzaengine.Model.Allergen> allergen) {
-        Allergen = allergen;
+        this.allergen = allergen;
     }
 
     @Override

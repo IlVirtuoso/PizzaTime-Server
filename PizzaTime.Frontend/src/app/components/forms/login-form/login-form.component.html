@@ -2,8 +2,8 @@
 <div class="centered">
     <form name="LoginForm">
       <p-floatLabel class="formfield">
-    <input pInputText id="username" [(ngModel)]="username"  name="username" />
-    <label for="username">Username</label>
+    <input pInputText id="email" [(ngModel)]="email" type="email"  name="email" />
+    <label for="email">Email</label>
   </p-floatLabel>
 <p-floatLabel class="formfield">
     <p-password [(ngModel)]="password" [feedback]="false" name="password"/>
@@ -11,6 +11,7 @@
 </p-floatLabel>
 <p-button label="Login" class="formfield centered" (onClick)="login()"/>
 <p class="centered errorText">{{errorMessage}}</p>
+<app-sign-in-with-google (onSocialAuthentication)="socialLogin($event)"/>
   </form>
 </div>
 </p-card>
