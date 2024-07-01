@@ -7,43 +7,58 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { IDataBridge } from 'app/services/idatabridge';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-pizzeria-registrar',
   standalone: true,
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatCardModule,
-    MatButtonModule,
+    CardModule,
     FormsModule,
+    PasswordModule,
+    InputTextModule,
+    FloatLabelModule,
+    ButtonModule,
+    
   ],
   templateUrl: './pizzeria-registrar.component.html',
   styleUrl: './pizzeria-registrar.component.css',
 })
 export class PizzeriaRegistrarComponent {
-  protected formFields = ['', '', ''];
-  protected get piva() {
-    return this.formFields[0];
-  }
-  protected get name() {
-    return this.formFields[1];
-  }
-  protected get address() {
-    return this.formFields[2];
-  }
-
-  protected errorMessage = '';
-
-  public constructor(private router: Router, private bridge: IDataBridge) {}
-
-  register(): void {
-    if(!this.bridge.createPizzeria(this.name,this.piva,this.address)){
-      this.errorMessage = this.bridge.lastError;
+    protected name = '';
+  
+    protected vatNumber = '';
+  
+    protected address = '';
+  
+    protected errorMessage = '';
+  
+    public constructor(private router: Router, private bridge: IDataBridge) {}
+  
+    public async createPizzeria() {
+      console.log('Create a pizzeria with name' + this.name);
+      if (this.name == '' || this.vatNumber == '' || this.address == '') {
+        this.errorMessage = 'Fields cannot be blank';
+        return;
+      }
+      let t = await this.bridge.getUser();
+      if (t != null && t.isVendor) {
+        this.errorMessage = 'User already owns already';
+        return;
+      }
+      let result = await this.bridge.createPizzeria(
+        this.name,
+        this.address,
+        this.vatNumber
+      );
+      if (result == false) {
+        this.router.navigateByUrl('/home');
+        this.bridge.regModeOnly = true;
+      } else this.router.navigateByUrl('login');
     }
-    else{
-      this.router.navigateByUrl('pizzeriaAdmin');
-    }
   }
-}
+  

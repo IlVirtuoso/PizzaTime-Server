@@ -56,11 +56,6 @@ export class SigninFormComponent {
       this.errorMessage = "Password doesn't match";
       return;
     }
-    let t = await this.bridge.getUser();
-    if (t != null) {
-      this.errorMessage = 'User already exists';
-      return;
-    }
     let result = await this.bridge.signin(
       this.firstName,
       this.lastName,
