@@ -22,6 +22,7 @@ import { Pizza } from '@data';
 import { UserListViewComponent } from 'app/components/views/user-list-view/user-list-view.component';
 import { CookieService } from 'ngx-cookie-service';
 import { PizzeriaRegistrarComponent } from 'app/components/forms/pizzeria-registrar/pizzeria-registrar.component';
+import { PizzeriaAdminPageComponent } from '../pizzeria-admin-page/pizzeria-admin-page.component';
 
 @Component({
   selector: 'app-user-home',
@@ -44,7 +45,8 @@ import { PizzeriaRegistrarComponent } from 'app/components/forms/pizzeria-regist
     ImportsModule,
     PizzaListViewComponent,
     UserListViewComponent,
-    PizzeriaRegistrarComponent
+    PizzeriaRegistrarComponent,
+    PizzeriaAdminPageComponent
   ],
   templateUrl: './user-home.component.html',
   styleUrl: './user-home.component.css',

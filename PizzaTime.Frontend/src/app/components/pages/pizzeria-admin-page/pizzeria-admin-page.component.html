@@ -1,27 +1,16 @@
 <p-card styleClass="ComponentCard">
-  <p-tabMenu
-    [model]="menu_items"
-    (activeItemChange)="onTabChange($event)"
-    [activeItem]="active_item"
-  />
 
-  <p *ngIf="user == null" class="errorText centered">
-    Error user not authenticated
-  </p>
 
-  <div *ngIf="active_item == menu_items[0]">
-    <app-menu-panel></app-menu-panel>
-  </div>
+<div>
+  {{pizzeria?.name}}
+</div>
+<br/>
+<div>
+  Pizzas: {{printPizzas()}}
+</div>
+<br/>
 
-  <div *ngIf="active_item == menu_items[1]">
-    <app-order-panel></app-order-panel>
-  </div>
-
-  <div *ngIf="active_item == menu_items[2]">
-
-  </div>
-
-  <div *ngIf="active_item == menu_items[3]">
-
-  </div>
+<div>
+  Ingredients:{{printRows()}}
+</div>
 </p-card>

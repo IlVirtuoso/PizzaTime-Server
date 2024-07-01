@@ -29,6 +29,7 @@ export class ToolBarComponent {
     { label: 'About us', url:'aboutus' ,command: (item) => this.navigate(item.item, false) },
      { label: 'Logout', url:'login', command: (item) => {
           this.cookieService.deleteAll();
+          this.router.navigateByUrl("/login");
          } }
   ];
 

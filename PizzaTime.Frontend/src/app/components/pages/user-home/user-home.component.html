@@ -33,7 +33,7 @@
   <div *ngIf="active_item == menu_items[4]">
     <app-pizzeria-registrar *ngIf="!user?.isVendor; else elseBlock"/>
     <ng-template  #elseBlock>
-      pannello pizza admin
+      <app-pizzeria-admin-page/>
       </ng-template>
     </div>
 </p-card>

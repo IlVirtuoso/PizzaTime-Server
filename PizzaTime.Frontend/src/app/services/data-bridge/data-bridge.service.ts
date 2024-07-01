@@ -11,8 +11,8 @@ import { Ingredient, Menu, Order, OrderRow, Pizza, Pizzeria, ResponseMessage, Us
 class LoginRequest{constructor(public username: string, public password: string){}}
 
 
-//var gatewayUrl: string = 'http://192.168.39.186:8000';
-var gatewayUrl: string = 'http://localhost:8000';
+var gatewayUrl: string = 'http://192.168.39.186:8000';
+//var gatewayUrl: string = 'http://localhost:8000';
 
 //ACCOUNT URLs
 var loginPath:string = gatewayUrl + "/login";

@@ -2,7 +2,7 @@ import { CommonModule, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Order, Pizzeria, User } from '@data';
+import { Menu, Order, Pizzeria, User } from '@data';
 import { OrderListViewComponent } from 'app/components/views/order-list-view/order-list-view.component';
 import { PizzaListViewComponent } from 'app/components/views/pizza-list-view/pizza-list-view.component';
 import { UserListViewComponent } from 'app/components/views/user-list-view/user-list-view.component';
@@ -19,6 +19,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { interval } from 'rxjs';
 import { MenuPanelComponent } from './menu-panel/menu-panel.component';
 import { OrderPanelComponent } from './order-panel/order-panel.component';
+import { By } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pizzeria-admin-page',
@@ -62,6 +63,8 @@ export class PizzeriaAdminPageComponent {
 
   ];
 
+  protected menu: Menu | null = null;
+
   protected active_item = this.menu_items[0];
 
 
@@ -74,5 +77,15 @@ export class PizzeriaAdminPageComponent {
   async ngOnInit() {
     this._user = await this.bridge.getUser();
     this.pizzeria = await this.bridge.getManagedPizzeria();
+    this.menu = await this.bridge.getMenu();
+  }
+
+
+  printRows() : string | undefined{
+    return this.menu?.ingrRows.map(t=> t.commonName).join(',');
+  }
+
+  printPizzas(): string | undefined{
+    return this.menu?.pizzaRows.map(t=> t.commonName).join(',');
   }
 }
