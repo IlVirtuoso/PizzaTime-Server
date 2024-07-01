@@ -55,6 +55,7 @@ export class UserProfileViewComponent {
   protected firstName : string = this.user?.firstName ?? "";
   protected lastName : string = this.user?.lastName?? "";
   protected address : string = this.user?.address??"";
+  protected mobile : string = this.user?.mobile??"";
 
 
   setEditableField(field: UserField) {
@@ -85,17 +86,33 @@ export class UserProfileViewComponent {
       throw new Error("User cannot be null");
     }
 
-    var result = await this.dataservice.finalizeRegistration(
-      'Matteo',
-      'Ielacqua',
-      'Viale vittoria 37',
-      '0000',
-      '0000'
-    );
-
-    if(result == 0){
-      this.dataservice.regModeOnly = false;
+    let t = await this.dataservice.getUser();
+    if (t != null) {
+      //this.errorMessage = 'User already owns already';
+      var result = await this.dataservice.setUserData(
+        this.firstName,
+        this.lastName,
+        this.address,
+        this.mobile,
+        '0000'
+      );    
+    }else{
+      var resultReg = await this.dataservice.finalizeRegistration(
+        'Matteo',
+        'Ielacqua',
+        'Viale vittoria 37',
+        '0000',
+        '0000'
+      );
+      if(resultReg == 0){
+        this.dataservice.regModeOnly = false;
+      }
     }
+  
+
+    
+
+    
 
   }
 }
