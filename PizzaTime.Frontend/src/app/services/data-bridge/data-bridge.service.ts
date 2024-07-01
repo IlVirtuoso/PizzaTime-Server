@@ -11,8 +11,8 @@ import { Ingredient, Menu, Order, OrderRow, Pizza, Pizzeria, ResponseMessage, Us
 class LoginRequest{constructor(public username: string, public password: string){}}
 
 
-var gatewayUrl: string = 'http://192.168.39.186:8000';
-//var gatewayUrl: string = 'http://localhost:8000';
+//var gatewayUrl: string = 'http://192.168.39.186:8000';
+var gatewayUrl: string = 'http://localhost:8000';
 
 //ACCOUNT URLs
 var loginPath:string = gatewayUrl + "/login";
@@ -550,6 +550,7 @@ export class DataBridgeService extends IDataBridge{
     override async addAdditionToMenu(additions:AddIngrRequest[]
     ): Promise<boolean> {
 
+    this.getJWT();
      var idToken:string = this.cookieService.get("Authorization");
      var data={
         "additions":additions
@@ -583,6 +584,7 @@ export class DataBridgeService extends IDataBridge{
      override async addPizzaToMenu(pizzas:AddPizzaRequest[]
      ): Promise<boolean> {
 
+      this.getJWT();
       var idToken:string = this.cookieService.get("Authorization")
       var data={
          "pizzas":pizzas
@@ -617,6 +619,7 @@ export class DataBridgeService extends IDataBridge{
     // create menu definition
     override async createMenu(): Promise<boolean> {
 
+      this.getJWT();
       var idToken:string = this.cookieService.get("Authorization")
 
       try {
@@ -646,6 +649,7 @@ export class DataBridgeService extends IDataBridge{
     // get menu definition
     override async getMenu(): Promise<Menu | null> {
 
+      this.getJWT();
       var idToken:string = this.cookieService.get("Authorization")
 
       try {
@@ -679,6 +683,7 @@ export class DataBridgeService extends IDataBridge{
     // open pizzeria definition
     override async openPizzeria(): Promise<boolean> {
 
+      this.getJWT();
       var idToken:string = this.cookieService.get("Authorization")
       try {
         const response = await this.promiseClient.get(openPizzeriaPath, {
@@ -708,6 +713,7 @@ export class DataBridgeService extends IDataBridge{
     // open pizzeria definition
     override async closePizzeria(): Promise<boolean> {
 
+      this.getJWT();
       var idToken:string = this.cookieService.get("Authorization")
 
       try {
@@ -765,6 +771,7 @@ export class DataBridgeService extends IDataBridge{
        */
 
      getMenuRowsForOrder(order:{order: getMenuRowsForOrderRequest[]}): Observable<Menu[]> {
+      this.getJWT();
       const headers = new HttpHeaders({
         'Authorization': this.cookieService.get("Authorization")
       });
@@ -795,6 +802,7 @@ export class DataBridgeService extends IDataBridge{
 
   /** TEMP */
   getPizzeriaOrders(piva: String): Observable<Order[]> {
+    this.getJWT();
     const headers = new HttpHeaders({
       'Authorization': this.cookieService.get("Authorization")
     });
@@ -802,6 +810,7 @@ export class DataBridgeService extends IDataBridge{
   }
 
   getOrdersForPizzeria(piva: String): Observable<Order[]> {
+    this.getJWT();
     const headers = new HttpHeaders({
       'Authorization': this.cookieService.get("Authorization")
     });
@@ -809,6 +818,7 @@ export class DataBridgeService extends IDataBridge{
   }
 
   getOrdersForUser(username: String): Observable<Order[]> {
+    this.getJWT();
     const headers = new HttpHeaders({
       'Authorization': this.cookieService.get("Authorization")
     });
