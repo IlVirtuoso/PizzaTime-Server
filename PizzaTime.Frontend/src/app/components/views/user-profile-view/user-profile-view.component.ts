@@ -44,11 +44,18 @@ import { UserField } from './userfield';
   styleUrl: './user-profile-view.component.css',
 })
 export class UserProfileViewComponent {
-  @Input() user: User | undefined = undefined;
+  @Input() public user: User | null = null;
 
-  public constructor() {}
+  public constructor(private dataservice: IDataBridge) {}
 
   protected fields: UserField[] = [];
+
+
+  protected userName : string = this.user?.username ?? "";
+  protected firstName : string = this.user?.firstName ?? "";
+  protected lastName : string = this.user?.lastName?? "";
+  protected address : string = this.user?.address??"";
+
 
   setEditableField(field: UserField) {
     field.editable = !field.editable;
@@ -60,16 +67,35 @@ export class UserProfileViewComponent {
   }
   ngOnChanges(changes: any): void {
     this.fields = [
-      {fieldName: 'UserName', value: this.user?.username, editable:true},
-      { fieldName: 'First Name', value: this.user?.firstName, editable: false },
-      { fieldName: 'Last Name', value: this.user?.surname, editable: false },
+      {fieldName: 'UserName', value: this.userName, editable:false},
+      { fieldName: 'First Name', value: this.firstName, editable: true },
+      { fieldName: 'Last Name', value: this.lastName, editable: true },
       { fieldName: 'Email', value: this.user?.email, editable: false },
-      { fieldName: 'Phone', value: this.user?.phone, editable: false },
-      { fieldName: 'Address', value: this.user?.address, editable: false },
+      { fieldName: 'Phone', value: this.user?.phone, editable: true },
+      { fieldName: 'Address', value: this.user?.address, editable: true },
     ];
   }
 
   ngOnInit(): void {
     this.ngOnChanges(undefined);
+  }
+
+  async applyChanges(): Promise<void>{
+    if(this.user == null){
+      throw new Error("User cannot be null");
+    }
+
+    var result = await this.dataservice.finalizeRegistration(
+      'Matteo',
+      'Ielacqua',
+      'Viale vittoria 37',
+      '0000',
+      '0000'
+    );
+
+    if(result == 0){
+      this.dataservice.regModeOnly = false;
+    }
+
   }
 }

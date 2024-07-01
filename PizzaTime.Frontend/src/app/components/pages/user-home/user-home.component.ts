@@ -20,6 +20,7 @@ import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
 import { PizzaListViewComponent } from 'app/components/views/pizza-list-view/pizza-list-view.component';
 import { Pizza } from '@data';
 import { UserListViewComponent } from 'app/components/views/user-list-view/user-list-view.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-user-home',
@@ -82,9 +83,15 @@ export class UserHomeComponent implements OnInit {
 
 
 
-  public constructor(private router: Router, private bridge: IDataBridge) {}
+  public constructor(private router: Router, private bridge: IDataBridge, private cookieService: CookieService) {}
   async ngOnInit(): Promise<void> {
+    if(this.bridge.regModeOnly){
+      this._user = this.cookieService.get("Account") as unknown as User;
+      console.log(this._user)
+    }
+    else{
     this._user = await this.bridge.getUser();
+    }
   }
 
 

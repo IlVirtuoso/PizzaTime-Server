@@ -6,6 +6,7 @@ import { ImportsModule } from 'app/imports/prime-ng/prime-ng.module';
 import { MegaMenuItem, MenuItem } from 'primeng/api';
 import { IDataBridge } from 'app/services/idatabridge';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'toolbar-component',
@@ -26,9 +27,12 @@ export class ToolBarComponent {
     { label: 'Pizza Party', url:'party', command: (item) => this.navigate(item.item, true) },
     { label: 'Contacts', url:'contacts',command: (item) => this.navigate(item.item, false) },
     { label: 'About us', url:'aboutus' ,command: (item) => this.navigate(item.item, false) },
+     { label: 'Logout', url:'login', command: (item) => {
+          this.cookieService.deleteAll();
+         } }
   ];
 
-  public constructor(protected service: IDataBridge, protected router: Router) {
+  public constructor(protected service: IDataBridge, protected router: Router, private cookieService: CookieService) {
     this.detectUser();
    }
 
@@ -43,12 +47,6 @@ export class ToolBarComponent {
              command: (item) => this.navigate(item.item, true),
            });
          }
-
-         this.items[0].disabled= true;
-         this.items[1].disabled= true;
-       }
-       else{
-        this.items[2].disabled=true;
        }
    }
 
