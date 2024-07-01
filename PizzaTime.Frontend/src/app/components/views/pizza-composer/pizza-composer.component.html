@@ -1,73 +1,77 @@
 <p-card header="Select Ingredients" styleClass="ComponentCard">
-<div class="ListView">
-<p-pickList
-    [source]="sourceIngredients"
-    [target]="selectedIngredients"
-    sourceHeader="Available"
-    targetHeader="Selected"
-    [dragdrop]="true"
-    [responsive]="true"
-    [sourceStyle]="{ height: '30rem' }"
-    [targetStyle]="{ height: '30rem' }"
-    filterBy="name"
-    breakpoint="1400px">
-        <ng-template let-product pTemplate="item">
-            <div class="flex flex-wrap p-2 align-items-center gap-3">
-                <img
-                    class="w-4rem shadow-2 flex-shrink-0 border-round"
-                    src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
-                    alt="{item.name}" />
-                <div class="flex-1 flex flex-column gap-2">
-                    <span class="font-bold">{{ product.name }}</span>
-                    <div class="flex align-items-center gap-2">
-                        <i class="pi pi-tag text-sm"></i>
-                        <span>
-                            {{ product.category }}
-                        </span>
-                    </div>
-                </div>
-                <span class="font-bold text-900">
-                    {{ '$' + product.price }}
-                </span>
+  <div class="ListView">
+    <p-pickList
+      [source]="sourceIngredients"
+      [target]="selectedIngredients"
+      sourceHeader="Available"
+      targetHeader="Selected"
+      [dragdrop]="true"
+      [responsive]="true"
+      [sourceStyle]="{ height: '30rem' }"
+      [targetStyle]="{ height: '30rem' }"
+      filterBy="name"
+      breakpoint="1400px"
+    >
+      <ng-template let-product pTemplate="item">
+        <div class="flex flex-wrap p-2 align-items-center gap-3">
+          <img
+            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.NZjbjbD7xgT1mDuMWGss2wFSC4%26pid%3DApi&f=1&ipt=c7da10e02cadc30abfcd4b91da7c5ffe73445cb1ea7439769bd112477ce871f6&ipo=images"
+            [alt]="product.name"
+            class="w-4rem shadow-2 flex-shrink-0 border-round"
+            style="width: 120px;"
+          />
+          <div class="flex-1 flex flex-column gap-2">
+            <span class="font-bold">{{ product.name }}</span>
+            <div class="flex align-items-center gap-2">
+              <span> Glutin Free: {{ product.glutinFree }} </span>
             </div>
-        </ng-template>
-</p-pickList>
-</div>
-<div class="ToolBar">
-<p-button label="Add"/>
-</div>
+            <div class="flex align-items-center gap-2">
+              <span> {{ product.description }} </span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-pickList>
+  </div>
+  <div class="ToolBar">
+    <p-button label="Add" />
+  </div>
 </p-card>
-<p-card header="User pizzas" styleClass="ComponentCard" >
-<div class="ListView">
+<p-card header="User pizzas" styleClass="ComponentCard">
+  <div class="ListView">
     <p-orderList
-    [value]="userPizzas"
-    [listStyle]="{ 'max-height': '30rem' }"
-    header="Your Pizzas"
-    filterBy="name"
-    filterPlaceholder="Filter by name">
-        <ng-template let-product pTemplate="item">
-            <div class="flex flex-wrap p-2 align-items-center gap-3">
-                <img
-                    src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
-                    [alt]="product.name"
-                    class="w-4rem shadow-2 flex-shrink-0 border-round" />
-                    <div class="flex-1 flex flex-column gap-2">
-                        <span class="font-bold">{{ product.name }}</span>
-                        <div class="flex align-items-center gap-2">
-                            <i class="pi pi-tag text-sm"></i>
-                            <span>{{ product.category }}</span>
-                        </div>
-                    </div>
-                <span class="font-bold text-900">
-                    {{ '$' + product.price }}
-                </span>
+      [value]="availablePizzas"
+      [listStyle]="{ 'max-height': '30rem' }"
+      header="Your Pizzas"
+      filterBy="name"
+      filterPlaceholder="Filter by name"
+    >
+      <ng-template let-product pTemplate="item">
+        <div class="flex flex-wrap p-2 align-items-center gap-3">
+          <img
+            src="https://primefaces.org/cdn/primeng/images/demo/product/{{
+              product.image
+            }}"
+            [alt]="product.name"
+            class="w-4rem shadow-2 flex-shrink-0 border-round"
+          />
+          <div class="flex-1 flex flex-column gap-2">
+            <span class="font-bold">{{ product.name }}</span>
+            <div class="flex align-items-center gap-2">
+              <i class="pi pi-tag text-sm"></i>
+              <span>{{ product.category }}</span>
             </div>
-        </ng-template>
-</p-orderList>
-</div>
-<div class="ToolBar">
-    <p-button label="Remove"/>
+          </div>
+          <span class="font-bold text-900">
+            {{ "$" + product.price }}
+          </span>
+        </div>
+      </ng-template>
+    </p-orderList>
+  </div>
+  <div class="ToolBar">
+    <p-button label="Remove" />
     <span class="Spacer"></span>
-    <p-button label="Edit"/>
-</div>
+    <p-button label="Edit" />
+  </div>
 </p-card>

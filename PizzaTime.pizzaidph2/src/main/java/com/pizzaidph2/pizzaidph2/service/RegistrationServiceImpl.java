@@ -93,12 +93,23 @@ public class RegistrationServiceImpl {
 
                     int message = respUtilities.PENDING_REGISTRATION_CODE;;
                     if(completeUser) {
+
+                        if(account!=null && (account.getAddress()!=null && !account.getAddress().isEmpty() && !account.getAddress().isBlank())){
+                            target.setAddress(account.getAddress());
+                        }
+                        if(account!=null && (account.getPhone()!=null && !account.getPhone().isEmpty() && !account.getPhone().isBlank())){
+                            target.setPhone(account.getPhone());
+                        }
+                        if(account!=null && (account.getMobile()!=null && !account.getMobile().isEmpty() && !account.getMobile().isBlank())){
+                            target.setMobile(account.getMobile());
+                        }
+
                         target.setRegistered(true);
                         message = respUtilities.OK_CODE;
                     }else {
                         target.setRegistered(false);
                     }
-                repo.save(target);
+                Account checkAccount = repo.save(target);
                 return message;
             }else{
                 return respUtilities.INVALID_PARAMETER_CODE;
@@ -209,6 +220,73 @@ public class RegistrationServiceImpl {
                 return respUtilities.INVALID_PARAMETER_CODE;
             }
         }else{return respUtilities.INVALID_PARAMETER_CODE;}
+    }
+
+    public void populateAccountDB(){
+        Account target = new Account();
+
+        if(!repo.findByEmail("pizzamaster1@mail.com").isPresent()){
+            target = new Account();
+            target.setUsername("pizzamaster1@mail.com");
+            target.setPassword("1234567");
+            target.setFirstName("Luca");
+            target.setLastName("Maggiolino");
+            target.setAddress("Via della via 1");
+            target.setPhone("380000000");
+            target.setMobile("380000000");
+            this.registerService(target,true);
+        }
+
+
+        if(!repo.findByEmail("pizzamaster2@mail.com").isPresent()){
+            target = new Account();
+            target.setUsername("pizzamaster2@mail.com");
+            target.setPassword("1234567");
+            target.setFirstName("Vero");
+            target.setLastName("Gan");
+            target.setAddress("Via della via 2");
+            target.setPhone("380000000");
+            target.setMobile("380000000");
+            this.registerService(target,true);
+        }
+
+
+        if(!repo.findByEmail("pizzamaster3@mail.com").isPresent()){
+            target = new Account();
+            target.setUsername("pizzamaster3@mail.com");
+            target.setPassword("1234567");
+            target.setFirstName("Metal");
+            target.setLastName("Man");
+            target.setAddress("Via della via 3");
+            target.setPhone("380000000");
+            target.setMobile("380000000");
+            this.registerService(target,true);
+        }
+
+
+        if(!repo.findByEmail("pizzamaster4@mail.com").isPresent()){
+            target = new Account();
+            target.setUsername("pizzamaster4@mail.com");
+            target.setPassword("1234567");
+            target.setFirstName("Marcolino");
+            target.setLastName("Dirondello");
+            target.setAddress("Via della via 4");
+            target.setPhone("380000000");
+            target.setMobile("380000000");
+            this.registerService(target,true);
+        }
+
+        if(!repo.findByEmail("fakegigya@mail.com").isPresent()){
+            target.setUsername("fakegigya@mail.com");
+            target.setPassword("1234567");
+            target.setFirstName("Gigya");
+            target.setLastName("Master");
+            target.setAddress("Via dell'IDP");
+            target.setPhone("360000000");
+            target.setMobile("360000000");
+            this.registerService(target,true);
+        }
+
     }
 
 }

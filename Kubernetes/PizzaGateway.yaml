@@ -1,0 +1,62 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizzatime-gateway
+spec:
+  selector:
+    matchLabels:
+      app: pizzatime-gateway
+  template:
+    metadata:
+      labels:
+        app: pizzatime-gateway
+    spec:
+      containers:
+      - name: pizzatime-gateway
+        image: pizzatime.gateway:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+         - containerPort: 8000 # Proxy port
+           name: proxy
+         - containerPort: 8443 # Proxy port (SSL)
+           name: sslproxy
+         - containerPort: 8001 # Admin API port
+           name: admin
+         - containerPort: 8002 
+           name : adminhttp
+         - containerPort: 8444 # Admin API port (SSL)
+           name: adminssl
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    app: pizzatime-gateway
+  type: NodePort
+  ports:
+  - port: 8000
+    nodePort: 8000
+    name : http
+    targetPort: 8000
+  - port: 8443
+    nodePort : 18443
+    name : ssl
+    targetPort: 8443
+  - port: 8001
+    nodePort: 8001
+    name : admin
+    targetPort: 8001
+  - port: 8002
+    nodePort: 8002
+    name: adminhttp
+    targetPort: 8002
+  - port: 8444
+    nodePort: 8444
+    name: adminssl
+    targetPort: 8444
+

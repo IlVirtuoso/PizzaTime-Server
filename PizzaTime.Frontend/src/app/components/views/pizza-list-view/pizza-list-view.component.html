@@ -1,15 +1,26 @@
-<p-dataView #userView [value]="items" paginator="true" rows="5" >
-    <ng-template pTemplate="list" let-items let-index="index">
-        <div *ngFor="let pizza of items; let first = first" class="data-row" >
-            <div class="flex">
-                <p-image src="https://th.bing.com/th/id/OIP.holHmftzMUgONoL-6n_dTQHaE7?rs=1&pid=ImgDetMain"
-                    width="192px" />
-                <p>Name : {{pizza.name}}</p>
-                <p>Pice : {{pizza.price}} <span class="pi pi-euro"></span> </p>
-                <div *ngIf="buyMode">
-                    <p-button icon="pi pi-shopping-cart" />
-                </div>
+<p-dataView [value]="items" layout="list">
+  <ng-template let-pizza pTemplate="listItem">
+    <div class="p-col-12" (click)="onPizzaTaken(pizza)" *ngFor="let pizza of items">
+      <p-card>
+        <div class="p-grid">
+          <div class="p-col-12 p-md-4">
+            <h2>{{ pizza.commonName }}</h2>
+          </div>
+          <div class="p-col-12 p-md-8">
+            <div><strong>ID:</strong> {{ pizza.id }}</div>
+            <div><strong>Ingredients:</strong>
+              <ul>
+                <li *ngFor="let ingredient of pizza.seasonings">
+                  <div><strong>Name:</strong> {{ ingredient.commonName }}</div>
+                  <div><strong>Description:</strong> {{ ingredient.description }}</div>
+                  <div><strong>Gluten Free:</strong> {{ ingredient.glutinFree ? 'Yes' : 'No' }}</div>
+                  <div><strong>Allergens:</strong> {{ ingredient.allergen.join(', ') }}</div>
+                </li>
+              </ul>
             </div>
+          </div>
         </div>
-    </ng-template>
+      </p-card>
+    </div>
+  </ng-template>
 </p-dataView>

@@ -1,0 +1,838 @@
+{
+	"info": {
+		"_postman_id": "4238a22a-9b23-4720-a46d-83c605799c02",
+		"name": "testTASS_idp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36197717"
+	},
+	"item": [
+		{
+			"name": "premethods",
+			"item": [
+				{
+					"name": "getHelloWorld",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:2042/account/v1/getHelloWorld?print=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2042",
+							"path": [
+								"account",
+								"v1",
+								"getHelloWorld"
+							],
+							"query": [
+								{
+									"key": "print",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register v0",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"gigya\",\r\n    \"lastName\":\"master\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:2042/account/v1/v0/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2042",
+							"path": [
+								"account",
+								"v1",
+								"v0",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAccountInfo v0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:2042/account/v1/v0/getAccountInfo?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2042",
+							"path": [
+								"account",
+								"v1",
+								"v0",
+								"getAccountInfo"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "populateDBFirstTime",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}{{port}}/account/v1/populateAccountDB",
+							"host": [
+								"{{domain}}{{port}}"
+							],
+							"path": [
+								"account",
+								"v1",
+								"populateAccountDB"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setAccontInfo v0",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"2\",\r\n    \"firstName\":\"modified\",\r\n    \"lastName\":\"ahahah\",\r\n    \"mobile\":\"2134123\",\r\n    \"email\":\"email@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:2042/account/v1/v0/setAccountInfo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2042",
+							"path": [
+								"account",
+								"v1",
+								"v0",
+								"setAccountInfo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "isAvaillableLoginId v0",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/v0/isAvaillableLoginID?loginId=gigyamaster@mail.lol",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"v0",
+						"isAvaillableLoginID"
+					],
+					"query": [
+						{
+							"key": "loginId",
+							"value": "gigyamaster@mail.lol"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\":\"saveme\",\r\n    \"lastName\":\"lol\",\r\n    \"username\":\"gigyamaster@mail2345643645.lol\",\r\n    \"password\":\"1234567\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/register",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "finalizeRegistration",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMSIsImlhdCI6MTcxOTIxNzc5OCwiZXhwIjoxNzE5MjE4Mzk4LCJpc0xvZ2dlZEluIjpmYWxzZSwicmVnVGltZXN0YW1wIjoiMjAyNC0wNi0yNCAxMDoyOTo1OCJ9.ZKuWAfF-XcsZVNh49zJytbUQAWyf69ByW6XxSTQtlRSujbmElcaqXZoMrQaJcFlg-rLjotSzGoTjpXQxU8BbTk4B8ygM5x7QmjKPEwZlO54hvG3jTKd_yQqfOatNPgV-LJmUHw0gVEqD1P0YFdtGP8RSXQSQQHdWsx4MfPvVLfe2n78QEGar7ndAgcaB7xFgSn-VjKAdVv59nNXxbqWsMxtNbgsT0tr3TueY6ob8YsWVfxL8mnXD551q0nM8o-amwuXbmELb8nXgf-3kkTWUKwYoVJDeP3QMc5JtWsIi1UQNWOmbhewjQdIt3yRi0K8GGF3D_OM-Hx1Yt7KE3KuNuA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\":\"mattia\",\r\n    \"lastName\":\"Borrelli\",\r\n    \"address\":\"1234567\",\r\n    \"phone\":\"342434\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/finalizeRegistration",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"finalizeRegistration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "registerComplete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"pizzamanagerdef@mail.lol\",\r\n    \"password\":\"1234567\",\r\n    \"firstName\":\"gigya\",\r\n    \"lastName\":\"master\",\r\n    \"address\":\"viao asdad\",\r\n    \"phone\":\"322\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/registerComplete",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"registerComplete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"pizzamanagerdef@mail.lol\",\r\n    \"password\":\"1234567\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/login",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "socialLogin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNkNTgwZjBhZjdhY2U2OThhMGNlZTdmMjMwYmNhNTk0ZGM2ZGJiNTUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0ODc0MTMyNTEwNzQtbWFra2U5bjFmMG90MWtuN21lM2hvNGhjYnQ0aDkyOWIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0ODc0MTMyNTEwNzQtbWFra2U5bjFmMG90MWtuN21lM2hvNGhjYnQ0aDkyOWIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTgyMTUyMjg3NDkwMDQwMzM3NzQiLCJlbWFpbCI6ImJvcnJlbGxpbWF0dGlhOTlAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTcxODk3NTMxNiwibmFtZSI6Ik1hdHRpYSBCb3JyZWxsaSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLVTdnaU5ReHdVMW5CSEU0Qmd3R3p0ZURkZ01NVlduN1FDaTVrSVVLdURmZkNxZ1ZMaD1zOTYtYyIsImdpdmVuX25hbWUiOiJNYXR0aWEiLCJmYW1pbHlfbmFtZSI6IkJvcnJlbGxpIiwiaWF0IjoxNzE4OTc1NjE2LCJleHAiOjE3MTg5NzkyMTYsImp0aSI6IjBmYTZkOTdiMGZhMTMxZjMxOTQ2MTMxMjAzZmZjZTdjNDQ1ZDI3NTEifQ.O23ixSpIawHGLLP8G9NsHRGGELMlhKxS02Nmo4Yas5SnKUubaMSOO3OursT_vNDhQ0Cwl_9kIUvdnKu26hG2sS9GmSehfm8TwZY-gIPtbyKJkjvIrY-ilkJCiI6oGlCM3RWStZaPgcHYCdnhHwtRYicaF_w3UEUtkvAjwmNG8p3rtT-eY9fPQ5uyj94FfzZHAM2Mql3VDvMZty54gpS-Y-1K3I3QPmOB2zh6Hh4ufv7eEroaApo0MNkv_DHvPE6ShZ4HsdDcYDcYYSV7cQCgnAcj6GHSU_xpzOKCBcEH3fOL-9MPBmgmyKzO77HYaBBOEQFa5H-W7wTY5Nyo2euz-g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/socialLogin",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"socialLogin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "setAccountInfo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTU4MjczOCwiZXhwIjoxNzE5NTg2MzM4LCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTI4IDE1OjUyOjE4In0.ACn1t2hL6swsy3XZ3MidQAN_vP9yvDJEpuO8j9pY2qZ1EUxCIifDrEqtxIU2xZRQjTQN2y0M6H9EnMtU_s6BQ2dUKyfUmvbOWTKP-m7AilLnpMh2stfRtcYKC5ZWgjcFSm8NF7tW9pySJ1J77EYCory49t0OZ9B5iJTquFKoG8Pum9tODZjfv8lofUFNpZtk6Vob8BKoptbDCeByJ-mypQ2o78CPpyCBvNWRkXTcaS0tJL73ZKQtBG2XzI5NeGl8dKgiEI-NAuy-FeaE244G20JHrcYMB0EU-ylINQtsKhZriszHri3ExL2afz4S10qEF7pN00VdpMliqh-hCUZPnA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mobile\":\"ok\",\r\n    \"address\":\"new address\",\r\n    \"phone\":\"ok\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/setAccountInfo",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"setAccountInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "changePassword",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTY4NDIyOSwiZXhwIjoxNzE5Njg3ODI5LCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTI5IDIwOjAzOjQ5In0.X8Ex-e66eQkqDl40pCtjwNmMQldmoJsNefuHyQcUoPnX375NOwkrc_4tzrca5x1XQaQug3tFvCWR7fHKgEqymWcgoKJ_ExARGrpGwfPv4rldJXF_LbZBc358JzIO7pulwx11wxmv1KnWCpRqxxnUpU9bYhxS7CX0D95Gdm7pw6vEyufbApD3TO4gjx9swZB6jrOEexMIMJNWxtB6RVJlh554VSlo7InuFKyain4DWkCJjaFTyQgatfNJ-i6t5QLVeUCFe_hT_8ZuUMUHhAQ62rLwWtE_xI9-DCAPiwFqrw0dkQCCJvcoa0oCQ_KIFsIMRMshQE6YLX6tWdSAXvKaNA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldPassword\":\"1234567ahah\",\r\n    \"newPassword\":\"1234567\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/changePassword",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"changePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAccountInfo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMSIsImlhdCI6MTcxODkwMTE0NiwiZXhwIjoxNzE4OTA0NzQ2LCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTIwIDE4OjMyOjI2In0.RtSzRfcR1AQK7o9ftHjvLfcf7et0MMT2AXY_jdLdc_qReNQ_9Lk_5IC9Y7KSGCX977DGqgWuYpYUS6eh1YPB3T9AMPxL3b6CG9fM2ES9mXhtgR2t4GuEy78OZ3tY-VmAjjj-01SN6mYqE2HJ_S3_aLWfYgJ6zgqfe26vF4xO0w9kTHZ_JAxI5CPcfsbBKPx7BZHKbJJPKdXf9KUjxhn6R5SF6uEg1Qs_2W17aCTp00aRKCm_Udb9uizJxhW8pE1QZB-w9HKiAubdDc0SL8wqqB0BxjoWPsdPv01T_nTrDQPEsoRuvTA_7pEcrvl1LgRPDpPrvtVD5PzZU4Y4dCaeow",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/getAccountInfo",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"getAccountInfo"
+					],
+					"query": [
+						{
+							"key": "Authorization",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getJWT",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiOSIsImlhdCI6MTcxOTc3NDE5MCwiZXhwIjoxNzE5Nzc3NzkwLCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MTUsImlzTG9nZ2VkSW4iOnRydWUsImxvZ2luVGltZXN0YW1wIjoiMjAyNC0wNi0zMCAyMTowMzoxMCJ9.wob2WIf64TlqZmsRavOqRQ4jDa_s5Gi2u8Yy2K_GEx-z89Id9fHlnbNpM4BuMVD-lb0Eu3xxZMIlIN7cIqyhf8f1mapWp-g9jtaZyWq_xuTMQ69h72HVkDUua_2_AYtFcCbupRaAca9Em3reHIyQntY5lOsnykVKRJOxayN5YNWBRqYQHMBxUp1KBmdhgEC8vsYhhUWT9lX-GABgNC58kpsbGq4STQs_JNeeZCP2xraiPKqbwMaOtxM_v3nejVG1LTH_cdM9y7NIxm8FzwHnpM2CZBfOaebXiUQbrEK9aO-XpT2Fhq3QBcsoWPbbkaGbaHRdXze-LBWeKE2WxnlAAg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/getJWT",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"getJWT"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verifyJWT",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/verifyJWT?jwt=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjAzMywiZXhwIjoxNzE4OTc5NjMzfQ.hZXZdDfM2kB8NyE6-0DqXQqxKnedt-BPyNf2dFYvcBVbb79eNKiS2XHLSqO4XzK-NGDjIQVrUJJ5jER_klDi9_BGTcpLQynbwK2uv-Gt1tWe9fYu4yYUcNMhlOi8BSWLQ2gt_KnmPa_kVQSuEHW-3C79XV8-wT31wcTR3ZyjL14HSLOUyVdflnMC6J7lUZH2R9Qpi5UuCeAaaaFzXvZTvVq4c5BJ6ZJ79rlR_DGDcLa36h8AkE1VB8YUQIVfVwRZcnCXmihE4NpXuUGgN_Qp2jGKbn59o6xlJ8coPB2_4RRiRMMD3P4PaPHc6_mAkTes9pUoUQYStq9Xbm0eIYS-_w",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"verifyJWT"
+					],
+					"query": [
+						{
+							"key": "jwt",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMyIsImlhdCI6MTcxODk3NjAzMywiZXhwIjoxNzE4OTc5NjMzfQ.hZXZdDfM2kB8NyE6-0DqXQqxKnedt-BPyNf2dFYvcBVbb79eNKiS2XHLSqO4XzK-NGDjIQVrUJJ5jER_klDi9_BGTcpLQynbwK2uv-Gt1tWe9fYu4yYUcNMhlOi8BSWLQ2gt_KnmPa_kVQSuEHW-3C79XV8-wT31wcTR3ZyjL14HSLOUyVdflnMC6J7lUZH2R9Qpi5UuCeAaaaFzXvZTvVq4c5BJ6ZJ79rlR_DGDcLa36h8AkE1VB8YUQIVfVwRZcnCXmihE4NpXuUGgN_Qp2jGKbn59o6xlJ8coPB2_4RRiRMMD3P4PaPHc6_mAkTes9pUoUQYStq9Xbm0eIYS-_w"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAccount",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxODU1Nzk1NiwiZXhwIjoxNzE4NTYxNTU2LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMTYgMTk6MTI6MzYifQ.hu6bRIdlTRkEIgxunhsGjwB5e4loxB8Z8FxxZBV3OcqEe_rWI-6qRPDL84DLoYMVENEvBwVPMih5D2sJWfL0MAzMhKWKJmjPgSu7k3GXo2pJSXSvIDb1lvnI2Co9esPrrMNQnpbk7Ie77Jlua8SBureE8YsqhqRI0pzSvwa6HlD3tSs--oWTuhKZviWRUUzzlryiUrYTrx-hHUV6ZMyPAMvdwdPiw71iTsRnhEtuM27HoG4sLC6ImM7RVBllGfu-5cv8bud766SW-OplDSqRdYOnbIrcAtPBuxRN8PHKYTD97eYogiitEZKqfvk3RDIz-UE3NhcGscLzdIwDnjWW0A"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/deleteAccount",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"deleteAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "rechargeBalance",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTY4NDIyOSwiZXhwIjoxNzE5Njg3ODI5LCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTI5IDIwOjAzOjQ5In0.X8Ex-e66eQkqDl40pCtjwNmMQldmoJsNefuHyQcUoPnX375NOwkrc_4tzrca5x1XQaQug3tFvCWR7fHKgEqymWcgoKJ_ExARGrpGwfPv4rldJXF_LbZBc358JzIO7pulwx11wxmv1KnWCpRqxxnUpU9bYhxS7CX0D95Gdm7pw6vEyufbApD3TO4gjx9swZB6jrOEexMIMJNWxtB6RVJlh554VSlo7InuFKyain4DWkCJjaFTyQgatfNJ-i6t5QLVeUCFe_hT_8ZuUMUHhAQ62rLwWtE_xI9-DCAPiwFqrw0dkQCCJvcoa0oCQ_KIFsIMRMshQE6YLX6tWdSAXvKaNA"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/rechargeBalance?value=1.2",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"rechargeBalance"
+					],
+					"query": [
+						{
+							"key": "value",
+							"value": "1.2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chargeOnBalance",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMSIsImlhdCI6MTcxOTIxNzgyNCwiZXhwIjoxNzE5MjIxNDI0LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMjQgMTA6MzA6MjQifQ.mQBKDAvi6Jm8D8ZUnSQXJNpkrGFfQsOFU3fnERvaMzjdnygV0wT6t3Kv1L9wazC0vlnrv82gXgt6Agfz9Ca-GgK_xyV8QDXGMReX5zGx-05aN5E_Kb5HQI7t_njQLiFZ2_AqXojwHkDlaPrQSQzNOXtfDksFqoGDc71WP4QQjd6sVPsQBf6YuyYWlBozTYozHVOrIgqUfcvoH1blfkPA3_5kPc21Kn_FKA4x50v6EfoycvtJed1dlTiDH4ETrcWkwmy7gEkpIl85AFaTYSaJ6kzw-SdMP8-HunehRVjE0g4ylB_mtyBgqKQ_navQMkA_mVY3iYjc4zd8GBupnvDqBA"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/account/v1/chargeOnBalance?value=3.50",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"account",
+						"v1",
+						"chargeOnBalance"
+					],
+					"query": [
+						{
+							"key": "value",
+							"value": "3.50"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createPizzeria",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiOSIsImlhdCI6MTcxOTc1NTU3NSwiZXhwIjoxNzE5NzU5MTc1LCJpc0xvZ2dlZEluIjp0cnVlLCJsb2dpblRpbWVzdGFtcCI6IjIwMjQtMDYtMzAgMTU6NTI6NTUifQ.pCd1N5s_raRdqSe780nqp14fgg_GdefmzxmFDV6pXXNC_V2w6L1FBCrHJz9aWtkNcJxop5kSlLkL1qCA2f6QIxxFW9xxDAx4OnpEl1Sr4yasJNplKJ2FdBOI30Pb2BbRBfM5m8EN5lOZ_e9FHzxH-Er-p8H5qJWf4btUDRbfpbYWz8mfg2ZcvAw2nW13StV9PIwamAfgxKRk_64ARdYP6klym5KJWXXgzexom_YAvzO_E3X0cUxaJhtdg8UKYVoO-B3aWJ6CZ8E7-yn74rkwxyJliITdyVAo3waAWt1RKSWYlTzgTdv7Izn3zLn1FzJPG_eKkY8sC7gbSaNS6ZyWTw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Pizzeria quella pizzeria che non ti aspetti\",\r\n    \"vatNumber\":\"213123421432\",\r\n    \"address\":\"via della banana\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/pizzeria/v1/createPizzeria",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"pizzeria",
+						"v1",
+						"createPizzeria"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPizzeriaInfo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTY4NDIyOSwiZXhwIjoxNzE5Njg3ODI5LCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MSwiaXNMb2dnZWRJbiI6dHJ1ZSwibG9naW5UaW1lc3RhbXAiOiIyMDI0LTA2LTI5IDIwOjAzOjQ5In0.X8Ex-e66eQkqDl40pCtjwNmMQldmoJsNefuHyQcUoPnX375NOwkrc_4tzrca5x1XQaQug3tFvCWR7fHKgEqymWcgoKJ_ExARGrpGwfPv4rldJXF_LbZBc358JzIO7pulwx11wxmv1KnWCpRqxxnUpU9bYhxS7CX0D95Gdm7pw6vEyufbApD3TO4gjx9swZB6jrOEexMIMJNWxtB6RVJlh554VSlo7InuFKyain4DWkCJjaFTyQgatfNJ-i6t5QLVeUCFe_hT_8ZuUMUHhAQ62rLwWtE_xI9-DCAPiwFqrw0dkQCCJvcoa0oCQ_KIFsIMRMshQE6YLX6tWdSAXvKaNA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/pizzeria/v1/getPizzeriaInfo",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"pizzeria",
+						"v1",
+						"getPizzeriaInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "openPizzeria",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTY1NDUxOCwiZXhwIjoxNzE5NjU4MTE4LCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MX0.qhqIAzjk91l_04A2U1jeZPnM24JU8rw6MBSQedtMea-TtezBz3JjhZqfNKHy8aRJjYG635ILl2wLZExe5eJQO4DnKrxacIrbTgwi886oC0QQw8d9kHZZ6wzD4UZCssyqhQv0H1bjEKHz4iZmU0WlZwYsJSI0GCOFHCfiiTDkodKCPcAJdfhqcP_ezROMEhMwEzME8BOVz5zi4bwpkiujJSnp5oGACd9_E3Ow2Hn6Md41_qMp8wocUhtA5YKN3lnZxNIb997C-JA5_P7ACXNcOX0SJkB61Z3RmgNiHteOdbboIpF6tJoBeFVHNjYNyRnRRanJaC5K6soPP3L_ki11rw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/openPizzeria",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"openPizzeria"
+					],
+					"query": [
+						{
+							"key": "pizzeriaId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "closePizzeria",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwaXp6YXBhcnR5aWRwIiwic3ViIjoiMiIsImlhdCI6MTcxOTY1NDUxOCwiZXhwIjoxNzE5NjU4MTE4LCJpc1ZlbmRvciI6dHJ1ZSwicGl6emVyaWFJRCI6MX0.qhqIAzjk91l_04A2U1jeZPnM24JU8rw6MBSQedtMea-TtezBz3JjhZqfNKHy8aRJjYG635ILl2wLZExe5eJQO4DnKrxacIrbTgwi886oC0QQw8d9kHZZ6wzD4UZCssyqhQv0H1bjEKHz4iZmU0WlZwYsJSI0GCOFHCfiiTDkodKCPcAJdfhqcP_ezROMEhMwEzME8BOVz5zi4bwpkiujJSnp5oGACd9_E3Ow2Hn6Md41_qMp8wocUhtA5YKN3lnZxNIb997C-JA5_P7ACXNcOX0SJkB61Z3RmgNiHteOdbboIpF6tJoBeFVHNjYNyRnRRanJaC5K6soPP3L_ki11rw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"commonName\":\"Marinara Senza Aglio\",\r\n    \"ingredient\":[6]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}{{port}}/closePizzeria",
+					"host": [
+						"{{domain}}{{port}}"
+					],
+					"path": [
+						"closePizzeria"
+					],
+					"query": [
+						{
+							"key": "pizzeriaId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

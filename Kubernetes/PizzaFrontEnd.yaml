@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizzatime-frontend
+spec:
+  selector:
+    matchLabels:
+      app: pizzatime-frontend
+  template:
+    metadata:
+      labels:
+        app: pizzatime-frontend
+    spec:
+      containers:
+      - name: pizzatime-frontend
+        image: pizzatime.frontend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+         - containerPort: 8080 # Proxy port
+           name: proxy
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: pizzatime-frontend
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 8080

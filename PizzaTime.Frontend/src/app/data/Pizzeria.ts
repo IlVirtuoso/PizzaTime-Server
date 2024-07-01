@@ -1,11 +1,11 @@
 
 export class Pizzeria {
   public constructor(
-    email: string,
-    phone: string,
-    piva: string,
-    name: string,
-    address: string
+    public id: number,
+    public managerId: number,
+    public vatNumber: string,
+    public name: string,
+    public address: string
   ) {
 
   }

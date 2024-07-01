@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AccountServiceImpl {
+public class AccountServiceImpl implements IAccountService {
 
     @Autowired
     HybernateAccountRepositoryImpl2 repo;
@@ -161,7 +161,8 @@ public class AccountServiceImpl {
             target = repo.save(target);
             resp.setStatusCode(GenericResponse.OK_CODE);
             resp.setStatusReason(GenericResponse.OK_MESSAGE);
-            resp.setAccount(target);
+            Account newOne = target.makeSafeCopy();
+            resp.setAccount(newOne);
             return resp.jsonfy();
         }else{
             resp.setStatusCode(GenericResponse.GENERIC_ERROR_CODE);
@@ -176,6 +177,7 @@ public class AccountServiceImpl {
      * @param value
      * @return
      */
+    @Override
     public String chargeOnBalance(long userId, float value) {
         GenericResponse resp = new GenericResponse();
         Optional<Account> optTarget = repo.findById(userId);
@@ -190,7 +192,8 @@ public class AccountServiceImpl {
                 target = repo.save(target);
                 resp.setStatusCode(GenericResponse.OK_CODE);
                 resp.setStatusReason(GenericResponse.OK_MESSAGE);
-                resp.setAccount(target);
+                Account newOne = target.makeSafeCopy();
+                resp.setAccount(newOne);
                 return resp.jsonfy();
             }else{
                 resp.setStatusCode(GenericResponse.NOT_ENOUGH_MONEY_CODE);
@@ -318,7 +321,8 @@ public class AccountServiceImpl {
                     // MISSING INFORMATION
                     resp.setStatusCode(GenericResponse.PENDING_REGISTRATION_CODE);
                     resp.setStatusReason(GenericResponse.PENDING_REGISTRATION_MESSAGE);
-                    resp.setSessionToken(jwtUtility.getRegToken(target));
+                    resp.setRegToken(jwtUtility.getRegToken(target));
+                    resp.setAccount(target);
                     return resp.jsonfy();
                 }else if((target.getSocialIdentity()==null || !target.getSocialIdentity()) && !target.getRegistered()){
                     // FIRST SOCIAL LOGIN FOR A STANDARD UNCOMPLETED ACCOUNT

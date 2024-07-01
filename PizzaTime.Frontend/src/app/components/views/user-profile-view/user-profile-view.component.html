@@ -15,7 +15,11 @@
         <div *ngIf="!field.editable">
           <span>{{field.fieldName}}: {{field.value}}</span>
         </div>
-        <p-button [label]="field.editable? 'Save':'edit'" (onClick)="field.editable? saveEditedField(field):setEditableField(field)"/>
+        <br>
+        <br>
+        <br>
+        <p-button [label]="field.editable? 'Save':'edit'" (onClick)="field.editable? saveEditedField(field):setEditableField(field)"/> 
       </div>
     </ng-template>
   </p-dataView>
+  <p-button (onClick)="applyChanges()">Apply</p-button>

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmqbroker
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmqbroker
+  template:
+    metadata:
+      labels:
+        app: rabbitmqbroker
+    spec:
+      containers:
+      - name: rabbitmqbroker
+        image: docker.io/rabbitmq:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+          - containerPort: 1883
+            name: mqtt
+          - containerPort: 4369
+            name: clustering
+          - containerPort: 5672
+            name: amqp
+          - containerPort: 15672
+            name: http-management
+        env:
+          - name: RABBITMQ_DEFAULT_USER
+            value: guest
+          - name: RABBITMQ_DEFAULT_PASS
+            value: guest
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: brokerservice
+spec:
+  type: ClusterIP
+  selector:
+    app: rabbitmqbroker  # Corrisponde alla label del pod
+  ports:
+  - port: 5672
+    targetPort: 5672
+    name: amqpport
+  - port: 15672
+    targetPort: 15672
+    name: http-managementport

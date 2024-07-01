@@ -1,6 +1,8 @@
 package com.pizzaidph2.pizzaidph2.model;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import jakarta.persistence.*;
 
@@ -84,4 +86,12 @@ public class Pizzeria{
     public void setName(String name) {
         this.name = name;
     }
+
+    public String jsonfy(){
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
+        return gson.toJson(this);
+    }
+
 }

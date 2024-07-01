@@ -1,0 +1,147 @@
+# a very minimal declarative config file
+_format_version: "2.1"
+_transform: true
+
+services:
+  - name: pizzaenginedefinitive_search
+    protocol: http
+    path: /search/v1
+    host: host.docker.internal
+    port: 3042
+    routes:
+      - name: getAllIngredient
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getAllIngredient
+      - name: searchMenuForAddition
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /searchMenuForAddition
+      - name: getAllSeasoning
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getAllSeasoning
+      - name: searchMenuForPizza
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /searchMenuForPizza
+      - name: searchPizzeriaForOrder
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /searchPizzeriaForOrder
+      - name: getAllPastry
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getAllPastry
+      - name: getMenuForOrder
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getMenuForOrder      
+      - name: getAllPizza
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - pizzaengine
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getAllPizza      

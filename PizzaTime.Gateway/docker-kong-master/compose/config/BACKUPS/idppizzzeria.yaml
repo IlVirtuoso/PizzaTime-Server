@@ -1,0 +1,45 @@
+# a very minimal declarative config file
+_format_version: "2.1"
+_transform: true
+#I'm expecting 2 API
+services:
+  - name: idpdefinitive_pizzeria
+    protocol: http
+    path: /pizzeria/v1
+    host: host.docker.internal
+    port: 2042
+    routes:
+      - name: getPizzeriaInfo
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - GET
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /getPizzeriaInfo
+      - name: createPizzeria
+        protocols:
+          - http
+          - https
+        preserve_host: false
+        strip_path: false
+        request_buffering: true
+        response_buffering: true
+        methods:
+          - POST
+        https_redirect_status_code: 426
+        tags:
+          - idp
+        path_handling: v0
+        regex_priority: 0
+        paths:
+          - /createPizzeria
