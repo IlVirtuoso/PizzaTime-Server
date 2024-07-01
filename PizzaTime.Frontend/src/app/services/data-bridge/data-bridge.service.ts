@@ -11,7 +11,8 @@ import { Ingredient, Menu, Order, Pizza, Pizzeria, ResponseMessage, User } from 
 class LoginRequest{constructor(public username: string, public password: string){}}
 
 
-var gatewayUrl: string = 'http://192.168.39.186:8000';
+//var gatewayUrl: string = 'http://192.168.39.186:8000';
+var gatewayUrl: string = 'http://localhost:8000';
 
 //ACCOUNT URLs
 var loginPath:string = gatewayUrl + "/login";
@@ -92,6 +93,7 @@ export class DataBridgeService extends IDataBridge{
       if(response.data.statusCode==206){
         this.lastError=response.data.statusReason;
         this.cookieService.set("Session", response.data.regToken);
+        this.cookieService.set("Account", response.data.account);
         this.regModeOnly = true;
         return 206;
       }else if(response.data.statusCode!=0){
@@ -134,6 +136,7 @@ export class DataBridgeService extends IDataBridge{
         if(response.data.statusCode==206){
           this.lastError=response.data.statusReason;
           this.cookieService.set("Session", response.data.regToken);
+          this.cookieService.set("Account", response.data.account);
           this.regModeOnly = true;
           return 206;
         }else if(response.data.statusCode!=0){
@@ -179,6 +182,7 @@ export class DataBridgeService extends IDataBridge{
       if(response.data.statusCode==206){
         this.lastError=response.data.statusReason;
         this.cookieService.set("Session", response.data.regToken);
+        this.cookieService.set("Account", response.data.account);
         this.regModeOnly = true;
         return 206;
       }else if(response.data.statusCode!=0){
@@ -226,6 +230,7 @@ export class DataBridgeService extends IDataBridge{
          if(response.data.statusCode==206){
           this.lastError=response.data.statusReason;
           this.cookieService.set("Session", response.data.regToken);
+          this.cookieService.set("Account", response.data.account);
           this.regModeOnly = true;
           return 206;
         }else if(response.data.statusCode!=0){
