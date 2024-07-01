@@ -21,6 +21,7 @@ import { PizzaListViewComponent } from 'app/components/views/pizza-list-view/piz
 import { Pizza } from '@data';
 import { UserListViewComponent } from 'app/components/views/user-list-view/user-list-view.component';
 import { CookieService } from 'ngx-cookie-service';
+import { PizzeriaRegistrarComponent } from 'app/components/forms/pizzeria-registrar/pizzeria-registrar.component';
 
 @Component({
   selector: 'app-user-home',
@@ -42,7 +43,8 @@ import { CookieService } from 'ngx-cookie-service';
     UserProfileViewComponent,
     ImportsModule,
     PizzaListViewComponent,
-    UserListViewComponent
+    UserListViewComponent,
+    PizzeriaRegistrarComponent
   ],
   templateUrl: './user-home.component.html',
   styleUrl: './user-home.component.css',
@@ -56,9 +58,10 @@ export class UserHomeComponent implements OnInit {
 
   protected menu_items: MenuItem[] = [
     { label: 'Profile', icon: 'pi pi-home' },
-    { label: 'Orders', icon: 'pi pi-shopping-cart' , disabled:!this.bridge.regModeOnly},
-    {label: 'Pizzas', icon: 'pi pi-heart-fill', disabled:!this.bridge.regModeOnly},
-    {label: 'Friends', icon:'pi pi-user', disabled:!this.bridge.regModeOnly}
+    { label: 'Orders', icon: 'pi pi-shopping-cart' },
+    {label: 'Pizzas', icon: 'pi pi-heart-fill'},
+    {label: 'Friends', icon:'pi pi-user'},
+    {label:'Your pizzeria', icon:'pi'}
   ];
 
 

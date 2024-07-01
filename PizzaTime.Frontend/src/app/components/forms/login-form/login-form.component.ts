@@ -58,6 +58,10 @@ export class LoginFormComponent {
     this.cookieService.set("Authorization", user.idToken);
     var result = await this.service.socialLogin();
     if(result == 206){
+      this.service.regModeOnly = true;
+      this.router.navigateByUrl("/home");
+    }
+    else if(result == 0){
       this.router.navigateByUrl("/home");
     }
     else{
