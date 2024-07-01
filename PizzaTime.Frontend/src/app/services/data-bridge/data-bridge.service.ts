@@ -548,7 +548,7 @@ export class DataBridgeService extends IDataBridge{
     override async addAdditionToMenu(additions:AddIngrRequest[]
     ): Promise<boolean> {
 
-      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
+     var idToken:string = this.cookieService.get("Authorization");
      var data={
         "additions":additions
       }
@@ -565,7 +565,12 @@ export class DataBridgeService extends IDataBridge{
           //VERY IMPORTANT RECALL to save the sessionToken
         //ERROR CODE 401 = user is malicious or the session is expired
 
-        return response.data;
+        if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return false;
+        }
+  
+        return true;
       } catch (error) {
           console.error('Error in adding an ingredient :', error);
           throw error;
@@ -576,7 +581,7 @@ export class DataBridgeService extends IDataBridge{
      override async addPizzaToMenu(pizzas:AddPizzaRequest[]
      ): Promise<boolean> {
 
-      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
+      var idToken:string = this.cookieService.get("Authorization")
       var data={
          "pizzas":pizzas
        }
@@ -593,7 +598,12 @@ export class DataBridgeService extends IDataBridge{
            //VERY IMPORTANT RECALL to save the sessionToken
          //ERROR CODE 401 = user is malicious or the session is expired
 
-         return response.data;
+         if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return false;
+        }
+  
+        return true;
        } catch (error) {
            console.error('Error in adding a pizza :', error);
            throw error;
@@ -605,7 +615,7 @@ export class DataBridgeService extends IDataBridge{
     // create menu definition
     override async createMenu(): Promise<boolean> {
 
-      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
+      var idToken:string = this.cookieService.get("Authorization")
 
       try {
         const response = await this.promiseClient.get(createMenuPath, {
@@ -618,8 +628,12 @@ export class DataBridgeService extends IDataBridge{
         //ERROR CODE 0 = success, return the pizzeria object
         //ERROR CODE 401 = session token is expired or the user is not a manager
         //Other ERRORS: general error
-
-        return response.data.account;
+        if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return false;
+        }
+  
+        return true;
       } catch (error) {
           console.error('Error in creaeting menu:', error);
           throw error;
@@ -630,7 +644,7 @@ export class DataBridgeService extends IDataBridge{
     // get menu definition
     override async getMenu(): Promise<Menu | null> {
 
-      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
+      var idToken:string = this.cookieService.get("Authorization")
 
       try {
         const response = await this.promiseClient.get(getMenuPath, {
@@ -645,8 +659,16 @@ export class DataBridgeService extends IDataBridge{
         //ERROR CODE 401 = session token is expired or the user is not a manager
         //Other ERRORS: general error
 
-        return response.data.account;
-      } catch (error) {
+        if(response.data.statusCode == 208){
+          this.createMenu();
+          return this.getMenu();
+        }else if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return null;
+        }
+  
+        return response.data.menu;
+        } catch (error) {
           console.error('Error in getting menu:', error);
           throw error;
       }
@@ -655,8 +677,7 @@ export class DataBridgeService extends IDataBridge{
     // open pizzeria definition
     override async openPizzeria(): Promise<boolean> {
 
-      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
-
+      var idToken:string = this.cookieService.get("Authorization")
       try {
         const response = await this.promiseClient.get(openPizzeriaPath, {
           headers: {
@@ -669,7 +690,12 @@ export class DataBridgeService extends IDataBridge{
         //ERROR CODE 401 = session token is expired or the user is not a manager
         //Other ERRORS: general error
 
-        return response.data.account;
+        if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return false;
+        }
+  
+        return true;
       } catch (error) {
           console.error('Error in opening the pizzeria :', error);
           throw error;
@@ -680,7 +706,7 @@ export class DataBridgeService extends IDataBridge{
     // open pizzeria definition
     override async closePizzeria(): Promise<boolean> {
 
-      var idToken:string = "PUT HERE THE idtoken obatined with a getJWT"
+      var idToken:string = this.cookieService.get("Authorization")
 
       try {
         const response = await this.promiseClient.get(closePizzeriaPath, {
@@ -694,7 +720,12 @@ export class DataBridgeService extends IDataBridge{
         //ERROR CODE 401 = session token is expired or the user is not a manager
         //Other ERRORS: general error
 
-        return response.data.account;
+        if(response.data.statusCode!=0){
+          this.lastError=response.data.statusReason;
+          return false;
+        }
+  
+        return true;
       } catch (error) {
           console.error('Error in closing the pizzeria :', error);
           throw error;
