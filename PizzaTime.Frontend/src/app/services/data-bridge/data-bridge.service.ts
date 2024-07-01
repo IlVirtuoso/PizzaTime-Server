@@ -4,15 +4,15 @@ import { CookieService } from 'ngx-cookie-service';
 import axios, { Axios , AxiosRequestConfig} from 'axios';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Ingredient, Menu, Order, Pizza, Pizzeria, ResponseMessage, User } from '@data';
+import { Ingredient, Menu, Order, OrderRow, Pizza, Pizzeria, ResponseMessage, User } from '@data';
 
 
 
 class LoginRequest{constructor(public username: string, public password: string){}}
 
 
-//var gatewayUrl: string = 'http://192.168.39.186:8000';
-var gatewayUrl: string = 'http://localhost:8000';
+var gatewayUrl: string = 'http://192.168.39.186:8000';
+//var gatewayUrl: string = 'http://localhost:8000';
 
 //ACCOUNT URLs
 var loginPath:string = gatewayUrl + "/login";
@@ -48,6 +48,8 @@ var getPizzaPath:string = gatewayUrl + "/getPizza";
 var prefetchDb: string = gatewayUrl + "/populateAccountDB";
 var prefetchDbPizza: string = gatewayUrl + "/populatePizzaDB";
 
+//ORDERS
+var orderUrl = gatewayUrl + "/order"
 
 @Injectable({
   providedIn: 'root'
@@ -142,12 +144,12 @@ export class DataBridgeService extends IDataBridge{
         }else if(response.data.statusCode!=0){
           this.lastError=response.data.statusReason;
           return response.data.statusCode;
-  
+
         }
-  
+
         this.cookieService.set("Session", response.data.sessionToken)
         //FOR ID TOKEN this.cookieService.set("Authorization", response.data.idToken)
-  
+
         return response.data.statusCode;
         } catch (error) {
           console.error('Error in social login:', error);
@@ -178,7 +180,7 @@ export class DataBridgeService extends IDataBridge{
         //ERROR CODE 206 = redirect to finalize registration page
           //recall to save the regToken
         //Other ERRORS: invalid "login id or password"
-        
+
       if(response.data.statusCode==206){
         this.lastError=response.data.statusReason;
         this.cookieService.set("Session", response.data.regToken);
@@ -236,12 +238,12 @@ export class DataBridgeService extends IDataBridge{
         }else if(response.data.statusCode!=0){
           this.lastError=response.data.statusReason;
           return response.data.statusCode;
-  
+
         }
-  
+
         this.cookieService.set("Session", response.data.sessionToken)
         //FOR ID TOKEN this.cookieService.set("Authorization", response.data.idToken)
-  
+
         return response.data.statusCode;
        } catch (error) {
            console.error('Error in finalizing registration :', error);
@@ -269,16 +271,16 @@ export class DataBridgeService extends IDataBridge{
               'Content-Type': 'application/json',
               'Authorization':sessionToken
             }
-            
+
           });
 
         if(response.data.statusCode!=0){
           this.lastError=response.data.statusReason;
           return false;
         }
-  
+
         return true;
-       
+
           //ERROR CODE 0 = success, user object is returned
           //ERROR CODE 401 = user is malicious or the session is expired
           //ERROR CODE 400 = "invalid data provided"
@@ -303,7 +305,7 @@ export class DataBridgeService extends IDataBridge{
             'Authorization':sessionToken
           }
         });
-        
+
         //ERROR CODE 0 = success, return the account object
         //ERROR CODE 401 = session token is expired: repeat social login
         //Other ERRORS: general error
@@ -359,7 +361,7 @@ export class DataBridgeService extends IDataBridge{
             this.lastError=response.data.statusReason;
             return false;
           }
-    
+
           return true;
         } catch (error) {
             console.error('Error in deleting account:', error);
@@ -388,10 +390,10 @@ export class DataBridgeService extends IDataBridge{
             this.lastError=response.data.statusReason;
             return false;
           }
-    
+
           //this.cookieService.set("Session", response.data.sessionToken)
           this.cookieService.set("Authorization", response.data.idToken);
-    
+
           return true;
         } catch (error) {
             console.error('Error in getting jwt:', error);
@@ -427,7 +429,7 @@ export class DataBridgeService extends IDataBridge{
             this.lastError=response.data.statusReason;
             return false;
           }
-  
+
           return true;
         } catch (error) {
             console.error('Error in changing password:', error);
@@ -458,8 +460,8 @@ export class DataBridgeService extends IDataBridge{
             this.lastError=response.data.statusReason;
             return false;
           }
-  
-          return true;  
+
+          return true;
         } catch (error) {
             console.error('Error in recharging the balance:', error);
             throw error;
@@ -501,10 +503,10 @@ export class DataBridgeService extends IDataBridge{
           this.lastError=response.data.statusReason;
           return false;
         }
-  
+
         this.cookieService.set("Session", response.data.sessionToken)
         //FOR ID TOKEN this.cookieService.set("Authorization", response.data.idToken)
-  
+
         return true;
 
         } catch (error) {
@@ -569,7 +571,7 @@ export class DataBridgeService extends IDataBridge{
           this.lastError=response.data.statusReason;
           return false;
         }
-  
+
         return true;
       } catch (error) {
           console.error('Error in adding an ingredient :', error);
@@ -602,7 +604,7 @@ export class DataBridgeService extends IDataBridge{
           this.lastError=response.data.statusReason;
           return false;
         }
-  
+
         return true;
        } catch (error) {
            console.error('Error in adding a pizza :', error);
@@ -632,7 +634,7 @@ export class DataBridgeService extends IDataBridge{
           this.lastError=response.data.statusReason;
           return false;
         }
-  
+
         return true;
       } catch (error) {
           console.error('Error in creaeting menu:', error);
@@ -666,7 +668,7 @@ export class DataBridgeService extends IDataBridge{
           this.lastError=response.data.statusReason;
           return null;
         }
-  
+
         return response.data.menu;
         } catch (error) {
           console.error('Error in getting menu:', error);
@@ -694,7 +696,7 @@ export class DataBridgeService extends IDataBridge{
           this.lastError=response.data.statusReason;
           return false;
         }
-  
+
         return true;
       } catch (error) {
           console.error('Error in opening the pizzeria :', error);
@@ -724,7 +726,7 @@ export class DataBridgeService extends IDataBridge{
           this.lastError=response.data.statusReason;
           return false;
         }
-  
+
         return true;
       } catch (error) {
           console.error('Error in closing the pizzeria :', error);
@@ -813,9 +815,6 @@ export class DataBridgeService extends IDataBridge{
     return this.fetcher.get(getAllPizzaPath) as Observable<Order[]>;
   }
 
-
-
-
   /* get all seasoning definition
   async getAvailableSeasonig(): Promise<Ingredient[] | null> {
 
@@ -840,5 +839,25 @@ export class DataBridgeService extends IDataBridge{
 }*/
 
 
+  async createOrder(): Promise<Order>{
+    var response= await this.promiseClient.post(orderUrl + "/create");
+    return response.data.payload;
+  }
+
+  async submitOrder(order: Order): Promise<Order>{
+    var response = await this.promiseClient.post(orderUrl + "/" + order.id + "/submit");
+    return response.data.payload;
+  }
+
+  async addOrderRow(order: Order, baseId: number, pizzaId: number, ingredients: number[], quantity: number) : Promise<OrderRow>{
+    var data = {
+      "pizzaId": pizzaId,
+      "ingredients":ingredients,
+      "baseId": baseId,
+      "quantity": quantity
+    };
+    var response = await this.promiseClient.post(orderUrl + "/" + order.id + "/addRow", data);
+    return response.data.payload;
+  }
 
 }
